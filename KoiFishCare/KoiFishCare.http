@@ -1,0 +1,6 @@
+@KoiFishCare_HostAddress = http://localhost:5155
+
+GET {{KoiFishCare_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
