@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using KoiFishCare.Models.Enum;
 
 namespace WebApplication1.Models;
 
@@ -30,6 +31,8 @@ public partial class Booking
     public string? Note { get; set; }
 
     public decimal? TotalAmount { get; set; }
+
+    public BookingStatus BookingStatus { get; set; }
 
     public virtual Customer? Customer { get; set; }
 
