@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using KoiFishCare.Models;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
@@ -39,6 +40,8 @@ public partial class KoiFishVeterinaryServiceContext : DbContext
     public virtual DbSet<Staff> Staff { get; set; }
 
     public virtual DbSet<Veterinarian> Veterinarians { get; set; }
+
+    public virtual DbSet<VetSlot> VetSlot { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
