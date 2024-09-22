@@ -1,15 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models;
-
+[Table("Distances")]
 public partial class Distance
 {
-    public int DistanceId { get; set; }
+    [Key]
+    public int DistanceID { get; set; }
 
-    public decimal? Price { get; set; }
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal Price { get; set; }
 
-    public decimal? Kilometer { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal Kilometer { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

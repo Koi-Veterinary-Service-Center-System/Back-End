@@ -1,29 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models;
 
-public partial class Customer
+[Table("Customers")]
+public partial class Customer : User
 {
-    public string CustomerId { get; set; } = null!;
-
-    public int? AccountId { get; set; }
-
-    public string? FirstName { get; set; }
-
-    public string? LastName { get; set; }
-
-    public string? Gender { get; set; }
-
-    public string? PhoneNumber { get; set; }
-
-    public string? DefaultAddress { get; set; }
-
-    public string? ImageUrl { get; set; }
-
-    public virtual Account? Account { get; set; }
+    public string DefaultAddress { get; set; } = string.Empty;
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-
-    public virtual ICollection<KoiOrPool> KoiOrPools { get; set; } = new List<KoiOrPool>();
 }

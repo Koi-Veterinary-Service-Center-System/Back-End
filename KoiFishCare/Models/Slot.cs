@@ -1,19 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using KoiFishCare.Models;
 
 namespace WebApplication1.Models;
 
+[Table("Slots")]
 public partial class Slot
 {
-    public int SlotId { get; set; }
+    [Key]
+    public int SlotID { get; set; }
 
-    public TimeOnly? StartTime { get; set; }
+    public TimeOnly StartTime { get; set; }
 
-    public TimeOnly? EndTime { get; set; }
+    public TimeOnly EndTime { get; set; }
 
-    public DateOnly? WeekDate { get; set; }
+    public DateOnly WeekDate { get; set; } //format ngày lại
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-
-    public virtual ICollection<Veterinarian> Vets { get; set; } = new List<Veterinarian>();
+    public virtual ICollection<VetSlot> VetSlots { get; set; } = new List<VetSlot>();
 }

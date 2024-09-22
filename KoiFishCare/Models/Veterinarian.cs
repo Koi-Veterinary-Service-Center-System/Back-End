@@ -1,29 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using KoiFishCare.Models;
 
 namespace WebApplication1.Models;
 
-public partial class Veterinarian
+[Table("Veterinarians")]
+public partial class Veterinarian : User
 {
-    public string VetId { get; set; } = null!;
+    public int ExperienceYears { get; set; }
 
-    public int? AccountId { get; set; }
-
-    public string? FirstName { get; set; }
-
-    public string? LastName { get; set; }
-
-    public string? Gender { get; set; }
-
-    public string? PhoneNumber { get; set; }
-
-    public int? ExperienceYears { get; set; }
-
-    public string? ImageUrl { get; set; }
-
-    public virtual Account? Account { get; set; }
+    // public virtual Account Account { get; set; } = null!;
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
-    public virtual ICollection<Slot> Slots { get; set; } = new List<Slot>();
+    public virtual ICollection<VetSlot> VetSlots { get; set; } = new List<VetSlot>();
 }

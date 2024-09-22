@@ -1,26 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using KoiFishCare.Models.Enum;
 
 namespace WebApplication1.Models;
 
+[Table("Bookings")]
 public partial class Booking
 {
-    public int BookingId { get; set; }
-
-    public int? ServiceId { get; set; }
-
-    public int? PaymentId { get; set; }
-
-    public int? SlotId { get; set; }
-
-    public string? CustomerId { get; set; }
-
-    public string? VetId { get; set; }
-
-    public int? DistanceId { get; set; }
-
-    public string? KoiOrPoolId { get; set; }
+    [Key]
+    public int BookingID { get; set; }
 
     public DateOnly? BookingDate { get; set; }
 
@@ -30,25 +20,49 @@ public partial class Booking
 
     public string? Note { get; set; }
 
+    [Column(TypeName = "decimal(18, 2)")]
     public decimal? TotalAmount { get; set; }
 
     public BookingStatus BookingStatus { get; set; }
 
-    public virtual Customer? Customer { get; set; }
+    // ---- Payment -----------------------------------------------------------------------
+    [ForeignKey("PaymentID")]
+    public required int PaymentID { get; set; }
+    public virtual required Payment Payment { get; set; }
 
-    public virtual Distance? Distance { get; set; }
+    // ---- Service -----------------------------------------------------------------------
+    [ForeignKey("ServiceID")]
+    public required int ServiceID { get; set; }
 
-    public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+    public virtual required Service Service { get; set; }
 
-    public virtual KoiOrPool? KoiOrPool { get; set; }
+    // ---- Slot -----------------------------------------------------------------------
+    [ForeignKey("SlotID")]
+    public required int SlotID { get; set; }
 
-    public virtual Payment? Payment { get; set; }
+    public virtual required Slot Slot { get; set; }
 
-    public virtual ICollection<PrescriptionRecord> PrescriptionRecords { get; set; } = new List<PrescriptionRecord>();
+    // ---- Customer -----------------------------------------------------------------------
+    [ForeignKey("CustomerID")]
+    public required string CustomerID { get; set; }
 
-    public virtual Service? Service { get; set; }
+    public virtual required Customer Customer { get; set; }
 
-    public virtual Slot? Slot { get; set; }
+    // ---- Vet -----------------------------------------------------------------------
+    [ForeignKey("VetID")]
+    public required string VetID { get; set; }
 
-    public virtual Veterinarian? Vet { get; set; }
+    public virtual required Veterinarian Vet { get; set; }
+
+    // ---- Distance -----------------------------------------------------------------------
+    [ForeignKey("DistanceID")]
+    public required int DistanceID { get; set; }
+
+    public virtual required Distance Distance { get; set; }
+
+    // ---- KoiOrPool -----------------------------------------------------------------------
+    [ForeignKey("KoiOrPoolID")]
+    public required int KoiOrPoolID { get; set; }
+
+    public virtual required KoiOrPool KoiOrPool { get; set; }
 }
