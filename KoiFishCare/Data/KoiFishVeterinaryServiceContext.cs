@@ -48,6 +48,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<Account
 
     public virtual DbSet<Veterinarian> Veterinarians { get; set; }
 
+    public virtual DbSet<VetSlot> VetSlot { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // modelBuilder.Entity<Account>(entity =>

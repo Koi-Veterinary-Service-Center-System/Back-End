@@ -1,3 +1,5 @@
+using KoiFishCare.Interfaces;
+using KoiFishCare.Repository;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<KoiFishVeterinaryServiceContext>(
     }
 );
 
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
 var app = builder.Build();
 
