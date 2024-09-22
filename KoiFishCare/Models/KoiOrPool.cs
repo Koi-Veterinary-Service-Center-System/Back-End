@@ -8,6 +8,8 @@ public partial class KoiOrPool
     public string KoiOrPoolId { get; set; } = null!;
 
     public string? CustomerId { get; set; }
+    
+    public int? BookingId { get; set; }
 
     public string? Name { get; set; }
 
