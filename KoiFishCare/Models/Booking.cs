@@ -25,6 +25,8 @@ public partial class Booking
 
     public BookingStatus BookingStatus { get; set; }
 
+    public string? MeetURL { get; set; }
+
     // ---- Payment -----------------------------------------------------------------------
     [ForeignKey("PaymentID")]
     public required int PaymentID { get; set; }
