@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using KoiFishCare.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
 namespace WebApplication1.Data;
 
-public partial class KoiFishVeterinaryServiceContext : DbContext
+public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<Account>
 {
+
     public KoiFishVeterinaryServiceContext()
     {
     }
@@ -36,29 +40,34 @@ public partial class KoiFishVeterinaryServiceContext : DbContext
 
     public virtual DbSet<Slot> Slots { get; set; }
 
+    public virtual DbSet<Veterinarian> Vets { get; set; }
+
     public virtual DbSet<Staff> Staff { get; set; }
+
+    public virtual DbSet<VetSlot> VetSlots { get; set; }
 
     public virtual DbSet<Veterinarian> Veterinarians { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Account>(entity =>
-        {
-            entity.HasKey(e => e.AccountId).HasName("PK__Account__349DA586AD67902E");
+        // modelBuilder.Entity<Account>(entity =>
+        // {
 
-            entity.ToTable("Account");
+            // entity.HasKey(e => e.AccountId).HasName("PK__Account__349DA586AD67902E");
 
-            entity.Property(e => e.AccountId).HasColumnName("AccountID");
-            entity.Property(e => e.Email)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.Password)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.UserName)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-        });
+            // entity.ToTable("Account");
+
+            // entity.Property(e => e.AccountId).HasColumnName("AccountID");
+            // entity.Property(e => e.Email)
+            //     .HasMaxLength(100)
+            //     .IsUnicode(false);
+            // entity.Property(e => e.Password)
+            //     .HasMaxLength(255)
+            //     .IsUnicode(false);
+            // entity.Property(e => e.UserName)
+            //     .HasMaxLength(100)
+            //     .IsUnicode(false);
+        // });
 
         modelBuilder.Entity<Booking>(entity =>
         {
@@ -152,9 +161,9 @@ public partial class KoiFishVeterinaryServiceContext : DbContext
                 .HasMaxLength(15)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Account).WithOne(p => p.Customer)
-                .HasForeignKey<Customer>(d => d.AccountId)
-                .HasConstraintName("FK__Customer__Accoun__412EB0B6");
+            // entity.HasOne(d => d.Account).WithOne(p => p.Customer)
+            //     .HasForeignKey<Customer>(d => d.AccountId)
+            //     .HasConstraintName("FK__Customer__Accoun__412EB0B6");
         });
 
         modelBuilder.Entity<Distance>(entity =>
@@ -296,10 +305,11 @@ public partial class KoiFishVeterinaryServiceContext : DbContext
                 .HasMaxLength(15)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Account).WithOne(p => p.Staff)
-                .HasForeignKey<Staff>(d => d.AccountId)
-                .HasConstraintName("FK__Staff__AccountID__3B75D760");
+            // entity.HasOne(d => d.Account).WithOne(p => p.Staff)
+            //     .HasForeignKey<Staff>(d => d.AccountId)
+            //     .HasConstraintName("FK__Staff__AccountID__3B75D760");
         });
+
 
         modelBuilder.Entity<Veterinarian>(entity =>
         {
@@ -333,25 +343,25 @@ public partial class KoiFishVeterinaryServiceContext : DbContext
                 .HasMaxLength(15)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Account).WithOne(p => p.Veterinarian)
-                .HasForeignKey<Veterinarian>(d => d.AccountId)
-                .HasConstraintName("FK__Veterinar__Accou__45F365D3");
+            // entity.HasOne(d => d.Account).WithOne(p => p.Veterinarian)
+            //     .HasForeignKey<Veterinarian>(d => d.AccountId)
+            //     .HasConstraintName("FK__Veterinar__Accou__45F365D3");
 
             entity.HasMany(d => d.Slots).WithMany(p => p.Vets)
                 .UsingEntity<Dictionary<string, object>>(
-                    "Having",
+                    "VetSlot",
                     r => r.HasOne<Slot>().WithMany()
                         .HasForeignKey("SlotId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Having__SlotID__4D94879B"),
+                        .HasConstraintName("FK__VetSlot__SlotID__4D94879B"),
                     l => l.HasOne<Veterinarian>().WithMany()
                         .HasForeignKey("VetId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Having__VetID__4CA06362"),
+                        .HasConstraintName("FK__VetSlot__VetID__4CA06362"),
                     j =>
                     {
-                        j.HasKey("VetId", "SlotId").HasName("PK__Having__C5F79CAAFED7EB1E");
-                        j.ToTable("Having");
+                        j.HasKey("VetId", "SlotId").HasName("PK__VetSlot__C5F79CAAFED7EB1E");
+                        j.ToTable("VetSlot");
                         j.IndexerProperty<string>("VetId")
                             .HasMaxLength(50)
                             .IsUnicode(false)
