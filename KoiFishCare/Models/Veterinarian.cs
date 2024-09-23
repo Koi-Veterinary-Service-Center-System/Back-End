@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using KoiFishCare.Models;
 
-namespace WebApplication1.Models;
+namespace KoiFishCare.Models;
 
 [Table("Veterinarians")]
 public partial class Veterinarian : User

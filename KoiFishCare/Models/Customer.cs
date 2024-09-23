@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApplication1.Models;
+namespace KoiFishCare.Models;
 
 [Table("Customers")]
 public partial class Customer : User

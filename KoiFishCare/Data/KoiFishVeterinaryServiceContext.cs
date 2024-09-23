@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
-using WebApplication1.Models;
 
-namespace WebApplication1.Data;
+namespace KoiFishCare.Data;
 
 public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 {
