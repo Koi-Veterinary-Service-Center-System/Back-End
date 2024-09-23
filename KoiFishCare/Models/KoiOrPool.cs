@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApplication1.Models;
+namespace KoiFishCare.Models;
 [Table("KoiOrPools")]
 public partial class KoiOrPool
 {
@@ -15,6 +15,11 @@ public partial class KoiOrPool
     public bool IsPool { get; set; }
 
     public string? Description { get; set; }
+
+    //Customer
+    public string? CustomerId { get; set; }
+    [ForeignKey("CustomerId")]
+    public Customer? Customer { get; set; }
 
     // ---- Booking -----------------------------------------------------------------------
     // Cần xem lại, chưa hiểu vì sao 1 koi/pool có nhiều booking
