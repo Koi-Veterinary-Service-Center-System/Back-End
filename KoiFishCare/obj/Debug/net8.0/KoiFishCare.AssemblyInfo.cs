@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KoiFishCare")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8d18b70b2f4a2bb510e27ff0f0a98c52405b25d0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bda1c0b4c2c9fc09e10766ba02fa83a558a378a9")]
 [assembly: System.Reflection.AssemblyProductAttribute("KoiFishCare")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KoiFishCare")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

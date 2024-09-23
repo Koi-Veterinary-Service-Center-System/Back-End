@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Models;
+using KoiFishCare.Models;
 using KoiFishCare.Dtos;
 
 namespace KoiFishCare.Controllers
