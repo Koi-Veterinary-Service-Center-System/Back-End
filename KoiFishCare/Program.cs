@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddDbContext<KoiFishVeterinaryServiceContext>(
     options =>
     {
@@ -36,6 +37,8 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
   .AddRoleStore<RoleStore<IdentityRole, KoiFishVeterinaryServiceContext>>();
 
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -47,6 +50,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
 
