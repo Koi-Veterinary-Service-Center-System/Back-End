@@ -45,6 +45,8 @@ namespace KoiFishCare.Controllers
             // Get logged in customer
             var username = _userManager.GetUserName(this.User);
             var userModel = await _userManager.FindByNameAsync(username);
+            if(userModel == null)
+                return BadRequest("Login before booking!");
 
             //check role
 
