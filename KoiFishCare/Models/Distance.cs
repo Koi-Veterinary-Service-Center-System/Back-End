@@ -13,7 +13,6 @@ public partial class Distance
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }
 
-
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Kilometer { get; set; }
 
