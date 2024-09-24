@@ -10,12 +10,10 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-// Add Authorization to SwaggerGen
+// Add Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "KoiFishCareService", Version = "v1" });
@@ -44,20 +42,25 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
+// Add CORS policy for your Vite frontend
+builder.Services.AddCors(options =>
 {
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    options.AddPolicy("AllowViteFrontend",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+                   .AllowCredentials();  // If you need to send cookies or Authorization header
+        });
 });
 
-// Add SQLServer connection
-builder.Services.AddDbContext<KoiFishVeterinaryServiceContext>(
-    options =>
-    {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    }
-);
+// Configure Entity Framework and Identity
+builder.Services.AddDbContext<KoiFishVeterinaryServiceContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
-// Add Identity 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 5;
@@ -72,21 +75,13 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
   .AddUserStore<UserStore<User, IdentityRole, KoiFishVeterinaryServiceContext>>()
   .AddRoleStore<RoleStore<IdentityRole, KoiFishVeterinaryServiceContext>>();
 
-
-builder.Services.AddAuthorization();
-
-// Add Cors
-builder.Services.AddCors(options =>
-    options.AddDefaultPolicy(policy =>
-    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
-);
-
-// Add Scoped for every repositories
+// Add other services (repositories, etc.)
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IFishOrPoolRepository, FishOrPoolRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<ISlotRepository, SlotRepository>();
 
+// Build the app
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -96,12 +91,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Enable CORS for the specified policy before handling requests
+app.UseCors("AllowViteFrontend");
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-
