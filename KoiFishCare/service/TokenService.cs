@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using KoiFishCare.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
-using WebApplication1.Models;
+using KoiFishCare.Models;
 
 namespace KoiFishCare.service
 {
