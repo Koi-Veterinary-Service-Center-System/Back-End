@@ -45,6 +45,8 @@ namespace KoiFishCare.Controllers
             // Get logged in customer
             var username = _userManager.GetUserName(this.User);
             var userModel = await _userManager.FindByNameAsync(username);
+            if(userModel == null)
+                return BadRequest("Login before booking!");
 
             //check role
 
@@ -104,6 +106,28 @@ namespace KoiFishCare.Controllers
                 await _bookingRepo.CreateBooking(bookingModel);
                 return Ok(bookingModel);
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllBooking()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var booking = await _bookingRepo.GetBookingsByUserIdAsync(user.Id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            return Ok(booking);
         }
     }
 }

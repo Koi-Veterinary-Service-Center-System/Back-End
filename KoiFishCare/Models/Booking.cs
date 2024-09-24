@@ -50,9 +50,9 @@ public partial class Booking
 
     // ---- Vet -----------------------------------------------------------------------
     [ForeignKey("VetID")]
-    public string? VetID { get; set; }
+    public string VetID { get; set; }
 
-    public Veterinarian? Vet { get; set; }
+    public Veterinarian? Veterinarian { get; set; }
 
     // ---- Distance -----------------------------------------------------------------------
     [ForeignKey("DistanceID")]

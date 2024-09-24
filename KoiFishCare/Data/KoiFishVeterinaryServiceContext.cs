@@ -59,7 +59,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             .HasBaseType<User>();
 
         modelBuilder.Entity<Booking>()
-            .HasOne(b => b.Vet)
+            .HasOne(b => b.Veterinarian)
             .WithMany(v => v.Bookings)
             .HasForeignKey(b => b.VetID)
             .OnDelete(DeleteBehavior.Restrict);

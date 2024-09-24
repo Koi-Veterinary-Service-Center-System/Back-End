@@ -16,7 +16,7 @@ public partial class Slot
 
     public TimeOnly EndTime { get; set; }
 
-    public DateOnly WeekDate { get; set; } //format ngày lại
+    public string WeekDate { get; set; } = string.Empty;
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     public virtual ICollection<VetSlot> VetSlots { get; set; } = new List<VetSlot>();
