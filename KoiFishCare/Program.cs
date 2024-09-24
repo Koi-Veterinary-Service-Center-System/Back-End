@@ -15,9 +15,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add Authorization to SwaggerGen
 builder.Services.AddSwaggerGen(option =>
 {
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "KoiFishCareService", Version = "v1" });
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -48,6 +49,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
+// Add SQLServer connection
 builder.Services.AddDbContext<KoiFishVeterinaryServiceContext>(
     options =>
     {
@@ -70,9 +72,16 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
   .AddUserStore<UserStore<User, IdentityRole, KoiFishVeterinaryServiceContext>>()
   .AddRoleStore<RoleStore<IdentityRole, KoiFishVeterinaryServiceContext>>();
 
-builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
 builder.Services.AddAuthorization();
 
+// Add Cors
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(policy =>
+    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
+);
+
+// Add Scoped for every repositories
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IFishOrPoolRepository, FishOrPoolRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
