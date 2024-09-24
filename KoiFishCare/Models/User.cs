@@ -12,11 +12,15 @@ public partial class User : IdentityUser
 
     public string LastName { get; set; } = string.Empty;
 
-    public bool Gender { get; set; }
+    public bool? Gender { get; set; }
 
-    public string? ImageURL { get; set; } = string.Empty;
+    public string? Address { get; set; }
 
-    public string ImagePublicId {get;set;} = string.Empty; //id của hình lưu trên cloud
+    public int? ExperienceYears { get; set; }
+
+    public string? ImageURL { get; set; }
+
+    public string? ImagePublicId {get;set;} //id của hình lưu trên cloud
 
     // public virtual Staff Staff { get; set; } = null!;
 
