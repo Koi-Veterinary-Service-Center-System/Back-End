@@ -46,6 +46,33 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
     {
         base.OnModelCreating(modelBuilder);
 
+        //add role
+        List<IdentityRole> roles = new List<IdentityRole>
+        {
+            new IdentityRole
+            {
+                Name = "Customer",
+                NormalizedName = "CUSTOMER"
+            },
+            new IdentityRole
+            {
+                Name = "Vet",
+                NormalizedName = "VET"
+            },
+            new IdentityRole
+            {
+                Name = "Staff",
+                NormalizedName = "STAFF"
+            },
+            new IdentityRole
+            {
+                Name = "Manager",
+                NormalizedName = "MANAGER"
+            },
+        };
+        modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+        //Define keys
         modelBuilder.Entity<Veterinarian>()
                 .ToTable("Veterinarians")
                 .HasBaseType<User>();
