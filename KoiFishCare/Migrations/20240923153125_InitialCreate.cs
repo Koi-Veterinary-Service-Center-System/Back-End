@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace KoiFishCare.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -67,21 +67,6 @@ namespace KoiFishCare.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Distances", x => x.DistanceID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "KoiOrPools",
-                columns: table => new
-                {
-                    KoiOrPoolID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsPool = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_KoiOrPools", x => x.KoiOrPoolID);
                 });
 
             migrationBuilder.CreateTable(
@@ -291,70 +276,24 @@ namespace KoiFishCare.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bookings",
+                name: "KoiOrPools",
                 columns: table => new
                 {
-                    BookingID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BookingDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    BookingTime = table.Column<TimeOnly>(type: "time", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    BookingStatus = table.Column<int>(type: "int", nullable: false),
-                    PaymentID = table.Column<int>(type: "int", nullable: false),
-                    ServiceID = table.Column<int>(type: "int", nullable: false),
-                    SlotID = table.Column<int>(type: "int", nullable: false),
-                    CustomerID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    VetID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DistanceID = table.Column<int>(type: "int", nullable: false),
                     KoiOrPoolID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsPool = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bookings", x => x.BookingID);
+                    table.PrimaryKey("PK_KoiOrPools", x => x.KoiOrPoolID);
                     table.ForeignKey(
-                        name: "FK_Bookings_Customers_CustomerID",
-                        column: x => x.CustomerID,
+                        name: "FK_KoiOrPools_Customers_CustomerId",
+                        column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Bookings_Distances_DistanceID",
-                        column: x => x.DistanceID,
-                        principalTable: "Distances",
-                        principalColumn: "DistanceID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Bookings_KoiOrPools_KoiOrPoolID",
-                        column: x => x.KoiOrPoolID,
-                        principalTable: "KoiOrPools",
-                        principalColumn: "KoiOrPoolID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Bookings_Payments_PaymentID",
-                        column: x => x.PaymentID,
-                        principalTable: "Payments",
-                        principalColumn: "PaymentID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Bookings_Services_ServiceID",
-                        column: x => x.ServiceID,
-                        principalTable: "Services",
-                        principalColumn: "ServiceID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Bookings_Slots_SlotID",
-                        column: x => x.SlotID,
-                        principalTable: "Slots",
-                        principalColumn: "SlotID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Bookings_Veterinarians_VetID",
-                        column: x => x.VetID,
-                        principalTable: "Veterinarians",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -379,6 +318,68 @@ namespace KoiFishCare.Migrations
                         principalTable: "Veterinarians",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    BookingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    BookingStatus = table.Column<int>(type: "int", nullable: false),
+                    MeetURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentID = table.Column<int>(type: "int", nullable: true),
+                    ServiceID = table.Column<int>(type: "int", nullable: true),
+                    SlotID = table.Column<int>(type: "int", nullable: true),
+                    CustomerID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    VetID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DistanceID = table.Column<int>(type: "int", nullable: true),
+                    KoiOrPoolID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.BookingID);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Customers_CustomerID",
+                        column: x => x.CustomerID,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Distances_DistanceID",
+                        column: x => x.DistanceID,
+                        principalTable: "Distances",
+                        principalColumn: "DistanceID");
+                    table.ForeignKey(
+                        name: "FK_Bookings_KoiOrPools_KoiOrPoolID",
+                        column: x => x.KoiOrPoolID,
+                        principalTable: "KoiOrPools",
+                        principalColumn: "KoiOrPoolID");
+                    table.ForeignKey(
+                        name: "FK_Bookings_Payments_PaymentID",
+                        column: x => x.PaymentID,
+                        principalTable: "Payments",
+                        principalColumn: "PaymentID");
+                    table.ForeignKey(
+                        name: "FK_Bookings_Services_ServiceID",
+                        column: x => x.ServiceID,
+                        principalTable: "Services",
+                        principalColumn: "ServiceID");
+                    table.ForeignKey(
+                        name: "FK_Bookings_Slots_SlotID",
+                        column: x => x.SlotID,
+                        principalTable: "Slots",
+                        principalColumn: "SlotID");
+                    table.ForeignKey(
+                        name: "FK_Bookings_Veterinarians_VetID",
+                        column: x => x.VetID,
+                        principalTable: "Veterinarians",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -503,6 +504,11 @@ namespace KoiFishCare.Migrations
                 column: "BookingID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_KoiOrPools_CustomerId",
+                table: "KoiOrPools",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PrescriptionRecords_BookingID",
                 table: "PrescriptionRecords",
                 column: "BookingID");
@@ -550,9 +556,6 @@ namespace KoiFishCare.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "Customers");
-
-            migrationBuilder.DropTable(
                 name: "Distances");
 
             migrationBuilder.DropTable(
@@ -569,6 +572,9 @@ namespace KoiFishCare.Migrations
 
             migrationBuilder.DropTable(
                 name: "Veterinarians");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

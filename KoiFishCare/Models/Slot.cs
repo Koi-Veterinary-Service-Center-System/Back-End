@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using KoiFishCare.Models;
 
-namespace WebApplication1.Models;
+namespace KoiFishCare.Models;
 
 [Table("Slots")]
 public partial class Slot

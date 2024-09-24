@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace WebApplication1.Models;
+namespace KoiFishCare.Models;
 
 [Table("Users")]
 public partial class User : IdentityUser
