@@ -84,7 +84,7 @@ namespace KoiFishCare.Controllers
                 bookingModel.ServiceID = service.ServiceID;
                 bookingModel.Slot = slot;
                 bookingModel.Service = service;
-                bookingModel.TotalAmount = service.Price;
+                bookingModel.TotalAmount = createBookingDto.TotalAmount;
 
                 await _bookingRepo.CreateBooking(bookingModel);
                 return Ok(bookingModel);
