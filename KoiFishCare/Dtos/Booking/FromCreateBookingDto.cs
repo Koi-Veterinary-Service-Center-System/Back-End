@@ -17,6 +17,7 @@ namespace KoiFishCare.Dtos
         public int KoiOrPoolId { get; set; }
 
         public string? VetName { get; set; }
+        public decimal? TotalAmount { get; set; }
 
         [Required(ErrorMessage = "Location is required.")]
         public string Location { get; set; }
