@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 using KoiFishCare.Dtos;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using KoiFishCare.Interfaces;
 
 namespace KoiFishCare.Controllers
 {
@@ -11,11 +15,13 @@ namespace KoiFishCare.Controllers
     {
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
+        private readonly ItokenService tokenService;
 
-        public UserController(SignInManager<User> signInManager, UserManager<User> userManager)
+        public UserController(SignInManager<User> signInManager, UserManager<User> userManager, ItokenService tokenService)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.tokenService = tokenService;
         }
 
         [HttpPost("login")]
@@ -26,10 +32,26 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
-            if (result.Succeeded)
+            var user = await userManager.FindByNameAsync(model.UserName);
+            if (user == null)
             {
-                return Ok("Login successful");
+                return Unauthorized("Invalid login");
+            }
+
+            var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
+            if (result.Succeeded)
+            {               
+                var customer = user as Customer;
+                var userDto = new UserDto
+                {
+                    UserName = customer.UserName,
+                    Email = customer.Email,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Token = tokenService.CreateToken(customer)
+                };
+
+            return Ok(userDto);
             }
             return Unauthorized("Invalid login");
         }
@@ -42,7 +64,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new User
+            var customer = new Customer
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -50,11 +72,20 @@ namespace KoiFishCare.Controllers
                 Email = model.Email
             };
 
-            var result = await userManager.CreateAsync(user, model.Password);
+            var result = await userManager.CreateAsync(customer, model.Password);
             if (result.Succeeded)
             {
-                await signInManager.SignInAsync(user, false);
-                return Ok("Registration successful");
+                await signInManager.SignInAsync(customer, false);
+                
+                var userDto = new UserDto
+                {
+                    UserName = customer.UserName,
+                    Email = customer.Email,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Token = tokenService.CreateToken(customer)
+                };
+            return Ok(userDto);
             }
             return BadRequest(result.Errors);
         }

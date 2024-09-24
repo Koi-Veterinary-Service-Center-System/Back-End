@@ -3,8 +3,12 @@ using KoiFishCare.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using WebApplication1.Data;
 using WebApplication1.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using KoiFishCare.service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,8 +41,30 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
   .AddRoleStore<RoleStore<IdentityRole, KoiFishVeterinaryServiceContext>>();
 
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddAuthorization();
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
+        )
+    };
+});
+
 builder.Services.AddControllers();
+builder.Services.AddScoped<ItokenService, TokenService>();
 
 var app = builder.Build();
 
