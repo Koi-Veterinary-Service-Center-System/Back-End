@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 namespace KoiFishCare.Models;
 // Warning
 [Table("VetSlots")]
-    public class VetSlot
-    {
-        [ForeignKey("VetID")]
-        public required string VetID { get; set; }
-        [ForeignKey("SlotID")]
-        public required int SlotID { get; set; }
-        public required Veterinarian Veterinarian { get; set; }
-        public required Slot Slot { get; set; }
-    }
+public class VetSlot
+{
+    [ForeignKey("VetID")]
+    public required string VetID { get; set; }
+    [ForeignKey("SlotID")]
+    public required int SlotID { get; set; }
+    public required Veterinarian Veterinarian { get; set; }
+    public required Slot Slot { get; set; }
+    public bool isBooked { get; set; }
+}

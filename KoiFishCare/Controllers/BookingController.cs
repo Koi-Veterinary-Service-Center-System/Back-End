@@ -105,5 +105,27 @@ namespace KoiFishCare.Controllers
                 return Ok(bookingModel);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllBooking()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var booking = await _bookingRepo.GetBookingsByUserIdAsync(user.Id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            return Ok(booking);
+        }
     }
 }

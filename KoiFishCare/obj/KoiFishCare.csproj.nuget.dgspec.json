@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\SEM5-FA24\\SWP391\\Back-End\\KoiFishCare\\KoiFishCare.csproj": {}
+    "D:\\Code_files\\Back-End\\KoiFishCare\\KoiFishCare.csproj": {}
   },
   "projects": {
-    "D:\\SEM5-FA24\\SWP391\\Back-End\\KoiFishCare\\KoiFishCare.csproj": {
+    "D:\\Code_files\\Back-End\\KoiFishCare\\KoiFishCare.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SEM5-FA24\\SWP391\\Back-End\\KoiFishCare\\KoiFishCare.csproj",
+        "projectUniqueName": "D:\\Code_files\\Back-End\\KoiFishCare\\KoiFishCare.csproj",
         "projectName": "KoiFishCare",
-        "projectPath": "D:\\SEM5-FA24\\SWP391\\Back-End\\KoiFishCare\\KoiFishCare.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\SEM5-FA24\\SWP391\\Back-End\\KoiFishCare\\obj\\",
+        "projectPath": "D:\\Code_files\\Back-End\\KoiFishCare\\KoiFishCare.csproj",
+        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+        "outputPath": "D:\\Code_files\\Back-End\\KoiFishCare\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -110,7 +110,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

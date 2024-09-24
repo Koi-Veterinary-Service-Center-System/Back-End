@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KoiFishCare.Dtos.Booking;
 using KoiFishCare.Models;
 
 namespace KoiFishCare.Interfaces
@@ -10,5 +11,6 @@ namespace KoiFishCare.Interfaces
     {
         Task<Booking> CreateBooking(Booking bookingModel);
         Task<List<Booking>> GetBookingsByDateAndSlot(DateOnly date, int slotId);
+        Task<List<FromViewBookingDTO>?> GetBookingsByUserIdAsync(string userID);
     }
 }
