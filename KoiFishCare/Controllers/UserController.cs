@@ -22,11 +22,12 @@ namespace KoiFishCare.Controllers
 
         private readonly IUserRepository _userRepo;
 
-        public UserController(SignInManager<User> signInManager, UserManager<User> userManager, ItokenService tokenService)
+        public UserController(SignInManager<User> signInManager, UserManager<User> userManager, ItokenService tokenService, IUserRepository userRepo)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
+            _userRepo = userRepo;
         }
 
         [HttpPost("login")]
@@ -109,15 +110,20 @@ namespace KoiFishCare.Controllers
         }
         
         [Authorize]
-        [HttpPut("profile")]
+        [HttpPut("update-profile")]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserProfileDTO updateDTO)
         {
             var id = _userManager.GetUserId(this.User);
+            if (id == null){
+                return Unauthorized();
+            }
+
             var user = await _userRepo.UpdateAsync(id, updateDTO);
             if (user == null)
             {
                 return NotFound("User not found.");
             }
+            
             return Ok(user);
         }
     }
