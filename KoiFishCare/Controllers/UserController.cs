@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using KoiFishCare.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using KoiFishCare.Mappers;
+using KoiFishCare.Dtos.User;
 
 namespace KoiFishCare.Controllers
 {
@@ -18,6 +19,8 @@ namespace KoiFishCare.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ItokenService _tokenService;
+
+        private readonly IUserRepository _userRepo;
 
         public UserController(SignInManager<User> signInManager, UserManager<User> userManager, ItokenService tokenService)
         {
@@ -103,6 +106,19 @@ namespace KoiFishCare.Controllers
 
             var result = user.ToUserProfileFromUser();
             return Ok(result);
+        }
+        
+        [Authorize]
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserProfileDTO updateDTO)
+        {
+            var id = _userManager.GetUserId(this.User);
+            var user = await _userRepo.UpdateAsync(id, updateDTO);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+            return Ok(user);
         }
     }
 }

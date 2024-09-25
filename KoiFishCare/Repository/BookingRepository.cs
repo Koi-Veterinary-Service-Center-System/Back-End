@@ -53,6 +53,7 @@ namespace KoiFishCare.Repository
                             Note = b.Note,
                             PaymentType = b.Payment.Type,
                             BookingDate = b.BookingDate,
+                            BookingStatus = b.BookingStatus,
                         }).ToListAsync();
 
             if (booking == null)
