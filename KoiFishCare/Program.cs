@@ -102,6 +102,7 @@ builder.Services.AddScoped<ISlotRepository, SlotRepository>();
 builder.Services.AddScoped<ItokenService, TokenService>();
 builder.Services.AddScoped<IVetRepository, VetRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 builder.Services.AddAuthentication(options =>
 {

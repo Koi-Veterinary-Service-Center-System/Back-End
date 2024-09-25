@@ -16,6 +16,12 @@ namespace KoiFishCare.Repository
         {
             _context = context;
         }
+
+        public async Task<List<Service>> GetAllService()
+        {
+            return await _context.Services.ToListAsync();
+        }
+
         public async Task<Service?> GetServiceById(int id)
         {
             return await _context.Services.FirstOrDefaultAsync(s => s.ServiceID == id);

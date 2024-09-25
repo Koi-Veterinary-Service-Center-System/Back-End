@@ -124,7 +124,7 @@ namespace KoiFishCare.Controllers
             }
 
             var booking = await _bookingRepo.GetBookingsByUserIdAsync(user.Id);
-            if (booking == null)
+            if (booking == null || !booking.Any())
             {
                 return NotFound();
             }

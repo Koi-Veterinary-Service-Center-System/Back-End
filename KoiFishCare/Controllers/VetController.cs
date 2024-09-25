@@ -26,6 +26,8 @@ namespace KoiFishCare.Controllers
         public async Task<IActionResult> GetAllVet()
         {
             var vet = await _vetRepo.GetAllVet();
+            if(vet == null || !vet.Any()) return BadRequest("Can not find any Vet");
+            
             var vetDto = vet.Select(v => v.ToVetDto()).ToList();
             return Ok(vetDto);
         }

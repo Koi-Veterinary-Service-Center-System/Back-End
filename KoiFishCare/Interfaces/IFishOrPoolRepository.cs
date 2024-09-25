@@ -9,5 +9,6 @@ namespace KoiFishCare.Interfaces
     public interface IFishOrPoolRepository
     {
         Task<KoiOrPool?> GetKoiOrPoolById(int id);
+        Task<List<KoiOrPool>> GetKoiOrPoolsOfCustomer(string customerId);
     }
 }
