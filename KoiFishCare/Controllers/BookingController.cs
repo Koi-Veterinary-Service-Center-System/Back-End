@@ -34,7 +34,7 @@ namespace KoiFishCare.Controllers
 
 
         [Authorize]
-        [HttpPost]
+        [HttpPost("create-booking")]
         public async Task<IActionResult> CreateBooking([FromBody] FromCreateBookingDto createBookingDto)
         {
             if (!ModelState.IsValid)
@@ -108,8 +108,8 @@ namespace KoiFishCare.Controllers
             }
         }
 
-        [HttpGet]
         [Authorize]
+        [HttpGet("all-booking")]
         public async Task<IActionResult> GetAllBooking()
         {
             if (!ModelState.IsValid)

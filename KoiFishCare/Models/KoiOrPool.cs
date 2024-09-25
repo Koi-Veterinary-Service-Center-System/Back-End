@@ -25,10 +25,4 @@ public partial class KoiOrPool
     // Cần xem lại, chưa hiểu vì sao 1 koi/pool có nhiều booking
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-
-
-
-
-
-
 }
