@@ -20,5 +20,10 @@ namespace KoiFishCare.Repository
         {
             return await _context.KoiOrPools.FirstOrDefaultAsync(k => k.KoiOrPoolID == id);
         }
+
+        public async Task<List<KoiOrPool>> GetKoiOrPoolsOfCustomer(string customerId)
+        {
+            return await _context.KoiOrPools.Where(k => k.CustomerId == customerId).ToListAsync();
+        }
     }
 }

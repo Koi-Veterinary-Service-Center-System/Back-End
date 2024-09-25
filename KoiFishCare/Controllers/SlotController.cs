@@ -23,6 +23,8 @@ namespace KoiFishCare.Controllers
         public async Task<IActionResult> GetAllSlot()
         {
             var slots = await _slotRepo.GetAllSlot();
+            if(slots == null || !slots.Any()) return BadRequest("Can not find any slot");
+            
             var slotsDto = slots.Select(s => s.ToSlotDto()).ToList();
             return Ok(slotsDto);
         }
