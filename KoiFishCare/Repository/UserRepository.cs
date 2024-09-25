@@ -32,10 +32,9 @@ namespace KoiFishCare.Repository
             user.Gender = userDTO.Gender;
             user.Email = userDTO.Email;
             user.Address = userDTO.Address;
-            user.ImageURL = user.ImageURL;
-            user.ImagePublicId = user.ImagePublicId;
-            user.PhoneNumber = user.PhoneNumber;
-            user.ExperienceYears = user.ExperienceYears;
+            user.ImageURL = userDTO.ImageURL;
+            user.PhoneNumber = userDTO.PhoneNumber;
+            user.ExperienceYears = userDTO.ExperienceYears;
 
             await _context.SaveChangesAsync();
             return user;
