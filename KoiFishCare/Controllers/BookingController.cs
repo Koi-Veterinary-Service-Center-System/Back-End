@@ -109,6 +109,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllBooking()
         {
             if (!ModelState.IsValid)
@@ -116,7 +117,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
             
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(this.User);
             if (user == null)
             {
                 return Unauthorized();
