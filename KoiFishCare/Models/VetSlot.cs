@@ -14,7 +14,7 @@ public class VetSlot
     public required string VetID { get; set; }
     [ForeignKey("SlotID")]
     public required int SlotID { get; set; }
-    public required Veterinarian Veterinarian { get; set; }
-    public required Slot Slot { get; set; }
+    public Veterinarian? Veterinarian { get; set; }
+    public Slot? Slot { get; set; }
     public bool isBooked { get; set; }
 }
