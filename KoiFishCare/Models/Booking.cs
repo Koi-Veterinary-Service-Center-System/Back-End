@@ -44,13 +44,13 @@ public partial class Booking
 
     // ---- Customer -----------------------------------------------------------------------
     [ForeignKey("CustomerID")]
-    public string CustomerID { get; set; }
+    public string CustomerID { get; set; } = string.Empty;
 
     public Customer? Customer { get; set; }
 
     // ---- Vet -----------------------------------------------------------------------
     [ForeignKey("VetID")]
-    public string VetID { get; set; }
+    public string VetID { get; set; } = string.Empty;
 
     public Veterinarian? Veterinarian { get; set; }
 

@@ -44,7 +44,7 @@ namespace KoiFishCare.Repository
                         Select(b => new FromViewBookingDTO
                         {
                             CustomerName = b.Customer.FirstName,
-                            Location = string.IsNullOrEmpty(b.Location) ? b.Customer.Address : b.Location,
+                            Location = b.Location,
                             ServiceName = b.Service.ServiceName,
                             KoiOrPoolType = b.KoiOrPool.IsPool,
                             StartTime = b.Slot.StartTime,
