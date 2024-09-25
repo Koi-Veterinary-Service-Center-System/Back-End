@@ -87,9 +87,8 @@ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IFishOrPoolRepository, FishOrPoolRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<ISlotRepository, SlotRepository>();
-
-
-
+builder.Services.AddScoped<ItokenService, TokenService>();
+builder.Services.AddScoped<IVetRepository, VetRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -110,14 +109,6 @@ builder.Services.AddAuthentication(options =>
         )
     };
 });
-
-builder.Services.AddControllers();
-builder.Services.AddScoped<ItokenService, TokenService>();
-
-builder.Services.AddScoped<IFishOrPoolRepository, FishOrPoolRepository>();
-builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
-builder.Services.AddScoped<ISlotRepository, SlotRepository>();
-
 
 // Build the app
 var app = builder.Build();
