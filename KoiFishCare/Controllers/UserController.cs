@@ -108,23 +108,63 @@ namespace KoiFishCare.Controllers
             var result = user.ToUserProfileFromUser();
             return Ok(result);
         }
-        
+
         [Authorize]
         [HttpPut("update-profile")]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserProfileDTO updateDTO)
         {
             var id = _userManager.GetUserId(this.User);
-            if (id == null){
+            if (id == null)
+            {
                 return Unauthorized();
             }
-
-            var user = await _userRepo.UpdateAsync(id, updateDTO);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                return NotFound("User not found.");
+                return BadRequest("Can not find user!");
             }
-            
-            return Ok(user);
+
+            var userDTO = updateDTO;
+            if (updateDTO.UserName.IsNullOrEmpty())
+            {
+                userDTO.UserName = user.UserName;
+            }
+            if (updateDTO.FirstName.IsNullOrEmpty())
+            {
+                userDTO.FirstName = user.FirstName;
+            }
+
+            if (updateDTO.LastName.IsNullOrEmpty())
+            {
+                userDTO.LastName = user.LastName;
+            }
+            if (updateDTO.Gender == null)
+            {
+                userDTO.Gender = user.Gender;
+            }
+            if (updateDTO.Email.IsNullOrEmpty())
+            {
+                userDTO.Email = user.Email;
+            }
+            if (updateDTO.Address.IsNullOrEmpty())
+            {
+                userDTO.Address = user.Address;
+            }
+            if (updateDTO.ImageURL.IsNullOrEmpty())
+            {
+                userDTO.ImageURL = user.ImageURL;
+            }
+            if (updateDTO.PhoneNumber.IsNullOrEmpty())
+            {
+                userDTO.PhoneNumber = user.PhoneNumber;
+            }
+            if (updateDTO.ExperienceYears == null)
+            {
+                userDTO.ExperienceYears = user.ExperienceYears;
+            }
+
+            var userUpdate = await _userRepo.UpdateAsync(id, userDTO);
+            return Ok(userUpdate);
         }
     }
 }
