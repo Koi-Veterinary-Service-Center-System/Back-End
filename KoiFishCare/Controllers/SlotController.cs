@@ -38,7 +38,7 @@ namespace KoiFishCare.Controllers
             }
 
             var slots = await _slotRepo.GetListAvailableSlot(vetId);
-            if (slots == null)
+            if (slots == null || !slots.Any())
                 return BadRequest("There is no available slot with this vet");
 
             var slotsDto = slots.Select(vs => new SlotDto
