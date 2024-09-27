@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.Dtos.Service;
 using KoiFishCare.Interfaces;
+using KoiFishCare.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KoiFishCare.Controllers
@@ -21,19 +22,66 @@ namespace KoiFishCare.Controllers
         [HttpGet("all-service")]
         public async Task<IActionResult> GetAllService()
         {
-            var services = await _serviceRepo.GetAllService();
-            if(services == null || !services.Any()) return BadRequest("Can not find any service");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            var serviceDto = services.Select(s => new ServiceDto
-            {
-                ServiceID = s.ServiceID,
-                ServiceName = s.ServiceName,
-                Description = s.Description,
-                Price = s.Price,
-                EstimatedDuration = s.EstimatedDuration
-            }).ToList();
+            var services = await _serviceRepo.GetAllService();
+            if(services == null || !services.Any()) return NotFound("Can not find any service");
+
+            var serviceDto = services.Select(s => s.ToServiceDto()).ToList();
             
             return Ok(serviceDto);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetServiceById([FromRoute]int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = await _serviceRepo.GetServiceById(id);
+            if(service == null) return NotFound("Can not find any service");
+
+            return Ok((service.ToServiceDto()));
+        }
+
+        [HttpPost("add-service")]
+        public async Task<IActionResult> AddService([FromBody] AddUpdateServiceDto serviceDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if(serviceDto.Price <= 0) return BadRequest("Price must bigger than 0");
+            if(serviceDto.EstimatedDuration <= 0) return BadRequest("Duration must bigger than 0");
+
+            var serviceModel = serviceDto.ToServiceFromAddUpdateDto();
+            await _serviceRepo.CreateService(serviceModel);
+            return CreatedAtAction(nameof(GetServiceById), new {id = serviceModel.ServiceID}, serviceModel.ToServiceDto());
+        }
+
+        [HttpPut("update-service/{id:int}")]
+        public async Task<IActionResult> UpdateService([FromRoute] int id, [FromBody] AddUpdateServiceDto serviceDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if(serviceDto.Price <= 0) return BadRequest("Price must bigger than 0");
+            if(serviceDto.EstimatedDuration <= 0) return BadRequest("Duration must bigger than 0");
+
+            var serviceModel = await _serviceRepo.UpdateService(id, serviceDto);
+
+            if(serviceModel == null) return NotFound("Can not find service");
+
+            return Ok(serviceModel.ToServiceDto());
+        }
+
+        [HttpDelete("delete-service/{id:int}")]
+        public async Task<IActionResult> DeleteService([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            var serviceModel = await _serviceRepo.DeleteService(id);
+
+            if(serviceModel == null) return NotFound("Can not find service");
+
+            return NoContent();
         }
     }
 }
