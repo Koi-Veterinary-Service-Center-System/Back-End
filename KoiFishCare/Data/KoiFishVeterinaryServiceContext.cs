@@ -133,6 +133,45 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Address = "456 Vet St.",
                 ImageURL = "https://example.com/vet2.jpg",
                 ImagePublicId = "vet2_image_id"
+            },
+            new Veterinarian
+            {
+                Id = "v3",
+                FirstName = "vet3",
+                LastName = "Smith",
+                UserName = "vet3",
+                NormalizedUserName = "VET3",
+                Gender = false,
+                ExperienceYears = 8,
+                Address = "456 Vet St.",
+                ImageURL = "https://example.com/vet2.jpg",
+                ImagePublicId = "vet2_image_id"
+            },
+            new Veterinarian
+            {
+                Id = "v4",
+                FirstName = "Vet 4",
+                LastName = "Smith",
+                UserName = "veterianary",
+                NormalizedUserName = "VETERIANARY",
+                Gender = false,
+                ExperienceYears = 8,
+                Address = "456 Vet St.",
+                ImageURL = "https://example.com/vet2.jpg",
+                ImagePublicId = "vet2_image_id"
+            },
+            new Veterinarian
+            {
+                Id = "v5",
+                FirstName = "Vet 5",
+                LastName = "Smith",
+                UserName = "vet1000000",
+                NormalizedUserName = "VET1000000",
+                Gender = false,
+                ExperienceYears = 8,
+                Address = "456 Vet St.",
+                ImageURL = "https://example.com/vet2.jpg",
+                ImagePublicId = "vet2_image_id"
             }
         );
 
@@ -151,6 +190,27 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 StartTime = new TimeOnly(11, 0),
                 EndTime = new TimeOnly(12, 0),
                 WeekDate = "Monday"
+            },
+            new Slot
+            {
+                SlotID = 3,
+                StartTime = new TimeOnly(9, 0),
+                EndTime = new TimeOnly(12, 0),
+                WeekDate = "Tuesday"
+            },
+            new Slot
+            {
+                SlotID = 4,
+                StartTime = new TimeOnly(11, 0),
+                EndTime = new TimeOnly(12, 0),
+                WeekDate = "Tuesday"
+            },
+            new Slot
+            {
+                SlotID = 5,
+                StartTime = new TimeOnly(11, 0),
+                EndTime = new TimeOnly(12, 0),
+                WeekDate = "Wednesday"
             }
         );
 
@@ -165,8 +225,56 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new VetSlot
             {
                 VetID = "v2",
+                SlotID = 1,
+                isBooked = false
+            },
+            new VetSlot
+            {
+                VetID = "v1",
                 SlotID = 2,
-                isBooked = true
+                isBooked = false
+            },
+            new VetSlot
+            {
+                VetID = "v1",
+                SlotID = 3,
+                isBooked = false
+            },
+            new VetSlot
+            {
+                VetID = "v2",
+                SlotID = 4,
+                isBooked = false
+            },
+            new VetSlot
+            {
+                VetID = "v3",
+                SlotID = 4,
+                isBooked = false
+            },
+            new VetSlot
+            {
+                VetID = "v3",
+                SlotID = 5,
+                isBooked = false
+            },
+            new VetSlot
+            {
+                VetID = "v4",
+                SlotID = 1,
+                isBooked = false
+            },
+            new VetSlot
+            {
+                VetID = "v5",
+                SlotID = 5,
+                isBooked = false
+            },
+            new VetSlot
+            {
+                VetID = "v4",
+                SlotID = 3,
+                isBooked = false
             }
         );
 
