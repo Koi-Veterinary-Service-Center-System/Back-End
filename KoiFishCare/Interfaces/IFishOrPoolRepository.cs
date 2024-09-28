@@ -10,5 +10,8 @@ namespace KoiFishCare.Interfaces
     {
         Task<KoiOrPool?> GetKoiOrPoolById(int id);
         Task<List<KoiOrPool>> GetKoiOrPoolsOfCustomer(string customerId);
+        Task<KoiOrPool> Create(KoiOrPool koiOrPoolModel);
+        Task<KoiOrPool?> Update(int id, KoiOrPool koiOrPoolModel);
+        Task<KoiOrPool?> Delete(int id);
     }
 }
