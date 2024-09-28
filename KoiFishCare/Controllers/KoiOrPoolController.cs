@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KoiFishCare.Controllers
 {
     [Route("api/koi-or-pool")]
+    [ApiController]
     public class KoiOrPoolController : ControllerBase
     {
         private readonly IFishOrPoolRepository _fishOrPoolRepo;

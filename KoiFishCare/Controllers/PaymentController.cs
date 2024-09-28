@@ -4,11 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.DTOs.Payment;
 using KoiFishCare.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KoiFishCare.Controllers
 {
     [Route("api/payment")]
+    [ApiController]
+    [AllowAnonymous]
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentRepository _paymentRepo;

@@ -12,6 +12,7 @@ namespace KoiFishCare.Controllers
 {
     [Route("api/service")]
     [ApiController]
+    [AllowAnonymous]
     public class ServiceController : ControllerBase
     {
         private readonly IServiceRepository _serviceRepo;

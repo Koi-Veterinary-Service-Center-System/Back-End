@@ -24,7 +24,7 @@ namespace KoiFishCare.Controllers
         private readonly IUserRepository _userRepo;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserController(SignInManager<User> signInManager, UserManager<User> userManager, 
+        public UserController(SignInManager<User> signInManager, UserManager<User> userManager,
         ItokenService tokenService, IUserRepository userRepo, RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
@@ -89,24 +89,23 @@ namespace KoiFishCare.Controllers
             if (result.Succeeded)
             {
                 var roleResult = await _userManager.AddToRoleAsync(customer, "Customer");
-                if(roleResult.Succeeded)
+                if (roleResult.Succeeded)
                 {
                     var role = await _roleManager.FindByNameAsync("Customer");
                     var userDto = new UserDTO
-                {
-                    UserName = customer.UserName,
-                    Email = customer.Email,
-                    FirstName = customer.FirstName,
-                    LastName = customer.LastName,
-                    Token = _tokenService.CreateToken(customer, role)
-                };
-                return Ok(userDto);
+                    {
+                        UserName = customer.UserName,
+                        Email = customer.Email,
+                        FirstName = customer.FirstName,
+                        LastName = customer.LastName,
+                        Token = _tokenService.CreateToken(customer, role)
+                    };
+                    return Ok(userDto);
                 }
             }
             return BadRequest(result.Errors);
         }
 
-        [Authorize]
         [HttpGet("profile")]
         public async Task<IActionResult> ViewProfile()
         {

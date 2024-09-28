@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using KoiFishCare.DTOs.Slot;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KoiFishCare.Controllers
 {
     [ApiController]
     [Route("api/slot")]
+    [AllowAnonymous]
     public class SlotController : ControllerBase
     {
         private readonly ISlotRepository _slotRepo;
