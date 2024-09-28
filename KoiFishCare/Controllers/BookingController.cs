@@ -52,9 +52,9 @@ namespace KoiFishCare.Controllers
 
 
             // Get customer fishorpool
-            var fishorpool = await _fishOrPoolRepo.GetKoiOrPoolById(createBookingDto.KoiOrPoolId);
-            if (fishorpool == null) return BadRequest("Fish or Pool does not exist");
-            if (fishorpool.CustomerId != userModel.Id) return BadRequest("Not your koi or pool");
+            // var fishorpool = await _fishOrPoolRepo.GetKoiOrPoolById(createBookingDto.KoiOrPoolId);
+            // if (fishorpool == null) return BadRequest("Fish or Pool does not exist");
+            // if (fishorpool.CustomerId != userModel.Id) return BadRequest("Not your koi or pool");
 
             // Get Slot
             var slot = await _slotRepo.GetSlotById(createBookingDto.SlotId);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using KoiFishCare.Dtos.Service;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KoiFishCare.Controllers
@@ -46,6 +47,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPost("add-service")]
+        [Authorize(Roles ="Staff")]
         public async Task<IActionResult> AddService([FromBody] AddUpdateServiceDto serviceDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

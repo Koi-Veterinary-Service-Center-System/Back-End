@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using KoiFishCare.service;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 // using KoiFishCare.Data;
 // using KoiFishCare.Models;
 // using Microsoft.OpenApi.Models;
@@ -103,6 +105,18 @@ builder.Services.AddScoped<ItokenService, TokenService>();
 builder.Services.AddScoped<IVetRepository, VetRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
+builder.Services.AddAuthorization(options => 
+{
+
+});
+
+builder.Services.AddControllers(options => 
+{
+    //add authorization Policy
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
 
 builder.Services.AddAuthentication(options =>
 {

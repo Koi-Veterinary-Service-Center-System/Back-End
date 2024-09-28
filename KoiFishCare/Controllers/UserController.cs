@@ -14,6 +14,7 @@ namespace KoiFishCare.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class UserController : ControllerBase
     {
         private readonly SignInManager<User> _signInManager;
@@ -21,13 +22,16 @@ namespace KoiFishCare.Controllers
         private readonly ItokenService _tokenService;
 
         private readonly IUserRepository _userRepo;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserController(SignInManager<User> signInManager, UserManager<User> userManager, ItokenService tokenService, IUserRepository userRepo)
+        public UserController(SignInManager<User> signInManager, UserManager<User> userManager, 
+        ItokenService tokenService, IUserRepository userRepo, RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
             _userRepo = userRepo;
+            _roleManager = roleManager;
         }
 
         [HttpPost("login")]
@@ -47,6 +51,9 @@ namespace KoiFishCare.Controllers
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
             if (result.Succeeded)
             {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var userRole = userRoles.FirstOrDefault();
+                var role = await _roleManager.FindByNameAsync(userRole!);
                 var customer = user as Customer;
                 var userDto = new UserDto
                 {
@@ -54,7 +61,7 @@ namespace KoiFishCare.Controllers
                     Email = customer.Email,
                     FirstName = customer.FirstName,
                     LastName = customer.LastName,
-                    Token = _tokenService.CreateToken(customer)
+                    Token = _tokenService.CreateToken(customer, role)
                 };
 
                 return Ok(userDto);
@@ -81,17 +88,20 @@ namespace KoiFishCare.Controllers
             var result = await _userManager.CreateAsync(customer, model.Password);
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(customer, false);
-
-                var userDto = new UserDto
+                var roleResult = await _userManager.AddToRoleAsync(customer, "Customer");
+                if(roleResult.Succeeded)
+                {
+                    var role = await _roleManager.FindByNameAsync("Customer");
+                    var userDto = new UserDto
                 {
                     UserName = customer.UserName,
                     Email = customer.Email,
                     FirstName = customer.FirstName,
                     LastName = customer.LastName,
-                    Token = _tokenService.CreateToken(customer)
+                    Token = _tokenService.CreateToken(customer, role)
                 };
                 return Ok(userDto);
+                }
             }
             return BadRequest(result.Errors);
         }

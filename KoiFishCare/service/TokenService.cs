@@ -9,6 +9,7 @@ using KoiFishCare.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using KoiFishCare.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace KoiFishCare.service
 {
@@ -21,13 +22,14 @@ namespace KoiFishCare.service
             _configuration = configuration;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]));
         }
-        public string CreateToken(User user)
+        public string CreateToken(User user, IdentityRole role)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
+                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
+                new Claim(ClaimTypes.Role, role.Name.ToString())
             };
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 

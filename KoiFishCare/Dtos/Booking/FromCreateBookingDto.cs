@@ -8,21 +8,19 @@ using KoiFishCare.Models.Enum;
 namespace KoiFishCare.Dtos
 {
     public class FromCreateBookingDto
-    {
-        public string? CustomerUserName { get; set; }
-        
+    {   
         public string? Note { get; set; }
+        public int? KoiOrPoolId { get; set; }
 
-        [Required(ErrorMessage = "KoiOrPoolId is required.")]
-        public int KoiOrPoolId { get; set; }
-
-        public string? VetName { get; set; }
-        public decimal? TotalAmount { get; set; }
+        [Required(ErrorMessage = "Vet is required.")]
+        public string VetName { get; set; }
+        [Required(ErrorMessage = "Total Amount is required.")]
+        public decimal TotalAmount { get; set; }
 
         [Required(ErrorMessage = "Location is required.")]
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
-        [Required(ErrorMessage = "Slot ID is required.")]
+        [Required(ErrorMessage = "Slot is required.")]
         public int SlotId { get; set; }
 
         [Required(ErrorMessage = "Service ID is required.")]
@@ -31,7 +29,7 @@ namespace KoiFishCare.Dtos
         [Required(ErrorMessage = "Payment ID is required.")]
         public int PaymentId { get; set; }
 
-        [Required(ErrorMessage = "DateOnly is required.")]
+        [Required(ErrorMessage = "Date is required.")]
         public DateOnly BookingDate { get; set; }
     }
 }
