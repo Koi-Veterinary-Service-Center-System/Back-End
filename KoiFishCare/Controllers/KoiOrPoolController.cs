@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KoiFishCare.Dtos.KoiOrPool;
 using KoiFishCare.DTOs.KoiOrPool;
 using KoiFishCare.Interfaces;
+using KoiFishCare.Mappers;
 using KoiFishCare.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,21 +30,57 @@ namespace KoiFishCare.Controllers
         public async Task<IActionResult> GetKoiOrPoolOfCus()
         {
             var customer = await _userManager.GetUserAsync(this.User);
+                if(customer == null) return Unauthorized();
 
             var listKoiOrPool = await _fishOrPoolRepo.GetKoiOrPoolsOfCustomer(customer.Id);
             
             if(listKoiOrPool == null || !listKoiOrPool.Any()) return BadRequest("Create a Fish or Pool to select");
 
-            var dto = listKoiOrPool.Select(k => new KoiOrPoolDTO
-            {
-                KoiOrPoolID = k.KoiOrPoolID,
-                Name = k.Name,
-                IsPool = k.IsPool,
-                Description = k.Description,
-                CustomerId = k.CustomerID
-            }).ToList();
+            var dto = listKoiOrPool.Select(k => k.ToDtoFromModel()).ToList();
 
             return Ok(dto);
+        }
+
+        [Authorize]
+        [HttpPost("create-koiorpool")]
+        public async Task<IActionResult> Create([FromBody] CreateUpdateKoiOrPoolDto dto)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var customer = await _userManager.GetUserAsync(this.User);
+                if(customer == null) return Unauthorized();
+
+            var model = dto.ToModelFromCreateUpdate();
+            model.CustomerID = customer.Id;
+            await _fishOrPoolRepo.Create(model);
+            return Ok(model.ToDtoFromModel());
+            }
+
+        [Authorize]
+        [HttpPut("update-koiorpool/{id:int}")]
+        public async Task<IActionResult> Update([FromRoute]int id,[FromBody] CreateUpdateKoiOrPoolDto dto)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _fishOrPoolRepo.Update(id, dto.ToModelFromCreateUpdate());
+            if(result == null) return NotFound("Can not find koi or pool");
+
+            return Ok(result.ToDtoFromModel());
+        }
+
+        [Authorize]
+        [HttpDelete("delete-koiorpool/{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute]int id)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _fishOrPoolRepo.Delete(id);
+            if(result == null) return NotFound("Can not find koi or pool");
+
+            return NoContent();
         }
     }
 }

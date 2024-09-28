@@ -8,11 +8,11 @@ namespace KoiFishCare.Models;
 public partial class KoiOrPool
 {
     [Key]
-    public required int KoiOrPoolID { get; set; }
+    public int KoiOrPoolID { get; set; }
 
     public string? Name { get; set; }
 
-    public bool IsPool { get; set; }
+    public bool? IsPool { get; set; }
 
     public string? Description { get; set; }
 

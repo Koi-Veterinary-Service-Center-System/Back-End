@@ -13,7 +13,7 @@ namespace KoiFishCare.DTOs.Booking
 
         public string? Note { get; set; }
 
-        public bool KoiOrPoolType { get; set; }
+        public bool? KoiOrPoolType { get; set; }
 
         public string VetName { get; set; } = null!;
 
