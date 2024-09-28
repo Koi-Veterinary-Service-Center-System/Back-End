@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KoiFishCare.Dtos.Service
+namespace KoiFishCare.DTOs.Service
 {
-    public class ServiceDto
+    public class ServiceDTO
     {
         public int? ServiceID { get; set; }
         public string? ServiceName { get; set; }

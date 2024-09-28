@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KoiFishCare.Dtos.User
+namespace KoiFishCare.DTOs.User
 {
-    public class UserProfileDto
+    public class UserProfileDTO
     {
         public string? UserId { get; set; }
         public string? UserName { get; set; }

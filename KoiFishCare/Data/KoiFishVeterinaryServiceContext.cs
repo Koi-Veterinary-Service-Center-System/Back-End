@@ -214,7 +214,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Name = "John's Koi Pond",
                 IsPool = false,
                 Description = "A beautiful koi pond owned by John.",
-                CustomerId = "c1" // Assuming customer with ID 'c1' exists
+                CustomerID = "c1" // Assuming customer with ID 'c1' exists
             },
             new KoiOrPool
             {
@@ -222,7 +222,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Name = "Smith's Pool",
                 IsPool = true,
                 Description = "A large swimming pool owned by the Smith family.",
-                CustomerId = "c2" // Assuming customer with ID 'c2' exists
+                CustomerID = "c2" // Assuming customer with ID 'c2' exists
             }
         );
 

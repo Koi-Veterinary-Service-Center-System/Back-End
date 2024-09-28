@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KoiFishCare.Dtos.Payment
+namespace KoiFishCare.DTOs.Payment
 {
-    public class PaymentDto
+    public class PaymentDTO
     {
         public int? PaymentID { get; set; }
         public string? Qrcode { get; set; }

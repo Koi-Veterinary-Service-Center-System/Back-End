@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace KoiFishCare.Dtos
+namespace KoiFishCare.DTOs
 {
-    public class RegisterDto
+    public class RegisterDTO
     {
         [Required]
         public string? FirstName { get; set; }

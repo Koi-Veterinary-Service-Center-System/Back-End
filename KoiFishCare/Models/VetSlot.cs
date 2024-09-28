@@ -10,11 +10,16 @@ namespace KoiFishCare.Models;
 [Table("VetSlots")]
 public class VetSlot
 {
+    public bool isBooked { get; set; }
+
+    // ---- Veterinarian -----------------------------------------------------------------------
     [ForeignKey("VetID")]
-    public required string VetID { get; set; }
+    public required string VetID { get; set; } = null!;
+    public Veterinarian Veterinarian { get; set; } = null!;
+
+    // ---- Slot -----------------------------------------------------------------------
     [ForeignKey("SlotID")]
     public required int SlotID { get; set; }
-    public Veterinarian? Veterinarian { get; set; }
-    public Slot? Slot { get; set; }
-    public bool isBooked { get; set; }
+    public Slot Slot { get; set; } = null!;
+
 }

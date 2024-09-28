@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KoiFishCare.Dtos.User;
+using KoiFishCare.DTOs.User;
 using KoiFishCare.Models;
 
 namespace KoiFishCare.Mappers
 {
     public static class UserMappers
     {
-        public static UserProfileDto ToUserProfileFromUser(this User user)
+        public static UserProfileDTO ToUserProfileFromUser(this User user)
         {
-            return new UserProfileDto
+            return new UserProfileDTO
             {
                 UserId = user.Id,
                 UserName = user.UserName,

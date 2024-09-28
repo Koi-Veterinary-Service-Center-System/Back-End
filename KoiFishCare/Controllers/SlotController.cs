@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KoiFishCare.Dtos.Slot;
+using KoiFishCare.DTOs.Slot;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +41,7 @@ namespace KoiFishCare.Controllers
             if (slots == null || !slots.Any())
                 return BadRequest("There is no available slot with this vet");
 
-            var slotsDto = slots.Select(vs => new SlotDto
+            var slotsDto = slots.Select(vs => new SlotDTO
             {
                 SlotID = vs.Slot.SlotID,
                 StartTime = vs.Slot.StartTime,

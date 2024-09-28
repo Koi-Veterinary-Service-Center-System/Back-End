@@ -13,7 +13,7 @@ public partial class Payment
 
     public string? Qrcode { get; set; }
 
-    public string? Type { get; set; }
+    public string Type { get; set; } = null!;
 
     // ---- Booking -----------------------------------------------------------------------
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();

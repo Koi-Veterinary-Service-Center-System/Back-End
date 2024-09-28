@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KoiFishCare.Dtos.User
+namespace KoiFishCare.DTOs.User
 {
     public class UpdateUserProfileDTO
     {

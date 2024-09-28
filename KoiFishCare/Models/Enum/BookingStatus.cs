@@ -10,6 +10,8 @@ namespace KoiFishCare.Models.Enum
         WaitingForPayment,
         Scheduled,
         Confirmed,
-        Complete
+        Completed,
+        Success
+
     }
 }

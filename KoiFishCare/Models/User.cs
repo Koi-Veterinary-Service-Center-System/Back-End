@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
@@ -8,9 +9,9 @@ namespace KoiFishCare.Models;
 [Table("Users")]
 public partial class User : IdentityUser
 {
-    public string FirstName { get; set; } = string.Empty;
+    public string FirstName { get; set; } = null!;
 
-    public string LastName { get; set; } = string.Empty;
+    public string LastName { get; set; } = null!;
 
     public bool? Gender { get; set; }
 
@@ -20,11 +21,6 @@ public partial class User : IdentityUser
 
     public string? ImageURL { get; set; }
 
-    public string? ImagePublicId {get;set;} //id của hình lưu trên cloud
+    public string? ImagePublicId { get; set; } //id của hình lưu trên cloud
 
-    // public virtual Staff Staff { get; set; } = null!;
-
-    // public virtual Customer Customer { get; set; } = null!;
-
-    // public virtual Veterinarian Veterinarian { get; set; } = null!;
 }

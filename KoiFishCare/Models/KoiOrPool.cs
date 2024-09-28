@@ -17,12 +17,11 @@ public partial class KoiOrPool
     public string? Description { get; set; }
 
     //Customer
-    public string? CustomerId { get; set; }
-    [ForeignKey("CustomerId")]
-    public Customer? Customer { get; set; }
+    [ForeignKey("CustomerID")]
+    public string CustomerID { get; set; } = null!;
+    
+    public Customer Customer { get; set; } = null!;
 
     // ---- Booking -----------------------------------------------------------------------
-    // Cần xem lại, chưa hiểu vì sao 1 koi/pool có nhiều booking
-
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

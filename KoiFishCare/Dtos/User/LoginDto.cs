@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace KoiFishCare.Dtos
+namespace KoiFishCare.DTOs
 {
-    public class LoginDto
+    public class LoginDTO
     {
         [Required(ErrorMessage ="Username is required")]
         public string? UserName {get; set;}

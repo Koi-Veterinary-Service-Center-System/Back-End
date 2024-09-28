@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KoiFishCare.Dtos.Service;
+using KoiFishCare.DTOs.Service;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -48,7 +48,7 @@ namespace KoiFishCare.Controllers
 
         [HttpPost("add-service")]
         [Authorize(Roles ="Staff")]
-        public async Task<IActionResult> AddService([FromBody] AddUpdateServiceDto serviceDto)
+        public async Task<IActionResult> AddService([FromBody] AddUpdateServiceDTO serviceDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if(serviceDto.Price <= 0) return BadRequest("Price must bigger than 0");
@@ -60,7 +60,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPut("update-service/{id:int}")]
-        public async Task<IActionResult> UpdateService([FromRoute] int id, [FromBody] AddUpdateServiceDto serviceDto)
+        public async Task<IActionResult> UpdateService([FromRoute] int id, [FromBody] AddUpdateServiceDTO serviceDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if(serviceDto.Price <= 0) return BadRequest("Price must bigger than 0");

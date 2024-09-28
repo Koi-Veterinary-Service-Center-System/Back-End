@@ -12,14 +12,14 @@ public partial class Booking
     [Key]
     public int BookingID { get; set; }
 
-    public DateOnly? BookingDate { get; set; }
+    public DateOnly BookingDate { get; set; }
 
     public string? Location { get; set; }
 
     public string? Note { get; set; }
 
     [Column(TypeName = "decimal(18, 2)")]
-    public decimal? TotalAmount { get; set; }
+    public decimal TotalAmount { get; set; }
 
     public BookingStatus BookingStatus { get; set; }
 
@@ -27,38 +27,38 @@ public partial class Booking
 
     // ---- Payment -----------------------------------------------------------------------
     [ForeignKey("PaymentID")]
-    public  int? PaymentID { get; set; }
-    public Payment? Payment { get; set; }
+    public int PaymentID { get; set; }
+    public Payment Payment { get; set; } = null!;
 
     // ---- Service -----------------------------------------------------------------------
     [ForeignKey("ServiceID")]
-    public int? ServiceID { get; set; }
+    public int ServiceID { get; set; }
 
-    public Service? Service { get; set; }
+    public Service Service { get; set; } = null!;
 
     // ---- Slot -----------------------------------------------------------------------
     [ForeignKey("SlotID")]
-    public int? SlotID { get; set; }
+    public int SlotID { get; set; }
 
-    public Slot? Slot { get; set; }
+    public Slot Slot { get; set; } = null!;
 
     // ---- Customer -----------------------------------------------------------------------
     [ForeignKey("CustomerID")]
-    public string CustomerID { get; set; } = string.Empty;
+    public string CustomerID { get; set; } = null!;
 
-    public Customer? Customer { get; set; }
+    public Customer Customer { get; set; } = null!;
 
     // ---- Vet -----------------------------------------------------------------------
     [ForeignKey("VetID")]
-    public string VetID { get; set; } = string.Empty;
+    public string VetID { get; set; } = null!;
 
-    public Veterinarian? Veterinarian { get; set; }
+    public Veterinarian Veterinarian { get; set; } = null!;
 
     // ---- Distance -----------------------------------------------------------------------
     [ForeignKey("DistanceID")]
-    public int? DistanceID { get; set; }
+    public int DistanceID { get; set; }
 
-    public Distance? Distance { get; set; }
+    public Distance Distance { get; set; } = null!;
 
     // ---- KoiOrPool -----------------------------------------------------------------------
     [ForeignKey("KoiOrPoolID")]

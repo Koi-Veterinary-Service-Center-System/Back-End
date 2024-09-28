@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.Data;
-using KoiFishCare.Dtos.Booking;
+using KoiFishCare.DTOs.Booking;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Models;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +46,7 @@ namespace KoiFishCare.Repository
                             CustomerName = b.Customer.FirstName,
                             Location = b.Location,
                             ServiceName = b.Service.ServiceName,
-                            KoiOrPoolType = b.KoiOrPool.IsPool,
+                            KoiOrPoolType = b.KoiOrPool != null ? b.KoiOrPool.IsPool : true,
                             StartTime = b.Slot.StartTime,
                             EndTime = b.Slot.EndTime,
                             VetName = b.Veterinarian.FirstName,

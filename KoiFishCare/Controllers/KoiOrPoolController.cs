@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KoiFishCare.Dtos.KoiOrPool;
+using KoiFishCare.DTOs.KoiOrPool;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -32,13 +32,13 @@ namespace KoiFishCare.Controllers
             
             if(listKoiOrPool == null || !listKoiOrPool.Any()) return BadRequest("Create a Fish or Pool to select");
 
-            var dto = listKoiOrPool.Select(k => new KoiOrPoolDto
+            var dto = listKoiOrPool.Select(k => new KoiOrPoolDTO
             {
                 KoiOrPoolID = k.KoiOrPoolID,
                 Name = k.Name,
                 IsPool = k.IsPool,
                 Description = k.Description,
-                CustomerId = k.CustomerId
+                CustomerId = k.CustomerID
             }).ToList();
 
             return Ok(dto);

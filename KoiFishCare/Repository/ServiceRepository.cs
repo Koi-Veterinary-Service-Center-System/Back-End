@@ -6,7 +6,7 @@ using KoiFishCare.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using KoiFishCare.Data;
 using KoiFishCare.Models;
-using KoiFishCare.Dtos.Service;
+using KoiFishCare.DTOs.Service;
 
 namespace KoiFishCare.Repository
 {
@@ -46,7 +46,7 @@ namespace KoiFishCare.Repository
             return await _context.Services.FirstOrDefaultAsync(s => s.ServiceID == id);
         }
 
-        public async Task<Service?> UpdateService(int id, AddUpdateServiceDto updateDto)
+        public async Task<Service?> UpdateService(int id, AddUpdateServiceDTO updateDto)
         {
             var service = await _context.Services.FirstOrDefaultAsync(s => s.ServiceID == id);
             

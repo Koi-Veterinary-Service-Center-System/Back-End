@@ -5,17 +5,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.Models.Enum;
 
-namespace KoiFishCare.Dtos.Booking
+namespace KoiFishCare.DTOs.Booking
 {
     public class FromViewBookingDTO
     {
-        public string CustomerName { get; set; } = string.Empty;
+        public string CustomerName { get; set; } = null!;
 
         public string? Note { get; set; }
 
         public bool KoiOrPoolType { get; set; }
 
-        public string VetName { get; set; } = string.Empty;
+        public string VetName { get; set; } = null!;
 
         public string? Location { get; set; }
 
@@ -23,12 +23,12 @@ namespace KoiFishCare.Dtos.Booking
 
         public TimeOnly EndTime { get; set; }
 
-        public string ServiceName { get; set; } = string.Empty;
+        public string ServiceName { get; set; } = null!;
 
-        public string PaymentType { get; set; } = string.Empty;
+        public string PaymentType { get; set; } = null!;
 
-        public DateOnly? BookingDate { get; set; }
+        public DateOnly BookingDate { get; set; }
 
-         public BookingStatus BookingStatus { get; set; }
+        public BookingStatus BookingStatus { get; set; }
     }
 }

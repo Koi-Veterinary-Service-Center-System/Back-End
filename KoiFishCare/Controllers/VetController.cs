@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KoiFishCare.Dtos.Vet;
+using KoiFishCare.DTOs.Vet;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -44,7 +44,7 @@ namespace KoiFishCare.Controllers
             if (vets == null || !vets.Any())
                 return BadRequest("There is no available vet with this slot");
 
-            var vetDtos = vets.Select(vs => new VetDto
+            var vetDtos = vets.Select(vs => new VetDTO
             {
                 Id = vs.Veterinarian.Id.ToString(),
                 VetName = vs.Veterinarian.UserName,

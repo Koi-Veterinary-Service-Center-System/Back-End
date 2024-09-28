@@ -5,31 +5,36 @@ using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.Models.Enum;
 
-namespace KoiFishCare.Dtos
+namespace KoiFishCare.DTOs
 {
-    public class FromCreateBookingDto
-    {   
+    public class FromCreateBookingDTO
+    {
         public string? Note { get; set; }
-        public int? KoiOrPoolId { get; set; }
+
+        public int KoiOrPoolId { get; set; }
 
         [Required(ErrorMessage = "Vet is required.")]
-        public string VetName { get; set; }
+        public string VetName { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Total Amount is required.")]
         public decimal TotalAmount { get; set; }
 
-        [Required(ErrorMessage = "Location is required.")]
         public string? Location { get; set; }
 
         [Required(ErrorMessage = "Slot is required.")]
+
         public int SlotId { get; set; }
 
         [Required(ErrorMessage = "Service ID is required.")]
+
         public int ServiceId { get; set; }
 
         [Required(ErrorMessage = "Payment ID is required.")]
+
         public int PaymentId { get; set; }
 
         [Required(ErrorMessage = "Date is required.")]
+        
         public DateOnly BookingDate { get; set; }
     }
 }

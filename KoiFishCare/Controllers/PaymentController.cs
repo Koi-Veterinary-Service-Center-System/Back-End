@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KoiFishCare.Dtos.Payment;
+using KoiFishCare.DTOs.Payment;
 using KoiFishCare.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +23,7 @@ namespace KoiFishCare.Controllers
             var payments = await _paymentRepo.GetAllPayment();
             if(payments == null || !payments.Any()) return BadRequest("Can not find any payment");
 
-            var paymentsDto = payments.Select(p => new PaymentDto
+            var paymentsDto = payments.Select(p => new PaymentDTO
             {
                 PaymentID = p.PaymentID,
                 Qrcode = p.Qrcode,

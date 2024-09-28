@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KoiFishCare.Dtos.Slot
+namespace KoiFishCare.DTOs.Slot
 {
-    public class SlotDto
+    public class SlotDTO
     {
         public int? SlotID { get; set; }
         public TimeOnly? StartTime { get; set; }

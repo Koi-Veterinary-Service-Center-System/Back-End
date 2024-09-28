@@ -11,9 +11,9 @@ public partial class Service
     [Key]
     public int ServiceID { get; set; }
 
-    public string ServiceName { get; set; } = string.Empty;
+    public string ServiceName { get; set; } = null!;
 
-    public string Description { get; set; } = string.Empty;
+    public string Description { get; set; } = null!;
 
 
     [Column(TypeName = "decimal(18, 2)")]

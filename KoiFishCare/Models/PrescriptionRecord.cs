@@ -9,7 +9,7 @@ namespace KoiFishCare.Models;
 public partial class PrescriptionRecord
 {
     [Key]
-    public int? PrescriptionRecordID { get; set; }
+    public int PrescriptionRecordID { get; set; }
 
     public string? DiseaseName { get; set; }
 

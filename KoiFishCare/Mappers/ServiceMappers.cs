@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KoiFishCare.Dtos.Service;
+using KoiFishCare.DTOs.Service;
 using KoiFishCare.Models;
 
 namespace KoiFishCare.Mappers
 {
     public static class ServiceMappers
     {
-        public static ServiceDto ToServiceDto(this Service s)
+        public static ServiceDTO ToServiceDto(this Service s)
         {
-            return new ServiceDto
+            return new ServiceDTO
             {
                 ServiceID = s.ServiceID,
                 ServiceName = s.ServiceName,
@@ -21,7 +21,7 @@ namespace KoiFishCare.Mappers
             };
         }
 
-        public static Service ToServiceFromAddUpdateDto(this AddUpdateServiceDto s)
+        public static Service ToServiceFromAddUpdateDto(this AddUpdateServiceDTO s)
         {
             return new Service
             {

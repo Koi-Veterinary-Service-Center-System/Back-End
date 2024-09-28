@@ -8,10 +8,8 @@ namespace KoiFishCare.Models;
 [Table("Staffs")]
 public partial class Staff : User
 {
-    public string? ManagerID { get; set; }  
-    public bool? IsManager { get; set; }
+    public string ManagerID { get; set; } = null!;
+    
+    public bool IsManager { get; set; }
 
-    // public string AccountId { get; set; } = null!;
-
-    // public virtual Account Account { get; set; } = null!;
 }

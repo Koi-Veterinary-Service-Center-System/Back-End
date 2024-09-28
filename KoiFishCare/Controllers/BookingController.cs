@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KoiFishCare.Dtos;
+using KoiFishCare.DTOs;
 using KoiFishCare.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -35,7 +35,7 @@ namespace KoiFishCare.Controllers
 
         [Authorize]
         [HttpPost("create-booking")]
-        public async Task<IActionResult> CreateBooking([FromBody] FromCreateBookingDto createBookingDto)
+        public async Task<IActionResult> CreateBooking([FromBody] FromCreateBookingDTO createBookingDto)
         {
             if (!ModelState.IsValid)
             {

@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using KoiFishCare.Models;
-using KoiFishCare.Dtos;
+using KoiFishCare.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using KoiFishCare.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using KoiFishCare.Mappers;
-using KoiFishCare.Dtos.User;
+using KoiFishCare.DTOs.User;
 
 namespace KoiFishCare.Controllers
 {
@@ -35,7 +35,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto model)
+        public async Task<IActionResult> Login([FromBody] LoginDTO model)
         {
             if (!ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace KoiFishCare.Controllers
                 var userRole = userRoles.FirstOrDefault();
                 var role = await _roleManager.FindByNameAsync(userRole!);
                 var customer = user as Customer;
-                var userDto = new UserDto
+                var userDto = new UserDTO
                 {
                     UserName = customer.UserName,
                     Email = customer.Email,
@@ -70,7 +70,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto model)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO model)
         {
             if (!ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace KoiFishCare.Controllers
                 if(roleResult.Succeeded)
                 {
                     var role = await _roleManager.FindByNameAsync("Customer");
-                    var userDto = new UserDto
+                    var userDto = new UserDTO
                 {
                     UserName = customer.UserName,
                     Email = customer.Email,
