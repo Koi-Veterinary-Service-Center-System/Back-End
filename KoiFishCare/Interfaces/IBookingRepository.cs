@@ -11,6 +11,7 @@ namespace KoiFishCare.Interfaces
     {
         Task<Booking> CreateBooking(Booking bookingModel);
         Task<List<Booking>> GetBookingsByDateAndSlot(DateOnly date, int slotId);
-        Task<List<FromViewBookingDTO>?> GetBookingsByUserIdAsync(string userID);
+        Task<List<FromViewBookingDTO>?> GetBookingsByCusIdAsync(string cusID);
+        Task<List<FromViewBookingForVetDTO>?> GetBookingByVetIdAsync(string vetID);
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using KoiFishCare.Models;
 using KoiFishCare.Mappers;
+using Microsoft.VisualBasic;
 
 namespace KoiFishCare.Controllers
 {
@@ -45,7 +46,7 @@ namespace KoiFishCare.Controllers
             // Get logged in customer
             var username = _userManager.GetUserName(this.User);
             var userModel = await _userManager.FindByNameAsync(username);
-            if(userModel == null)
+            if (userModel == null)
                 return BadRequest("Login before booking!");
 
             //check role
@@ -110,25 +111,49 @@ namespace KoiFishCare.Controllers
 
         [Authorize]
         [HttpGet("all-booking")]
-        public async Task<IActionResult> GetAllBooking()
+        public async Task<IActionResult> GetBookingByID()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
+
             var user = await _userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized("User is not available!");
             }
 
-            var booking = await _bookingRepo.GetBookingsByUserIdAsync(user.Id);
-            if (booking == null || !booking.Any())
+            var isVet = await _userManager.IsInRoleAsync(user, "Vet");
+            var isCus = await _userManager.IsInRoleAsync(user, "Customer");
+
+            if (!isVet || !isCus)
             {
-                return NotFound();
+                return Unauthorized("You have no permission to access this feature!");
             }
-            return Ok(booking);
+            
+            if (isVet)
+            {
+                var booking = await _bookingRepo.GetBookingByVetIdAsync(user.Id);
+                if (booking == null || !booking.Any())
+                {
+                    return NotFound();
+                }
+                Ok(booking);
+            }
+
+            if (isCus)
+            {
+                var booking = await _bookingRepo.GetBookingsByCusIdAsync(user.Id);
+                if (booking == null || !booking.Any())
+                {
+                    return NotFound("There is no booking!");
+                }
+                Ok(booking);
+            }
+            return Ok();
         }
+
+
     }
 }
