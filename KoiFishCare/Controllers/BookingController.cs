@@ -126,8 +126,8 @@ namespace KoiFishCare.Controllers
 
             var isVet = await _userManager.IsInRoleAsync(user, "Vet");
             var isCus = await _userManager.IsInRoleAsync(user, "Customer");
-
-            if (!isVet || !isCus)
+            
+            if (!isVet && !isCus)
             {
                 return Unauthorized("You have no permission to access this feature!");
             }
