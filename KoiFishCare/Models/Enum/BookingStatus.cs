@@ -12,6 +12,5 @@ namespace KoiFishCare.Models.Enum
         Confirmed,
         Completed,
         Success
-
     }
 }
