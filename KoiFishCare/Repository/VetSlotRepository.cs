@@ -27,18 +27,29 @@ namespace KoiFishCare.Repository
 
             await _context.VetSlots.AddAsync(vetSlot);
             await _context.SaveChangesAsync();
+
+            // Load the related Slot and Veterinarian entities
+            await _context.Entry(vetSlot)
+                .Reference(vs => vs.Slot)
+                .LoadAsync();
+
+            await _context.Entry(vetSlot)
+                .Reference(vs => vs.Veterinarian)
+                .LoadAsync();
+
             return vetSlot;
         }
+
 
         public async Task<VetSlot?> Delete(string vetId, int slotId)
         {
             var vetSlot = await _context.VetSlots.FirstOrDefaultAsync(vs => vs.VetID == vetId && vs.SlotID == slotId);
-            if(vetSlot == null) return null;
+            if (vetSlot == null) return null;
 
             _context.VetSlots.Remove(vetSlot);
             await _context.SaveChangesAsync();
             return vetSlot;
-                
+
         }
 
         public async Task<List<VetSlot>> GetAllVetSlot()
@@ -56,10 +67,20 @@ namespace KoiFishCare.Repository
         public async Task<VetSlot?> Update(string vetId, int slotId, bool isBooked)
         {
             var vetSlot = await _context.VetSlots.FirstOrDefaultAsync(vs => vs.VetID == vetId && vs.SlotID == slotId);
-            if(vetSlot == null) return null;
+            if (vetSlot == null) return null;
 
             vetSlot.isBooked = isBooked;
             await _context.SaveChangesAsync();
+            
+            // Load the related Slot and Veterinarian entities
+            await _context.Entry(vetSlot)
+                .Reference(vs => vs.Slot)
+                .LoadAsync();
+
+            await _context.Entry(vetSlot)
+                .Reference(vs => vs.Veterinarian)
+                .LoadAsync();
+
             return vetSlot;
         }
     }

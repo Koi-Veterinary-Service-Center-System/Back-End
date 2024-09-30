@@ -20,5 +20,10 @@ namespace KoiFishCare.Repository
         {
             return await _context.Veterinarians.ToListAsync();
         }
+
+        public async Task<Veterinarian?> GetVetById(string id)
+        {
+            return await _context.Veterinarians.FirstOrDefaultAsync(v => v.Id == id);
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.Dtos.VetSlot;
 using KoiFishCare.Interfaces;
+using KoiFishCare.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +15,13 @@ namespace KoiFishCare.Controllers
     public class VetSlotController : ControllerBase
     {
         private readonly IVetSlotRepository _vetSlotRepo;
-        public VetSlotController(IVetSlotRepository vetSlotRepo)
+        private readonly ISlotRepository _slotRepo;
+        private readonly IVetRepository _vetRepo;
+        public VetSlotController(IVetSlotRepository vetSlotRepo, ISlotRepository slotRepo, IVetRepository vetRepo)
         {
             _vetSlotRepo = vetSlotRepo;
+            _slotRepo = slotRepo;
+            _vetRepo = vetRepo;
         }
 
         [Authorize]
@@ -30,7 +35,9 @@ namespace KoiFishCare.Controllers
             if (vetSlotList == null || !vetSlotList.Any())
                 return NotFound();
 
-            return Ok(vetSlotList);
+            var dto = vetSlotList.Select(vs => vs.ToVetSlotDtoFromModel());
+
+            return Ok(dto);
         }
 
         [Authorize]
@@ -43,7 +50,7 @@ namespace KoiFishCare.Controllers
             var vetSlot = await _vetSlotRepo.GetVetSlot(vetId, slotId);
             if (vetSlot == null) return NotFound();
 
-            return Ok(vetSlot);
+            return Ok(vetSlot.ToVetSlotDtoFromModel());
         }
 
         [Authorize]
@@ -53,8 +60,14 @@ namespace KoiFishCare.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var slot = await _slotRepo.GetSlotById(dto.SlotID);
+            if(slot == null) return BadRequest("Invalid SlotId");
+
+            var vet = await _vetRepo.GetVetById(dto.VetID);
+            if(vet == null) return BadRequest("Invalid VetId");
+
             var result = await _vetSlotRepo.Create(dto.VetID, dto.SlotID, false);
-            return Ok(result);
+            return Ok(result.ToVetSlotDtoFromModel());
         }
 
         [Authorize]
@@ -67,7 +80,7 @@ namespace KoiFishCare.Controllers
             var vetSlot = await _vetSlotRepo.Update(dto.VetID, dto.SlotID, dto.isBook);
             if (vetSlot == null) return NotFound();
 
-            return Ok(vetSlot);
+            return Ok(vetSlot.ToVetSlotDtoFromModel());
         }
 
         [Authorize]
