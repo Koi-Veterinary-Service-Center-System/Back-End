@@ -9,5 +9,6 @@ namespace KoiFishCare.Interfaces
     public interface IVetRepository
     {
         Task<List<Veterinarian>> GetAllVet();
+        Task<Veterinarian?> GetVetById(string id);
     }
 }
