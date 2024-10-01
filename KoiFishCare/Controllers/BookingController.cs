@@ -45,8 +45,7 @@ namespace KoiFishCare.Controllers
             }
 
             // Get logged in customer
-            var username = _userManager.GetUserName(this.User);
-            var userModel = await _userManager.FindByNameAsync(username);
+            var userModel = await _userManager.GetUserAsync(this.User);
             if (userModel == null)
                 return BadRequest("Login before booking!");
 
@@ -54,9 +53,13 @@ namespace KoiFishCare.Controllers
 
 
             // Get customer fishorpool
-            // var fishorpool = await _fishOrPoolRepo.GetKoiOrPoolById(createBookingDto.KoiOrPoolId);
-            // if (fishorpool == null) return BadRequest("Fish or Pool does not exist");
-            // if (fishorpool.CustomerId != userModel.Id) return BadRequest("Not your koi or pool");
+            if (createBookingDto.KoiOrPoolId.HasValue)
+            {
+                var fishorpool = await _fishOrPoolRepo.GetKoiOrPoolById(createBookingDto.KoiOrPoolId.Value);
+                if (fishorpool == null) return BadRequest("Fish or Pool does not exist");
+                if (fishorpool.CustomerID != userModel.Id) return BadRequest("Not your koi or pool");
+            }
+
 
             // Get Slot
             var slot = await _slotRepo.GetSlotById(createBookingDto.SlotId);
@@ -89,7 +92,7 @@ namespace KoiFishCare.Controllers
                 bookingModel.TotalAmount = createBookingDto.TotalAmount;
 
                 await _bookingRepo.CreateBooking(bookingModel);
-                return Ok(bookingModel);
+                return Ok(bookingModel.ToBookingDtoFromModel());
             }
             else
             {
@@ -106,8 +109,7 @@ namespace KoiFishCare.Controllers
                 bookingModel.TotalAmount = service.Price;
 
                 await _bookingRepo.CreateBooking(bookingModel);
-                _bookingRepo.UpdateBookingAsync(bookingModel);
-                return Ok(bookingModel);
+                return Ok(bookingModel.ToBookingDtoFromModel());
             }
         }
 
@@ -169,14 +171,14 @@ namespace KoiFishCare.Controllers
             if (!User.IsInRole("Vet") && !User.IsInRole("Customer") && !User.IsInRole("Staff"))
             {
                 return Unauthorized("You have no permission to access this feature!");
-            } 
+            }
 
-           
-                if (booking.BookingStatus.Equals("Scheduled"))
-                {
-                    booking.BookingStatus = newStatus;
-                    _bookingRepo.UpdateBookingAsync(booking);
-                }
+
+            if (booking.BookingStatus.Equals("Scheduled"))
+            {
+                booking.BookingStatus = newStatus;
+                _bookingRepo.UpdateBookingAsync(booking);
+            }
 
             return Ok(booking);
         }

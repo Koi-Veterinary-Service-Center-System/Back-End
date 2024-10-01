@@ -23,6 +23,26 @@ namespace KoiFishCare.Repository
         {
             await _context.Bookings.AddAsync(bookingModel);
             await _context.SaveChangesAsync();
+
+            //load relate entities
+            await _context.Entry(bookingModel)
+            .Reference(b => b.Customer).LoadAsync();
+
+            await _context.Entry(bookingModel)
+            .Reference(b => b.Veterinarian).LoadAsync();
+
+            await _context.Entry(bookingModel)
+            .Reference(b => b.Slot).LoadAsync();
+
+            await _context.Entry(bookingModel)
+            .Reference(b => b.Service).LoadAsync();
+
+            await _context.Entry(bookingModel)
+            .Reference(b => b.KoiOrPool).LoadAsync();
+
+            await _context.Entry(bookingModel)
+            .Reference(b => b.Payment).LoadAsync();
+
             return bookingModel;
         }
 

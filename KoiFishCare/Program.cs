@@ -14,6 +14,7 @@ using KoiFishCare.service;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.OpenApi.Any;
 // using KoiFishCare.Data;
 // using KoiFishCare.Models;
 // using Microsoft.OpenApi.Models;
@@ -62,6 +63,17 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+//format date for booking
+builder.Services.AddSwaggerGen(c =>
+{
+    c.MapType<DateOnly>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Format = "date",
+        Example = new OpenApiString("2024-10-15")
+    });
+});
+
 
 // Add CORS policy for your Vite frontend
 builder.Services.AddCors(options =>
