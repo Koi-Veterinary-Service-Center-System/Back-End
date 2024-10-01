@@ -26,6 +26,24 @@ namespace KoiFishCare.Mappers
             };
         }
 
+        public static FromViewBookingDTO ToBookingDtoFromModel(this Booking booking)
+        {
+            return new FromViewBookingDTO
+            {
+                BookingDate = booking.BookingDate,
+                CustomerName = booking.Customer.UserName,
+                StartTime = booking.Slot.StartTime,
+                EndTime = booking.Slot.EndTime,
+                ServiceName = booking.Service.ServiceName,
+                VetName = booking.Veterinarian.UserName,
+                KoiOrPoolType = booking.KoiOrPool.IsPool,
+                Location = booking.Location,
+                BookingStatus = booking.BookingStatus,
+                Note = booking.Note,
+                PaymentType = booking.Payment.Type
+            };
+        }
+
         // public static FromViewBookingDTO ToBookingFromView(this Booking viewBooking)
         // {
         //     return new FromViewBookingDTO()

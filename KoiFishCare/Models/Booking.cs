@@ -53,13 +53,6 @@ public partial class Booking
     public string VetID { get; set; } = null!;
 
     public Veterinarian Veterinarian { get; set; } = null!;
-
-    // ---- Distance -----------------------------------------------------------------------
-    [ForeignKey("DistanceID")]
-    public int DistanceID { get; set; }
-
-    public Distance Distance { get; set; } = null!;
-
     // ---- KoiOrPool -----------------------------------------------------------------------
     [ForeignKey("KoiOrPoolID")]
     public int? KoiOrPoolID { get; set; }

@@ -11,7 +11,7 @@ namespace KoiFishCare.DTOs
     {
         public string? Note { get; set; }
 
-        public int KoiOrPoolId { get; set; }
+        public int? KoiOrPoolId { get; set; }
 
         [Required(ErrorMessage = "Vet is required.")]
         public string VetName { get; set; } = string.Empty;
@@ -34,7 +34,7 @@ namespace KoiFishCare.DTOs
         public int PaymentId { get; set; }
 
         [Required(ErrorMessage = "Date is required.")]
-        
+        [DataType(DataType.Date)]
         public DateOnly BookingDate { get; set; }
     }
 }
