@@ -303,14 +303,13 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new Payment
             {
                 PaymentID = 1,
-                Qrcode = "qrcode1",
-                Type = "Credit Card"
+                Type = "In Cash"
             },
             new Payment
             {
                 PaymentID = 2,
                 Qrcode = "qrcode2",
-                Type = "PayPal"
+                Type = "VNPay"
             }
         );
 

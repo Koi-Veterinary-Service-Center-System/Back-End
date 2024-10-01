@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using KoiFishCare.Models;
 using KoiFishCare.Mappers;
 using Microsoft.VisualBasic;
+using KoiFishCare.Models.Enum;
 
 namespace KoiFishCare.Controllers
 {
@@ -105,6 +106,7 @@ namespace KoiFishCare.Controllers
                 bookingModel.TotalAmount = service.Price;
 
                 await _bookingRepo.CreateBooking(bookingModel);
+                _bookingRepo.UpdateBookingAsync(bookingModel);
                 return Ok(bookingModel);
             }
         }
@@ -126,18 +128,18 @@ namespace KoiFishCare.Controllers
 
             var isVet = await _userManager.IsInRoleAsync(user, "Vet");
             var isCus = await _userManager.IsInRoleAsync(user, "Customer");
-            
+
             if (!isVet && !isCus)
             {
                 return Unauthorized("You have no permission to access this feature!");
             }
-            
+
             if (isVet)
             {
                 var booking = await _bookingRepo.GetBookingByVetIdAsync(user.Id);
                 if (booking == null || !booking.Any())
                 {
-                    return NotFound();
+                    return NotFound("There is no booking!");
                 }
                 Ok(booking);
             }
@@ -154,6 +156,29 @@ namespace KoiFishCare.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> UpdateStatusForVet(int bookingID, BookingStatus newStatus)
+        {
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+            if (booking == null)
+            {
+                return NotFound();
+            }
 
+            if (!User.IsInRole("Vet") && !User.IsInRole("Customer") && !User.IsInRole("Staff"))
+            {
+                return Unauthorized("You have no permission to access this feature!");
+            } 
+
+           
+                if (booking.BookingStatus.Equals("Scheduled"))
+                {
+                    booking.BookingStatus = newStatus;
+                    _bookingRepo.UpdateBookingAsync(booking);
+                }
+
+            return Ok(booking);
+        }
     }
 }

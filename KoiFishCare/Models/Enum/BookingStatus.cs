@@ -7,10 +7,11 @@ namespace KoiFishCare.Models.Enum
 {
     public enum BookingStatus
     {
-        WaitingForPayment,
-        Scheduled,
+        Pending,
         Confirmed,
+        Scheduled,
         Completed,
-        Success
+        Succeeded,
+        Cancelled,
     }
 }
