@@ -143,7 +143,7 @@ namespace KoiFishCare.Controllers
                 {
                     return NotFound("There is no booking!");
                 }
-                Ok(booking);
+                return Ok(booking);
             }
 
             if (isCus)
@@ -153,13 +153,14 @@ namespace KoiFishCare.Controllers
                 {
                     return NotFound("There is no booking!");
                 }
-                Ok(booking);
+                return Ok(booking);
             }
-            return Ok();
+
+            return BadRequest("Invalid request");
         }
 
         [Authorize]
-        [HttpPut]
+        [HttpPut("update-status")]
         public async Task<IActionResult> UpdateStatusForVet(int bookingID, BookingStatus newStatus)
         {
             var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
