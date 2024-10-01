@@ -6,6 +6,7 @@ using KoiFishCare.Data;
 using KoiFishCare.DTOs.Booking;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Models;
+using KoiFishCare.Models.Enum;
 using Microsoft.EntityFrameworkCore;
 
 namespace KoiFishCare.Repository
@@ -91,6 +92,24 @@ namespace KoiFishCare.Repository
 
             return booking.ToList();
 
+        }
+
+        public async Task<Booking?> GetBookingByIdAsync(int bookingID)
+        {
+            var booking = await _context.Bookings.FindAsync(bookingID);
+            if (booking == null)
+            {
+                return null;
+            }
+            return booking;
+
+        }
+
+
+        void IBookingRepository.UpdateBookingAsync(Booking booking)
+        {
+            _context.Bookings.Update(booking);
+            _context.SaveChanges();
         }
     }
 }

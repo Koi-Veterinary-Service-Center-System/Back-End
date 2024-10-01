@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.DTOs.Booking;
 using KoiFishCare.Models;
+using KoiFishCare.Models.Enum;
 
 namespace KoiFishCare.Interfaces
 {
@@ -13,5 +14,7 @@ namespace KoiFishCare.Interfaces
         Task<List<Booking>> GetBookingsByDateAndSlot(DateOnly date, int slotId);
         Task<List<FromViewBookingDTO>?> GetBookingsByCusIdAsync(string cusID);
         Task<List<FromViewBookingForVetDTO>?> GetBookingByVetIdAsync(string vetID);
+        Task<Booking?> GetBookingByIdAsync(int bookingID);
+        void UpdateBookingAsync(Booking booking);
     }
 }
