@@ -11,7 +11,7 @@ namespace KoiFishCare.Interfaces
 {
     public interface IUserRepository
     {
-        Task<User?> UpdateAsync(string UserID, UpdateUserProfileDTO userDTO);
+        Task<User?> UpdateAsync(string userID, UpdateUserProfileDTO userDTO);
 
     }
 }
