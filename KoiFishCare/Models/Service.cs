@@ -13,6 +13,8 @@ public partial class Service
 
     public string ServiceName { get; set; } = null!;
 
+    public string? ImageURL { get; set; }
+
     public string Description { get; set; } = null!;
 
 

@@ -18,6 +18,10 @@ public partial class PrescriptionRecord
     public string? Medication { get; set; }
 
     public string? Note { get; set; }
+    
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? RefundMoney { get; set; }
+    public int? RefundPercent { get; set; }
 
     // ---- Booking -----------------------------------------------------------------------
     public int? BookingID { get; set; }

@@ -16,5 +16,6 @@ namespace KoiFishCare.DTOs.Service
         public decimal Price { get; set; }
         [Required(ErrorMessage = "Duration is required.")]
         public double EstimatedDuration { get; set; }
+        public string? ImageURL { get; set; }
     }
 }

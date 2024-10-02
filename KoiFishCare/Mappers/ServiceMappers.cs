@@ -17,7 +17,8 @@ namespace KoiFishCare.Mappers
                 ServiceName = s.ServiceName,
                 Description = s.Description,
                 Price = s.Price,
-                EstimatedDuration = s.EstimatedDuration
+                EstimatedDuration = s.EstimatedDuration,
+                ImageURL = s.ImageURL
             };
         }
 
@@ -28,7 +29,8 @@ namespace KoiFishCare.Mappers
                 ServiceName = s.ServiceName,
                 Description = s.Description,
                 Price = s.Price,
-                EstimatedDuration = s.EstimatedDuration
+                EstimatedDuration = s.EstimatedDuration,
+                ImageURL = s.ImageURL
             };
         }
     }
