@@ -286,7 +286,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceName = "Koi Health Check",
                 Description = "A general health check for Koi fish.",
                 Price = 150.00m,
-                EstimatedDuration = 1.5
+                EstimatedDuration = 1.5,
+                ImageURL = "https://example.com/service1.jpg"
             },
             new Service
             {
@@ -294,7 +295,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceName = "Pool Maintenance",
                 Description = "Comprehensive pool maintenance service.",
                 Price = 250.00m,
-                EstimatedDuration = 2.0
+                EstimatedDuration = 2.0,
+                ImageURL = "https://example.com/service2.jpg"
             }
         );
 
