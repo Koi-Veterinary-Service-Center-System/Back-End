@@ -161,6 +161,7 @@ namespace KoiFishCare.Controllers
 
         [Authorize]
         [HttpPut("update-status")]
+        [Authorize(Roles = "Staff, Customer, Vet")]
         public async Task<IActionResult> UpdateStatusForVet(int bookingID, BookingStatus newStatus)
         {
             var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
@@ -169,16 +170,29 @@ namespace KoiFishCare.Controllers
                 return NotFound();
             }
 
-            if (!User.IsInRole("Vet") && !User.IsInRole("Customer") && !User.IsInRole("Staff"))
+            if (User.IsInRole("Vet"))
+                if (booking.BookingStatus.Equals("Ongoing") || booking.BookingStatus.Equals("Completed"))
+                {
+                    booking.BookingStatus = newStatus;
+                    _bookingRepo.UpdateBooking(booking);
+                }
+
+            if (User.IsInRole("Staff"))
             {
-                return Unauthorized("You have no permission to access this feature!");
+                if (booking.BookingStatus.Equals("Pending") || booking.BookingStatus.Equals("Scheduled"))
+                {
+                    booking.BookingStatus = newStatus;
+                    _bookingRepo.UpdateBooking(booking);
+                }
             }
 
-
-            if (booking.BookingStatus.Equals("Scheduled"))
+            if (User.IsInRole("Customer"))
             {
-                booking.BookingStatus = newStatus;
-                _bookingRepo.UpdateBookingAsync(booking);
+                if (booking.BookingStatus.Equals("Received_Money"))
+                {
+                    booking.BookingStatus = newStatus;
+                    _bookingRepo.UpdateBooking(booking);
+                }
             }
 
             return Ok(booking);

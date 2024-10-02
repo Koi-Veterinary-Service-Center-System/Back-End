@@ -2962,34 +2962,35 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             }
         );
 
-        //Seed data for staff
+        // Seed data for staff
         // modelBuilder.Entity<Staff>().HasData(
-        //     new Staff
-        //     {
-        //         Id = "s1",
-        //         FirstName = "staff1",
-        //         LastName = "Johnson",
-        //         UserName = "sitap",
-        //         NormalizedUserName = "SITAP",
-        //         Gender = false,
-        //         Address = "789 Staff Lane",
-        //         ImageURL = "https://example.com/staff1.jpg",
-        //         ImagePublicId = "staff_image_id",
-        //         IsManager = false
-        //     },
-        //     new Staff
-        //     {
-        //         Id = "m2",
-        //         FirstName = "manager",
-        //         LastName = "Williams",
-        //         UserName = "manager",
-        //         NormalizedUserName = "MANAGER",
-        //         Gender = true,
-        //         Address = "123 Staff Ave",
-        //         ImageURL = "https://example.com/staff2.jpg",
-        //         ImagePublicId = "staff2_image_id",
-        //         IsManager = true
-        //     }
+            // new Staff
+            // {
+            //     Id = "s1",
+            //     FirstName = "staff1",
+            //     LastName = "Johnson",
+            //     UserName = "sitap",
+            //     NormalizedUserName = "SITAP",
+            //     Gender = false,
+            //     Address = "789 Staff Lane",
+            //     ImageURL = "https://example.com/staff1.jpg",
+            //     ImagePublicId = "staff_image_id",
+            //     IsManager = false
+            // },
+            // new Staff
+            // {
+            //     Id = "m2",
+            //     FirstName = "manager",
+            //     LastName = "Williams",
+            //     UserName = "manager",
+            //     NormalizedUserName = "MANAGER",
+            //     Gender = true,
+            //     Address = "123 Staff Ave",
+            //     ImageURL = "https://example.com/staff2.jpg",
+            //     ImagePublicId = "staff2_image_id",
+            //     IsManager = true
+
+            // }
         // );
     }
 

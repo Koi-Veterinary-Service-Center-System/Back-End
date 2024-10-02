@@ -10,8 +10,11 @@ namespace KoiFishCare.Models.Enum
         Pending,
         Confirmed,
         Scheduled,
+        Ongoing,
         Completed,
+        Received_Money,
         Succeeded,
+        Refunded,
         Cancelled,
     }
 }

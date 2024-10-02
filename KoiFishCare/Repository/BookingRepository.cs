@@ -126,7 +126,7 @@ namespace KoiFishCare.Repository
         }
 
 
-        void IBookingRepository.UpdateBookingAsync(Booking booking)
+        void IBookingRepository.UpdateBooking(Booking booking)
         {
             _context.Bookings.Update(booking);
             _context.SaveChanges();

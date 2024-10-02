@@ -15,6 +15,6 @@ namespace KoiFishCare.Interfaces
         Task<List<FromViewBookingDTO>?> GetBookingsByCusIdAsync(string cusID);
         Task<List<FromViewBookingForVetDTO>?> GetBookingByVetIdAsync(string vetID);
         Task<Booking?> GetBookingByIdAsync(int bookingID);
-        void UpdateBookingAsync(Booking booking);
+        void UpdateBooking(Booking booking);
     }
 }
