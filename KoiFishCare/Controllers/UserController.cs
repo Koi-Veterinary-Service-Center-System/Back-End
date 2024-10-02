@@ -9,6 +9,7 @@ using KoiFishCare.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using KoiFishCare.Mappers;
 using KoiFishCare.DTOs.User;
+using KoiFishCare.Dtos.User;
 
 namespace KoiFishCare.Controllers
 {
@@ -174,6 +175,39 @@ namespace KoiFishCare.Controllers
 
             var userUpdate = await _userRepo.UpdateAsync(id, userDTO);
             return Ok(userUpdate);
+        }
+
+        [HttpPost("create-account")]
+        // [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO userDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = new User
+            {
+                UserName = userDTO.UserName,
+                FirstName = userDTO.FirstName,
+                LastName = userDTO.LastName,
+                Email = userDTO.Email,
+                Gender = userDTO.Gender,
+            };
+
+            var result = await _userManager.CreateAsync(user, userDTO.Password);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            var role = await _userManager.AddToRoleAsync(user, userDTO.Role);
+            if (!role.Succeeded)
+            {
+                return BadRequest(role.Errors);
+            }
+
+            return Ok($"Account created successfully for {userDTO.Role}: {userDTO.UserName}");
         }
     }
 }
