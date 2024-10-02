@@ -49,7 +49,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPost("add-service")]
-        [Authorize(Roles = "Staff")]
+        // [Authorize(Roles = "Staff")]
         public async Task<IActionResult> AddService([FromBody] AddUpdateServiceDTO serviceDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

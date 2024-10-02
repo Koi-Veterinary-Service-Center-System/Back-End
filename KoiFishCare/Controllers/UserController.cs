@@ -115,8 +115,8 @@ namespace KoiFishCare.Controllers
             if (user == null)
                 return NotFound("User not found.");
 
-            var result = user.ToUserProfileFromUser();
-            return Ok(result);
+            var dto = await user.ToUserProfileFromUser(_userManager);
+            return Ok(dto);
         }
 
         [Authorize]
@@ -174,7 +174,8 @@ namespace KoiFishCare.Controllers
             }
 
             var userUpdate = await _userRepo.UpdateAsync(id, userDTO);
-            return Ok(userUpdate);
+            var dto = await userUpdate.ToUserProfileFromUser(_userManager);
+            return Ok(dto);
         }
 
         [HttpPost("create-account")]
