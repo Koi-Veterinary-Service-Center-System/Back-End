@@ -8,6 +8,7 @@ using KoiFishCare.DTOs;
 using KoiFishCare.DTOs.User;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace KoiFishCare.Repository
@@ -20,9 +21,9 @@ namespace KoiFishCare.Repository
             _context = context;
         }
 
-        public async Task<User?> UpdateAsync(string UserID, UpdateUserProfileDTO userDTO)
+        public async Task<User?> UpdateAsync(string userID, UpdateUserProfileDTO userDTO)
         {
-            var user = await _context.Users.FindAsync(UserID);
+            var user = await _context.Users.FindAsync(userID);
             if (user == null)
             {
                 return null;

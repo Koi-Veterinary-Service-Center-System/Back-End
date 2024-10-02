@@ -210,5 +210,20 @@ namespace KoiFishCare.Controllers
 
             return Ok($"Account created successfully for {userDTO.Role}: {userDTO.UserName}");
         }
+
+
+        [HttpDelete("delete-account")]
+        // [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> DeleteAccount(string userID)
+        {
+            var user = await _userManager.FindByIdAsync(userID);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            await _userManager.DeleteAsync(user);
+            return Ok($"Account deleted successfully for {userID}");
+        }
     }
 }
