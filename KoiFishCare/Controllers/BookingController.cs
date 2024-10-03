@@ -117,6 +117,8 @@ namespace KoiFishCare.Controllers
                 if (availableVet == null)
                     return BadRequest("No available vet for the chosen slot");
 
+                
+
                 var bookingModel = createBookingDto.ToBookingFromCreate();
                 bookingModel.CustomerID = userModel.Id;
                 bookingModel.VetID = availableVet.VetID;
@@ -126,6 +128,9 @@ namespace KoiFishCare.Controllers
                 bookingModel.TotalAmount = service.Price;
 
                 await _bookingRepo.CreateBooking(bookingModel);
+
+                await _vetSlotRepo.Update(availableVet.VetID, availableVet.SlotID, true);
+                
                 return Ok(bookingModel.ToBookingDtoFromModel());
             }
         }
