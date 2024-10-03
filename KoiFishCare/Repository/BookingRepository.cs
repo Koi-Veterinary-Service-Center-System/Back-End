@@ -50,7 +50,6 @@ namespace KoiFishCare.Repository
         public async Task<List<FromViewBookingForVetDTO>?> GetBookingByVetIdAsync(string vetID)
         {
             var booking = await _context.Bookings.
-            Include(u => u.Customer).
             Where(b => b.VetID == vetID).
             Select(b => new FromViewBookingForVetDTO
             {
@@ -60,9 +59,9 @@ namespace KoiFishCare.Repository
                 SlotID = b.Slot.SlotID,
                 StartTime = b.Slot.StartTime,
                 EndTime = b.Slot.EndTime,
-                CustomerName = b.Customer.LastName,
-                KoiOrPoolType = b.KoiOrPool.IsPool,
-                KoiOrPoolName = b.KoiOrPool.Name,
+                CustomerName = b.Customer.FirstName + " " + b.Customer.LastName,
+                KoiOrPoolType = b.KoiOrPool != null ? b.KoiOrPool.IsPool : (bool?)null,
+                KoiOrPoolName = b.KoiOrPool != null ? b.KoiOrPool.Name : null,
                 Location = b.Location,
                 PaymentType = b.Payment.Type,
                 TotalAmount = b.TotalAmount,
@@ -86,24 +85,18 @@ namespace KoiFishCare.Repository
         public async Task<List<FromViewBookingDTO>?> GetBookingsByCusIdAsync(string cusID)
         {
             var booking = await _context.Bookings.
-                        Include(u => u.Customer).
-                        Include(s => s.Service).
-                        Include(sl => sl.Slot).
-                        Include(v => v.Veterinarian).
-                        Include(kob => kob.KoiOrPool).
-                        Include(p => p.Payment).
                         Where(b => b.CustomerID == cusID).
                         Select(b => new FromViewBookingDTO
                         {
                             BookingID = b.BookingID,
-                            CustomerName = b.Customer.LastName,
+                            CustomerName = b.Customer.FirstName + " " + b.Customer.LastName,
                             Location = b.Location,
                             ServiceName = b.Service.ServiceName,
-                            KoiOrPoolType = b.KoiOrPool.IsPool,
-                            KoiOrPoolName = b.KoiOrPool.Name,
+                            KoiOrPoolType = b.KoiOrPool != null ? b.KoiOrPool.IsPool : (bool?)null,
+                            KoiOrPoolName = b.KoiOrPool != null ? b.KoiOrPool.Name : null,
                             StartTime = b.Slot.StartTime,
                             EndTime = b.Slot.EndTime,
-                            VetName = b.Veterinarian.FirstName,
+                            VetName = b.Veterinarian.FirstName + " " + b.Veterinarian.LastName,
                             Note = b.Note,
                             PaymentType = b.Payment.Type,
                             BookingDate = b.BookingDate,
@@ -145,9 +138,10 @@ namespace KoiFishCare.Repository
             Select(b => new FromViewBookingHistoryDTO
             {
                 BookingID = b.BookingID,
-                CustomerName = b.Customer.LastName,
-                KoiOrPoolType = b.KoiOrPool.IsPool,
-                VetName = b.Veterinarian.LastName,
+                CustomerName = b.Customer.FirstName + " " + b.Customer.LastName,
+                KoiOrPoolType = b.KoiOrPool != null ? b.KoiOrPool.IsPool : (bool?)null,
+                KoiOrPoolName = b.KoiOrPool != null ? b.KoiOrPool.Name : null,
+                VetName = b.Veterinarian.FirstName + " " + b.Veterinarian.LastName,
                 Location = b.Location,
                 StartTime = b.Slot.StartTime,
                 EndTime = b.Slot.EndTime,
@@ -178,6 +172,7 @@ namespace KoiFishCare.Repository
                 .Select(pr => pr.RefundMoney)
                 .FirstOrDefault(),
                 BookingDate = b.BookingDate,
+                TotalAmount = b.TotalAmount,
                 BookingStatus = b.BookingStatus,
             }).ToListAsync();
             

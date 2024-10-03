@@ -46,23 +46,5 @@ namespace KoiFishCare.Mappers
             };
         }
 
-        // public static FromViewBookingHistoryDTO ToBookingFromView(this PrescriptionRecord prescriptionRecord)
-        // {
-        //     return new FromViewBookingHistoryDTO()
-        //     {
-        //        CustomerName = prescriptionRecord.Booking.Customer.LastName,
-        //        KoiOrPoolType = prescriptionRecord.Booking.KoiOrPool?.IsPool,
-        //        VetName = prescriptionRecord.Booking.Veterinarian.LastName,
-        //        Location = prescriptionRecord.Booking.Location,
-        //        StartTime = prescriptionRecord.Booking.Slot.StartTime,
-        //        EndTime = prescriptionRecord.Booking.Slot.EndTime,
-        //        ServiceName =prescriptionRecord.Booking.Service.ServiceName,
-        //        PaymentType = prescriptionRecord.Booking.Payment.Type,
-        //        DiseaseName = prescriptionRecord.DiseaseName,
-        //        BookingDate = prescriptionRecord.Booking.BookingDate,
-        //        BookingStatus = prescriptionRecord.Booking.BookingStatus,
-        //     };
-        // }
-        
     }
 }

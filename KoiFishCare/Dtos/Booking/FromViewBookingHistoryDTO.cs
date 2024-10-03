@@ -45,6 +45,9 @@ namespace KoiFishCare.Dtos.Booking
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? RefundMoney { get; set; }
 
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal TotalAmount { get; set; }
+
         public BookingStatus BookingStatus { get; set; }
     }
 }
