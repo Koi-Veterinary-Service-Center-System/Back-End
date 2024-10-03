@@ -16,13 +16,13 @@ namespace KoiFishCare.Mappers
             {
                 isBook = vetSlot.isBooked,
                 SlotID = vetSlot.SlotID,
-                SlotStartTime = vetSlot.Slot.StartTime,
-                SlotEndTime = vetSlot.Slot.EndTime,
-                WeekDate = vetSlot.Slot.WeekDate,
-                VetId = vetSlot.Veterinarian.Id,
-                VetName = vetSlot.Veterinarian.UserName,
-                VetFirstName = vetSlot.Veterinarian.FirstName,
-                VetLastName = vetSlot.Veterinarian.LastName
+                SlotStartTime = vetSlot.Slot?.StartTime,
+                SlotEndTime = vetSlot.Slot?.EndTime,
+                WeekDate = vetSlot.Slot?.WeekDate,
+                VetId = vetSlot.Veterinarian?.Id,
+                VetName = vetSlot.Veterinarian?.UserName,
+                VetFirstName = vetSlot.Veterinarian?.FirstName,
+                VetLastName = vetSlot.Veterinarian?.LastName
             };
         }
 
@@ -30,13 +30,13 @@ namespace KoiFishCare.Mappers
         {
             return new VetDTO
             {
-                Id = vs.Veterinarian.Id.ToString(),
-                VetName = vs.Veterinarian.UserName,
-                FirstName = vs.Veterinarian.FirstName,
-                LastName = vs.Veterinarian.LastName,
-                Gender = vs.Veterinarian.Gender,
-                ExperienceYears = vs.Veterinarian.ExperienceYears,
-                ImageURL = vs.Veterinarian.ImageURL
+                Id = vs.Veterinarian?.Id.ToString(),
+                VetName = vs.Veterinarian?.UserName,
+                FirstName = vs.Veterinarian?.FirstName,
+                LastName = vs.Veterinarian?.LastName,
+                Gender = vs.Veterinarian?.Gender,
+                ExperienceYears = vs.Veterinarian?.ExperienceYears,
+                ImageURL = vs.Veterinarian?.ImageURL
             };
         }
     }

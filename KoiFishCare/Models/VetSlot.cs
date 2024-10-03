@@ -19,7 +19,7 @@ public class VetSlot
 
     // ---- Slot -----------------------------------------------------------------------
     [ForeignKey("SlotID")]
-    public int? SlotID { get; set; }
+    public int SlotID { get; set; }
     public Slot? Slot { get; set; }
 
 }

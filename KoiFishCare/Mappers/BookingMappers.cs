@@ -31,12 +31,12 @@ namespace KoiFishCare.Mappers
             return new FromViewBookingDTO
             {
                 BookingDate = booking.BookingDate,
-                CustomerName = booking.Customer.UserName,
+                CustomerName = booking.Customer?.UserName ?? "Unknown",
                 StartTime = booking.Slot.StartTime,
                 EndTime = booking.Slot.EndTime,
                 ServiceName = booking.Service.ServiceName,
-                VetName = booking.Veterinarian.UserName,
-                KoiOrPoolType = booking.KoiOrPool.IsPool,
+                VetName = booking.Veterinarian?.UserName ?? "Unknown",//check null
+                KoiOrPoolType = booking.KoiOrPool?.IsPool,//checknull
                 Location = booking.Location,
                 BookingStatus = booking.BookingStatus,
                 Note = booking.Note,
