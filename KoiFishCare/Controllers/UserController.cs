@@ -255,5 +255,29 @@ namespace KoiFishCare.Controllers
             return Ok(userDTOs);
         }
 
+        [HttpPut("update-user")]
+        // [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> UpdateUser(string userID, string role)
+        {
+            var user = await _userManager.FindByIdAsync(userID);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userDTO = new ViewUserDTO()
+                {
+                    UserID = user.Id,
+                    UserName = user.UserName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Role = role,
+                    Gender = user.Gender,
+                    Email = user.Email,
+                };
+            
+            return Ok(userDTO);
+        }
+
     }
 }
