@@ -13,5 +13,7 @@ namespace KoiFishCare.Interfaces
     {
         Task<User?> UpdateAsync(string userID, UpdateUserProfileDTO userDTO);
 
+        Task<List<User>?> GetAllUserAsync();
+
     }
 }
