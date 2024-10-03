@@ -53,6 +53,7 @@ namespace KoiFishCare.Repository
             Where(b => b.VetID == vetID).
             Select(b => new FromViewBookingForVetDTO
             {
+                BookingID = b.BookingID,
                 BookingDate = b.BookingDate,
                 ServiceName = b.Service.ServiceName,
                 SlotID = b.Slot.SlotID,
@@ -60,7 +61,7 @@ namespace KoiFishCare.Repository
                 EndTime = b.Slot.EndTime,
                 CustomerName = b.Customer.LastName,
                 KoiOrPoolType = b.KoiOrPool.IsPool,
-                
+                KoiOrPoolName = b.KoiOrPool.Name,
                 Location = b.Location,
                 PaymentType = b.Payment.Type,
                 TotalAmount = b.TotalAmount,
@@ -93,6 +94,7 @@ namespace KoiFishCare.Repository
                         Where(b => b.CustomerID == cusID).
                         Select(b => new FromViewBookingDTO
                         {
+                            BookingID = b.BookingID,
                             CustomerName = b.Customer.LastName,
                             Location = b.Location,
                             ServiceName = b.Service.ServiceName,

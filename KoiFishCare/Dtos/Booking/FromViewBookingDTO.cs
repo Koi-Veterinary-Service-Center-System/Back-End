@@ -10,6 +10,8 @@ namespace KoiFishCare.DTOs.Booking
 {
     public class FromViewBookingDTO
     {
+        public int BookingID { get; set; }
+        
         public DateOnly BookingDate { get; set; }
 
         public string CustomerName { get; set; } = null!;
