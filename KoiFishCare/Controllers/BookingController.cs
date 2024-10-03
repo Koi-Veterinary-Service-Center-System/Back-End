@@ -23,15 +23,18 @@ namespace KoiFishCare.Controllers
         private readonly ISlotRepository _slotRepo;
         private readonly IServiceRepository _serviceRepo;
         private readonly IBookingRepository _bookingRepo;
+        private readonly IVetSlotRepository _vetSlotRepo;
 
         public BookingController(UserManager<User> userManager, IFishOrPoolRepository fishOrPoolRepo,
-        ISlotRepository slotRepo, IServiceRepository serviceRepo, IBookingRepository bookingRepo)
+        ISlotRepository slotRepo, IServiceRepository serviceRepo, IBookingRepository bookingRepo,
+        IVetSlotRepository vetSlotRepo)
         {
             _userManager = userManager;
             _fishOrPoolRepo = fishOrPoolRepo;
             _slotRepo = slotRepo;
             _serviceRepo = serviceRepo;
             _bookingRepo = bookingRepo;
+            _vetSlotRepo = vetSlotRepo;
         }
 
 
@@ -79,9 +82,20 @@ namespace KoiFishCare.Controllers
                     return BadRequest("Vet does not exist");
                 }
 
-                var bookingsInDateAndSlot = await _bookingRepo.GetBookingsByDateAndSlot(createBookingDto.BookingDate, slot.SlotID);
-                if (bookingsInDateAndSlot.Any(b => b.VetID == vet.Id))
+                // var bookingsInDateAndSlot = await _bookingRepo.GetBookingsByDateAndSlot(createBookingDto.BookingDate, slot.SlotID);
+                // if (bookingsInDateAndSlot.Any(b => b.VetID == vet.Id))
+                //     return BadRequest("The selected vet is already booked");
+
+                var vetSlot = await _vetSlotRepo.GetVetSlot(vet.Id, slot.SlotID);
+                if (vetSlot == null)
+                {
+                    return BadRequest("The selected vet slot does not exist.");
+                }
+
+                if (vetSlot.isBooked == true)
+                {
                     return BadRequest("The selected vet is already booked");
+                }
 
                 var bookingModel = createBookingDto.ToBookingFromCreate();
                 bookingModel.CustomerID = userModel.Id;
@@ -92,6 +106,9 @@ namespace KoiFishCare.Controllers
                 bookingModel.TotalAmount = createBookingDto.TotalAmount;
 
                 await _bookingRepo.CreateBooking(bookingModel);
+
+                await _vetSlotRepo.Update(vetSlot.VetID, vetSlot.SlotID, true);
+
                 return Ok(bookingModel.ToBookingDtoFromModel());
             }
             else
