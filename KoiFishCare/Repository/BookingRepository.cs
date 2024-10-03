@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.Data;
+using KoiFishCare.Dtos.Booking;
 using KoiFishCare.DTOs.Booking;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Models;
@@ -135,5 +136,54 @@ namespace KoiFishCare.Repository
             _context.Bookings.Update(booking);
             _context.SaveChanges();
         }
+
+        public async Task<List<FromViewBookingHistoryDTO>?> GetBookingByStatusAsync(string userID)
+        {
+            var bookings = await _context.Bookings.
+            Include(c => c.Customer).
+            Where(x => x.Customer.Id.Equals(userID) && (x.BookingStatus == BookingStatus.Succeeded || x.BookingStatus == BookingStatus.Cancelled)).
+            Select(b => new FromViewBookingHistoryDTO
+            {
+                BookingID = b.BookingID,
+                CustomerName = b.Customer.LastName,
+                KoiOrPoolType = b.KoiOrPool.IsPool,
+                VetName = b.Veterinarian.LastName,
+                Location = b.Location,
+                StartTime = b.Slot.StartTime,
+                EndTime = b.Slot.EndTime,
+                ServiceName = b.Service.ServiceName,
+                PaymentType = b.Payment.Type,
+                DiseaseName = _context.PrescriptionRecords
+                .Where(pr => pr.BookingID == b.BookingID)
+                .Select(pr => pr.DiseaseName)
+                .FirstOrDefault(),
+                Symptoms = _context.PrescriptionRecords
+                .Where(pr => pr.BookingID == b.BookingID)
+                .Select(pr => pr.Symptoms)
+                .FirstOrDefault(),
+                Medication = _context.PrescriptionRecords
+                .Where(pr => pr.BookingID == b.BookingID)
+                .Select(pr => pr.Medication)
+                .FirstOrDefault(),
+                PrescriptionNote = _context.PrescriptionRecords
+                .Where(pr => pr.BookingID == b.BookingID)
+                .Select(pr => pr.Note)
+                .FirstOrDefault(),
+                RefundPercent = _context.PrescriptionRecords
+                .Where(pr => pr.BookingID == b.BookingID)
+                .Select(pr => pr.RefundPercent)
+                .FirstOrDefault(),
+                RefundMoney = _context.PrescriptionRecords
+                .Where(pr => pr.BookingID == b.BookingID)
+                .Select(pr => pr.RefundMoney)
+                .FirstOrDefault(),
+                BookingDate = b.BookingDate,
+                BookingStatus = b.BookingStatus,
+            }).ToListAsync();
+            
+            return bookings;
+
+        }
+
     }
 }

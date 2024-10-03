@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KoiFishCare.Dtos.Booking;
 using KoiFishCare.DTOs;
 using KoiFishCare.DTOs.Booking;
 using KoiFishCare.Models;
@@ -45,21 +46,21 @@ namespace KoiFishCare.Mappers
             };
         }
 
-        // public static FromViewBookingDTO ToBookingFromView(this Booking viewBooking)
+        // public static FromViewBookingHistoryDTO ToBookingFromView(this PrescriptionRecord prescriptionRecord)
         // {
-        //     return new FromViewBookingDTO()
+        //     return new FromViewBookingHistoryDTO()
         //     {
-        //        CustomerName = viewBooking.Customer.LastName,
-        //        Note = viewBooking.Note,
-        //        KoiOrPoolType = viewBooking.KoiOrPool.IsPool,
-        //        VetName = viewBooking.Veterinarian.LastName,
-        //        Location = viewBooking.Location,
-        //        StartTime = viewBooking.Slot.StartTime,
-        //        EndTime = viewBooking.Slot.EndTime,
-        //        ServiceName =viewBooking.Service.ServiceName,
-        //        PaymentType = viewBooking.Payment.Type,
-        //        BookingDate = viewBooking.BookingDate,
-        //        BookingStatus = viewBooking.BookingStatus,
+        //        CustomerName = prescriptionRecord.Booking.Customer.LastName,
+        //        KoiOrPoolType = prescriptionRecord.Booking.KoiOrPool?.IsPool,
+        //        VetName = prescriptionRecord.Booking.Veterinarian.LastName,
+        //        Location = prescriptionRecord.Booking.Location,
+        //        StartTime = prescriptionRecord.Booking.Slot.StartTime,
+        //        EndTime = prescriptionRecord.Booking.Slot.EndTime,
+        //        ServiceName =prescriptionRecord.Booking.Service.ServiceName,
+        //        PaymentType = prescriptionRecord.Booking.Payment.Type,
+        //        DiseaseName = prescriptionRecord.DiseaseName,
+        //        BookingDate = prescriptionRecord.Booking.BookingDate,
+        //        BookingStatus = prescriptionRecord.Booking.BookingStatus,
         //     };
         // }
         

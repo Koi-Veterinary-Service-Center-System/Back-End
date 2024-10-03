@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.Models;
 using KoiFishCare.Models.Enum;
 
-namespace KoiFishCare.DTOs.Booking
+namespace KoiFishCare.Dtos.Booking
 {
-    public class FromViewBookingDTO
+    public class FromViewBookingHistoryDTO
     {
         public int BookingID { get; set; }
 
@@ -32,9 +32,19 @@ namespace KoiFishCare.DTOs.Booking
 
         public string PaymentType { get; set; } = null!;
 
-        public string? Note { get; set; }
+        public string? DiseaseName { get; set; }
+
+        public string? Symptoms { get; set; }
+
+        public string? Medication { get; set; }
+
+        public string? PrescriptionNote { get; set; }
+
+        public int? RefundPercent { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? RefundMoney { get; set; }
 
         public BookingStatus BookingStatus { get; set; }
-
     }
 }

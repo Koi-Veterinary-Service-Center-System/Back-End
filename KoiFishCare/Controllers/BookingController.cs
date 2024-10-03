@@ -11,6 +11,7 @@ using KoiFishCare.Models;
 using KoiFishCare.Mappers;
 using Microsoft.VisualBasic;
 using KoiFishCare.Models.Enum;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace KoiFishCare.Controllers
 {
@@ -117,7 +118,7 @@ namespace KoiFishCare.Controllers
                 if (availableVet == null)
                     return BadRequest("No available vet for the chosen slot");
 
-                
+
 
                 var bookingModel = createBookingDto.ToBookingFromCreate();
                 bookingModel.CustomerID = userModel.Id;
@@ -130,13 +131,13 @@ namespace KoiFishCare.Controllers
                 await _bookingRepo.CreateBooking(bookingModel);
 
                 await _vetSlotRepo.Update(availableVet.VetID, availableVet.SlotID, true);
-                
+
                 return Ok(bookingModel.ToBookingDtoFromModel());
             }
         }
 
         [Authorize]
-        [HttpGet("all-booking")]
+        [HttpGet("view-booking")]
         public async Task<IActionResult> GetBookingByID()
         {
             if (!ModelState.IsValid)
@@ -182,6 +183,25 @@ namespace KoiFishCare.Controllers
         }
 
         [Authorize]
+        [HttpGet("view-booking-history")]
+        public async Task<IActionResult> GetBookingHistory()
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return Unauthorized("User is not available!");
+            }
+
+            var bookingHistoryDTOs = await _bookingRepo.GetBookingByStatusAsync(user.Id);
+            if (bookingHistoryDTOs == null)
+            {
+                return NotFound("There is no booking!");
+            }
+
+            return Ok(bookingHistoryDTOs);
+        }
+
+        [Authorize]
         [HttpPut("update-status")]
         [Authorize(Roles = "Staff, Customer, Vet")]
         public async Task<IActionResult> UpdateStatusForVet(int bookingID, BookingStatus newStatus)
@@ -193,7 +213,7 @@ namespace KoiFishCare.Controllers
             }
 
             if (User.IsInRole("Vet"))
-                if (booking.BookingStatus.Equals("Ongoing") || booking.BookingStatus.Equals("Completed"))
+                if (booking.BookingStatus == BookingStatus.Ongoing || booking.BookingStatus == BookingStatus.Completed)
                 {
                     booking.BookingStatus = newStatus;
                     _bookingRepo.UpdateBooking(booking);
@@ -201,7 +221,7 @@ namespace KoiFishCare.Controllers
 
             if (User.IsInRole("Staff"))
             {
-                if (booking.BookingStatus.Equals("Pending") || booking.BookingStatus.Equals("Scheduled"))
+                if (booking.BookingStatus == BookingStatus.Pending || booking.BookingStatus == BookingStatus.Scheduled)
                 {
                     booking.BookingStatus = newStatus;
                     _bookingRepo.UpdateBooking(booking);
@@ -210,14 +230,14 @@ namespace KoiFishCare.Controllers
 
             if (User.IsInRole("Customer"))
             {
-                if (booking.BookingStatus.Equals("Received_Money"))
+                if (booking.BookingStatus == BookingStatus.Received_Money)
                 {
                     booking.BookingStatus = newStatus;
                     _bookingRepo.UpdateBooking(booking);
                 }
             }
 
-            return Ok(booking);
+            return Ok("Update status successfully!");
         }
 
     }
