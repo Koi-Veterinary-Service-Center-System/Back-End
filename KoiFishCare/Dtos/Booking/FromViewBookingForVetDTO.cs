@@ -8,6 +8,8 @@ namespace KoiFishCare.DTOs.Booking
 {
     public class FromViewBookingForVetDTO
     {
+        public int BookingID { get; set; }
+
         public DateOnly BookingDate { get; set; }
 
         public string ServiceName { get; set; } = null!;
@@ -21,6 +23,8 @@ namespace KoiFishCare.DTOs.Booking
         public string? CustomerName { get; set; }
 
         public bool? KoiOrPoolType { get; set; }
+
+        public string? KoiOrPoolName { get; set; }
 
         public string? Location { get; set; }
 
