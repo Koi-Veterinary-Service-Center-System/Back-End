@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using KoiFishCare.Models;
 using KoiFishCare.Models.Enum;
 
 namespace KoiFishCare.DTOs.Booking
@@ -22,6 +23,8 @@ namespace KoiFishCare.DTOs.Booking
         public string VetName { get; set; } = null!;
 
         public bool? KoiOrPoolType { get; set; }
+
+        public string? KoiOrPoolName { get; set; }
 
         public string? Location { get; set; }
 

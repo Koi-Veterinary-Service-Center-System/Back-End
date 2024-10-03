@@ -37,6 +37,7 @@ namespace KoiFishCare.Mappers
                 ServiceName = booking.Service.ServiceName,
                 VetName = booking.Veterinarian?.UserName ?? "Unknown",//check null
                 KoiOrPoolType = booking.KoiOrPool?.IsPool,//checknull
+                KoiOrPoolName = booking.KoiOrPool?.Name,//check null
                 Location = booking.Location,
                 BookingStatus = booking.BookingStatus,
                 Note = booking.Note,

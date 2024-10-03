@@ -178,7 +178,7 @@ namespace KoiFishCare.Controllers
             return Ok(dto);
         }
 
-        [HttpPost("create-account")]
+        [HttpPost("create-user")]
         // [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO userDTO)
         {
@@ -212,9 +212,9 @@ namespace KoiFishCare.Controllers
         }
 
 
-        [HttpDelete("delete-account")]
+        [HttpDelete("delete-user")]
         // [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> DeleteAccount(string userID)
+        public async Task<IActionResult> DeleteUser(string userID)
         {
             var user = await _userManager.FindByIdAsync(userID);
             if (user == null)
@@ -223,7 +223,37 @@ namespace KoiFishCare.Controllers
             }
 
             await _userManager.DeleteAsync(user);
-            return Ok($"Account deleted successfully for {userID}");
+            return Ok($"Account deleted successfully for {user.UserName}");
         }
+
+        [HttpGet("view-user")]
+        // [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> GetAllUser()
+        {
+            var users = await _userRepo.GetAllUserAsync();
+            if (users == null)
+            {
+                return NotFound("There is no user!");
+            }
+
+            var userDTOs = new List<ViewUserDTO>();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userDTOs.Add(new ViewUserDTO
+                {
+                    UserID = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Role = roles.FirstOrDefault(),
+                    Gender = user.Gender,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                });
+            }
+
+            return Ok(userDTOs);
+        }
+
     }
 }
