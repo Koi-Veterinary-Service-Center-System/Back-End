@@ -50,25 +50,40 @@ namespace KoiFishCare.Controllers
             }
 
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
-                var userRole = userRoles.FirstOrDefault();
-                var role = await _roleManager.FindByNameAsync(userRole!);
-                var customer = user as Customer;
-                var userDto = new UserDTO
-                {
-                    UserName = customer.UserName,
-                    Email = customer.Email,
-                    FirstName = customer.FirstName,
-                    LastName = customer.LastName,
-                    Token = _tokenService.CreateToken(customer, role)
-                };
-
-                return Ok(userDto);
+                return Unauthorized("Invalid login");
             }
-            return Unauthorized("Invalid login");
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var userRole = userRoles.FirstOrDefault();
+            if (userRole == null)
+            {
+                return Unauthorized("User has no assigned roles");
+            }
+            var role = await _roleManager.FindByNameAsync(userRole);
+            if (role == null)
+            {
+                return BadRequest("Role not found");
+            }
+
+            var token = _tokenService.CreateToken(user, role);
+            var userDto = new UserDTO
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Token = token
+            };
+
+            var welcomeMessage = $"Welcome {user.UserName} ({userRole})";
+
+            return Ok(new { Token = userDto.Token, Message = welcomeMessage });
         }
+
+
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO model)
