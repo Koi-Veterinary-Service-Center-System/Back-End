@@ -161,22 +161,22 @@ namespace KoiFishCare.Controllers
 
             if (isVet)
             {
-                var booking = await _bookingRepo.GetBookingByVetIdAsync(user.Id);
-                if (booking == null || !booking.Any())
+                var bookings = await _bookingRepo.GetBookingByVetIdAsync(user.Id);
+                if (bookings == null || !bookings.Any())
                 {
                     return NotFound("There is no booking!");
                 }
-                return Ok(booking);
+                return Ok(bookings);
             }
 
             if (isCus)
             {
-                var booking = await _bookingRepo.GetBookingsByCusIdAsync(user.Id);
-                if (booking == null || !booking.Any())
+                var bookings = await _bookingRepo.GetBookingsByCusIdAsync(user.Id);
+                if (bookings == null || !bookings.Any())
                 {
                     return NotFound("There is no booking!");
                 }
-                return Ok(booking);
+                return Ok(bookings);
             }
 
             return BadRequest("Invalid request");
@@ -193,7 +193,7 @@ namespace KoiFishCare.Controllers
             }
 
             var bookingHistoryDTOs = await _bookingRepo.GetBookingByStatusAsync(user.Id);
-            if (bookingHistoryDTOs == null)
+            if (bookingHistoryDTOs == null || !bookingHistoryDTOs.Any())
             {
                 return NotFound("There is no booking!");
             }

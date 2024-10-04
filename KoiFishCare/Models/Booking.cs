@@ -58,4 +58,5 @@ public partial class Booking
     public int? KoiOrPoolID { get; set; }
 
     public KoiOrPool? KoiOrPool { get; set; }
+
 }
