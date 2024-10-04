@@ -22,15 +22,12 @@ namespace KoiFishCare.DTOs
         public string? Location { get; set; }
 
         [Required(ErrorMessage = "Slot is required.")]
-
         public int SlotId { get; set; }
 
         [Required(ErrorMessage = "Service ID is required.")]
-
         public int ServiceId { get; set; }
 
         [Required(ErrorMessage = "Payment ID is required.")]
-
         public int PaymentId { get; set; }
 
         [Required(ErrorMessage = "Date is required.")]

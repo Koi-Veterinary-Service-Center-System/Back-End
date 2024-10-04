@@ -4,6 +4,7 @@ using KoiFishCare.Models;
 using KoiFishCare.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using Microsoft.IdentityModel.Tokens;
 using KoiFishCare.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -149,6 +150,21 @@ namespace KoiFishCare.Controllers
                 return BadRequest("Can not find user!");
             }
 
+            if (updateDTO.UserName.Length < 3)
+            {
+                return BadRequest("User name length must be more than 3!");
+            }
+
+            if (IsValidEmail(updateDTO.Email))
+            {
+                return BadRequest("Invalid email!");
+            }
+
+            if (!IsValidPhoneNumber(updateDTO.PhoneNumber))
+            {
+                return BadRequest("Phone number must not contain characters!");
+            }
+
             var userDTO = updateDTO;
             if (updateDTO.UserName.IsNullOrEmpty())
             {
@@ -193,6 +209,8 @@ namespace KoiFishCare.Controllers
             return Ok(dto);
         }
 
+
+
         [HttpPost("create-user")]
         // [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO userDTO)
@@ -200,6 +218,21 @@ namespace KoiFishCare.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if (userDTO.UserName.Length < 3)
+            {
+                return BadRequest("User name length must be more than 3!");
+            }
+
+            if (!IsValidEmail(userDTO.Email))
+            {
+                return BadRequest("Invalid email!");
+            }
+
+            if (!userDTO.Role.Equals("Customer") || !userDTO.Role.Equals("Vet") || !userDTO.Role.Equals("Staff") || !userDTO.Role.Equals("Manager"))
+            {
+                return BadRequest("This role is not available!");
             }
 
             var user = new User
@@ -241,12 +274,12 @@ namespace KoiFishCare.Controllers
             return Ok($"Account deleted successfully for {user.UserName}");
         }
 
-        [HttpGet("view-user")]
+        [HttpGet("all-user")]
         // [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetAllUser()
         {
             var users = await _userRepo.GetAllUserAsync();
-            if (users == null)
+            if (users == null || !users.Any())
             {
                 return NotFound("There is no user!");
             }
@@ -281,18 +314,29 @@ namespace KoiFishCare.Controllers
             }
 
             var userDTO = new ViewUserDTO()
-                {
-                    UserID = user.Id,
-                    UserName = user.UserName,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Role = role,
-                    Gender = user.Gender,
-                    Email = user.Email,
-                };
-            
+            {
+                UserID = user.Id,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = role,
+                Gender = user.Gender,
+                Email = user.Email,
+            };
+
             return Ok(userDTO);
         }
 
+        private bool IsValidPhoneNumber(string phoneNumber)
+        {
+            string pattern = @"^[0-9\-]+$";
+            return Regex.IsMatch(phoneNumber, pattern);
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            return Regex.IsMatch(email, pattern);
+        }
     }
 }
