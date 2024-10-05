@@ -119,6 +119,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IVetSlotRepository, VetSlotRepository>();
 builder.Services.AddScoped<IDistanceRepository, DistanceRepository>();
+builder.Services.AddScoped<IPrescriptionRecordRepository, PrescriptionRecordRepository>();
 
 builder.Services.AddAuthorization(options => 
 {
