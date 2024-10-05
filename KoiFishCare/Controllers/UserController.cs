@@ -230,7 +230,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest("Invalid email!");
             }
 
-            if (!userDTO.Role.Equals("Customer") || !userDTO.Role.Equals("Vet") || !userDTO.Role.Equals("Staff") || !userDTO.Role.Equals("Manager"))
+            if (!userDTO.Role.Equals("Customer") && !userDTO.Role.Equals("Vet") && !userDTO.Role.Equals("Staff") && !userDTO.Role.Equals("Manager"))
             {
                 return BadRequest("This role is not available!");
             }
