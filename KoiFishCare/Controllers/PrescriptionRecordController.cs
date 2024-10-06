@@ -81,7 +81,7 @@ namespace KoiFishCare.Controllers
             if(User.IsInRole("Vet"))
             {
                 var user = await _userManager.GetUserAsync(this.User);
-                if(user.UserName != booking.VetID) return Unauthorized("This booking is not yours, you can not update record for this!");
+                if(user.Id != booking.VetID) return Unauthorized("This booking is not yours, you can not update record for this!");
             }
 
             var presRec = await _preRecRepo.Update(presRecId, updateDto.ToModelFromUpdate());
