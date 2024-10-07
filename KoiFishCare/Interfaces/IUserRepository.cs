@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using KoiFishCare.Dtos.User;
 using KoiFishCare.DTOs;
@@ -14,6 +15,7 @@ namespace KoiFishCare.Interfaces
         Task<User?> UpdateAsync(string userID, UpdateUserProfileDTO userDTO);
 
         Task<List<User>?> GetAllUserAsync();
+
 
     }
 }

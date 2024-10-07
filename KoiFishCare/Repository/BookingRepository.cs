@@ -50,7 +50,7 @@ namespace KoiFishCare.Repository
         public async Task<List<FromViewBookingForVetDTO>?> GetBookingByVetIdAsync(string vetID)
         {
             var booking = await _context.Bookings.
-            Where(b => b.VetID == vetID).
+            Where(b => b.VetID == vetID && (b.BookingStatus == BookingStatus.Scheduled || b.BookingStatus == BookingStatus.Ongoing || b.BookingStatus == BookingStatus.Completed || b.BookingStatus == BookingStatus.Received_Money)).
             Select(b => new FromViewBookingForVetDTO
             {
                 BookingID = b.BookingID,
@@ -85,7 +85,7 @@ namespace KoiFishCare.Repository
         public async Task<List<FromViewBookingDTO>?> GetBookingsByCusIdAsync(string cusID)
         {
             var booking = await _context.Bookings.
-                        Where(b => b.CustomerID == cusID).
+                        Where(b => b.CustomerID == cusID && (b.BookingStatus == BookingStatus.Pending || b.BookingStatus == BookingStatus.Confirmed || b.BookingStatus == BookingStatus.Scheduled || b.BookingStatus == BookingStatus.Ongoing || b.BookingStatus == BookingStatus.Completed || b.BookingStatus == BookingStatus.Received_Money)).
                         Select(b => new FromViewBookingDTO
                         {
                             BookingID = b.BookingID,
@@ -173,6 +173,12 @@ namespace KoiFishCare.Repository
                 .FirstOrDefault(),
                 BookingDate = b.BookingDate,
                 TotalAmount = b.TotalAmount,
+                Rate = _context.Feedbacks
+                .Where(f => f.BookingID == b.BookingID)
+                .Select(f => f.Rate).FirstOrDefault(),
+                Comments = _context.Feedbacks
+                .Where(f => f.BookingID == b.BookingID)
+                .Select(f => f.Comments).FirstOrDefault(),
                 BookingStatus = b.BookingStatus,
             }).ToListAsync();
             

@@ -36,7 +36,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
     public virtual DbSet<Veterinarian> Vets { get; set; }
 
-    public virtual DbSet<Staff> Staff { get; set; }
+    public virtual DbSet<Staff> Staffs { get; set; }
 
     public virtual DbSet<VetSlot> VetSlots { get; set; }
 

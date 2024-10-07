@@ -137,7 +137,7 @@ namespace KoiFishCare.Controllers
         }
 
         [Authorize]
-        [HttpGet("view-booking")]
+        [HttpGet("view-booking-process")]
         public async Task<IActionResult> GetBookingByID()
         {
             if (!ModelState.IsValid)
@@ -230,11 +230,11 @@ namespace KoiFishCare.Controllers
 
             if (User.IsInRole("Customer"))
             {
-                if (booking.BookingStatus == BookingStatus.Received_Money)
-                {
+                // if (booking.BookingStatus == BookingStatus.Received_Money)
+                // {
                     booking.BookingStatus = newStatus;
                     _bookingRepo.UpdateBooking(booking);
-                }
+                // }
             }
 
             return Ok("Update status successfully!");
