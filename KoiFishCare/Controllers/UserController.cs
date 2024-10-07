@@ -25,15 +25,19 @@ namespace KoiFishCare.Controllers
 
         private readonly IUserRepository _userRepo;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IStaffRepository _staffRepo;
+        private readonly IVetRepository _vetRepo;
 
         public UserController(SignInManager<User> signInManager, UserManager<User> userManager,
-        ItokenService tokenService, IUserRepository userRepo, RoleManager<IdentityRole> roleManager)
+        ItokenService tokenService, IUserRepository userRepo, RoleManager<IdentityRole> roleManager, IStaffRepository staffRepo, IVetRepository vetRepo)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
             _userRepo = userRepo;
             _roleManager = roleManager;
+            _staffRepo = staffRepo;
+            _vetRepo = vetRepo;
         }
 
         [HttpPost("login")]
@@ -230,30 +234,84 @@ namespace KoiFishCare.Controllers
                 return BadRequest("Invalid email!");
             }
 
-            if (!userDTO.Role.Equals("Customer") && !userDTO.Role.Equals("Vet") && !userDTO.Role.Equals("Staff") && !userDTO.Role.Equals("Manager"))
+            if (!userDTO.Role.Equals("Vet") && !userDTO.Role.Equals("Staff") && !userDTO.Role.Equals("Manager"))
             {
                 return BadRequest("This role is not available!");
             }
 
-            var user = new User
+            if (userDTO.Role.Equals("Staff"))
             {
-                UserName = userDTO.UserName,
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                Email = userDTO.Email,
-                Gender = userDTO.Gender,
-            };
+                var user = new Staff
+                {
+                    UserName = userDTO.UserName,
+                    FirstName = userDTO.FirstName,
+                    LastName = userDTO.LastName,
+                    Email = userDTO.Email,
+                    Gender = userDTO.Gender,
+                    ManagerID = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    IsManager = userDTO.Role.Equals("Manager"),
+                };
 
-            var result = await _userManager.CreateAsync(user, userDTO.Password);
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
+                var result = await _userManager.CreateAsync(user, userDTO.Password);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+
+                var role = await _userManager.AddToRoleAsync(user, userDTO.Role);
+                if (!role.Succeeded)
+                {
+                    return BadRequest(role.Errors);
+                }
             }
 
-            var role = await _userManager.AddToRoleAsync(user, userDTO.Role);
-            if (!role.Succeeded)
+            else if (userDTO.Role.Equals("Manager"))
             {
-                return BadRequest(role.Errors);
+                var user = new Staff
+                {
+                    UserName = userDTO.UserName,
+                    FirstName = userDTO.FirstName,
+                    LastName = userDTO.LastName,
+                    Email = userDTO.Email,
+                    Gender = userDTO.Gender,
+                    IsManager = userDTO.Role.Equals("Manager"),
+                };
+
+                var result = await _userManager.CreateAsync(user, userDTO.Password);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+
+                var role = await _userManager.AddToRoleAsync(user, userDTO.Role);
+                if (!role.Succeeded)
+                {
+                    return BadRequest(role.Errors);
+                }
+            }
+
+            else
+            {
+                var user = new Veterinarian
+                {
+                    UserName = userDTO.UserName,
+                    FirstName = userDTO.FirstName,
+                    LastName = userDTO.LastName,
+                    Email = userDTO.Email,
+                    Gender = userDTO.Gender,
+                };
+
+                var result = await _userManager.CreateAsync(user, userDTO.Password);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+
+                var role = await _userManager.AddToRoleAsync(user, userDTO.Role);
+                if (!role.Succeeded)
+                {
+                    return BadRequest(role.Errors);
+                }
             }
 
             return Ok($"Account created successfully for {userDTO.Role}: {userDTO.UserName}");

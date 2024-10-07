@@ -10,6 +10,8 @@ public partial class Feedback
     [Key]
     public int FeedbackID { get; set; }
 
+    public string? CustomerName { get; set; }
+
     public int? Rate { get; set; }
 
     public string? Comments { get; set; }
@@ -19,5 +21,6 @@ public partial class Feedback
     public int? BookingID { get; set; }
 
     public virtual Booking? Booking { get; set; }
-
+    // ---- Control visibility -----------------------------------------------------------------------
+    public bool IsVisible { get; set; } = true;
 }

@@ -48,6 +48,10 @@ namespace KoiFishCare.Dtos.Booking
         [Column(TypeName = "decimal(18, 2)")]
         public decimal TotalAmount { get; set; }
 
+        public int? Rate { get; set; }
+
+        public string? Comments { get; set; }
+
         public BookingStatus BookingStatus { get; set; }
     }
 }

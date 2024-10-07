@@ -7,7 +7,7 @@ using KoiFishCare.Models;
 
 namespace KoiFishCare.Mappers
 {
-    public static class DistanceMapper
+    public static class DistanceMappers
     {
         public static DistanceDTO ToDTOFromModel(this Distance distanceModel)
         {

@@ -8,7 +8,7 @@ namespace KoiFishCare.Models;
 [Table("Staffs")]
 public partial class Staff : User
 {
-    public string ManagerID { get; set; } = null!;
+    public string? ManagerID { get; set; }
     
     public bool IsManager { get; set; }
 
