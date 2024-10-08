@@ -43,6 +43,7 @@ namespace KoiFishCare.Controllers
 
         [Authorize]
         [HttpPost("create-booking")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> CreateBooking([FromBody] FromCreateBookingDTO createBookingDto)
         {
             if (!ModelState.IsValid)
@@ -108,11 +109,11 @@ namespace KoiFishCare.Controllers
                 bookingModel.Service = service;
                 bookingModel.TotalAmount = createBookingDto.TotalAmount;
 
-                await _bookingRepo.CreateBooking(bookingModel);
+                var result = await _bookingRepo.CreateBooking(bookingModel);
 
                 await _vetSlotRepo.Update(vetSlot.VetID, vetSlot.SlotID, true);
 
-                return Ok(bookingModel.ToBookingDtoFromModel());
+                return Ok(result.ToBookingDtoFromModel());
             }
             else
             {
@@ -130,11 +131,11 @@ namespace KoiFishCare.Controllers
                 bookingModel.Service = service;
                 bookingModel.TotalAmount = service.Price;
 
-                await _bookingRepo.CreateBooking(bookingModel);
+                var result = await _bookingRepo.CreateBooking(bookingModel);
 
                 await _vetSlotRepo.Update(availableVet.VetID, availableVet.SlotID, true);
 
-                return Ok(bookingModel.ToBookingDtoFromModel());
+                return Ok(result.ToBookingDtoFromModel());
             }
         }
 

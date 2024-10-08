@@ -49,8 +49,7 @@ namespace KoiFishCare.Mappers
                 Medication = dto.Medication,
                 Note = dto.Note,
                 RefundMoney = dto.RefundMoney,
-                RefundPercent = dto.RefundPercent,
-                BookingID = dto.BookingID
+                RefundPercent = dto.RefundPercent
             };
         }
     }

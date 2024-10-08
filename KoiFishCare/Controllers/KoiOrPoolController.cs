@@ -27,6 +27,7 @@ namespace KoiFishCare.Controllers
 
         [Authorize]
         [HttpGet("all-customer-koi-pool")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> GetKoiOrPoolOfCus()
         {
             var customer = await _userManager.GetUserAsync(this.User);
@@ -43,6 +44,7 @@ namespace KoiFishCare.Controllers
 
         [Authorize]
         [HttpPost("create-koiorpool")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromBody] CreateUpdateKoiOrPoolDto dto)
         {
             if(!ModelState.IsValid)
@@ -59,6 +61,7 @@ namespace KoiFishCare.Controllers
 
         [Authorize]
         [HttpPut("update-koiorpool/{id:int}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Update([FromRoute]int id,[FromBody] CreateUpdateKoiOrPoolDto dto)
         {
             if(!ModelState.IsValid)
@@ -72,6 +75,7 @@ namespace KoiFishCare.Controllers
 
         [Authorize]
         [HttpDelete("delete-koiorpool/{id:int}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Delete([FromRoute]int id)
         {
             if(!ModelState.IsValid)
