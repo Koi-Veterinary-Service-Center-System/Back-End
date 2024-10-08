@@ -254,6 +254,8 @@ namespace KoiFishCare.Controllers
 
             var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
             if (booking == null) return NotFound("Booking not found!");
+            if(booking.BookingStatus.Equals(BookingStatus.Cancelled) || booking.BookingStatus.Equals(BookingStatus.Refunded))
+                return BadRequest("The booking is already canceled");
 
             if (User.IsInRole("Customer"))
                 if (booking.CustomerID != user.Id)
@@ -281,7 +283,7 @@ namespace KoiFishCare.Controllers
             booking.BookingStatus = BookingStatus.Cancelled;
             _bookingRepo.UpdateBooking(booking);
 
-            return Ok(booking.ToBookingDtoFromModel());
+            return Ok(presRec.ToPresRecDtoFromModel());
         }
 
         
