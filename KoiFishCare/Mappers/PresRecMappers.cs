@@ -33,8 +33,6 @@ namespace KoiFishCare.Mappers
                 Symptoms = dto.Symptoms,
                 Medication = dto.Medication,
                 Note = dto.Note,
-                RefundMoney = dto.RefundMoney,
-                RefundPercent = dto.RefundPercent,
                 BookingID = dto.BookingID,
                 CreateAt = DateTime.Now
             };
@@ -47,9 +45,7 @@ namespace KoiFishCare.Mappers
                 DiseaseName = dto.DiseaseName,
                 Symptoms = dto.Symptoms,
                 Medication = dto.Medication,
-                Note = dto.Note,
-                RefundMoney = dto.RefundMoney,
-                RefundPercent = dto.RefundPercent
+                Note = dto.Note
             };
         }
     }
