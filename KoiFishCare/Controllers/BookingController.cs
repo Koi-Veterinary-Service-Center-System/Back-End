@@ -286,7 +286,15 @@ namespace KoiFishCare.Controllers
             return Ok(presRec.ToPresRecDtoFromModel());
         }
 
-        
+        [HttpGet("all-booking")]
+        [Authorize(Roles = "Staff, Manager")]
+        public async Task<IActionResult> GetAllBooking()
+        {
+            var bookings = await _bookingRepo.GetAllBooking();
+            if(!bookings.Any()) return NotFound("No booking!");
+
+            return Ok(bookings);
+        }
 
     }
 }

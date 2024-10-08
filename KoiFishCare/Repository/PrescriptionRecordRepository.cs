@@ -36,7 +36,7 @@ namespace KoiFishCare.Repository
 
         public async Task<PrescriptionRecord?> GetById(int id)
         {
-            var model = await _context.PrescriptionRecords.FirstOrDefaultAsync(p => p.PrescriptionRecordID == id);
+            var model = await _context.PrescriptionRecords.FirstOrDefaultAsync(p => p.BookingID == id);
             return model;
         }
 
