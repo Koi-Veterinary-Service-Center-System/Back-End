@@ -40,7 +40,8 @@ namespace KoiFishCare.Dtos.Booking
 
         public string? PrescriptionNote { get; set; }
 
-        public int? RefundPercent { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? RefundPercent { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? RefundMoney { get; set; }

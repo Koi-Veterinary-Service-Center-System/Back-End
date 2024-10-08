@@ -56,7 +56,6 @@ public partial class Booking
     // ---- KoiOrPool -----------------------------------------------------------------------
     [ForeignKey("KoiOrPoolID")]
     public int? KoiOrPoolID { get; set; }
-
     public KoiOrPool? KoiOrPool { get; set; }
 
 }

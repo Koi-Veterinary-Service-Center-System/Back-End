@@ -20,7 +20,8 @@ namespace KoiFishCare.Mappers
                 Note = model.Note,
                 RefundMoney = model.RefundMoney,
                 RefundPercent = model.RefundPercent,
-                BookingID = model.BookingID
+                BookingID = model.BookingID,
+                CreateAt = model.CreateAt
             };
         }
 
@@ -34,7 +35,8 @@ namespace KoiFishCare.Mappers
                 Note = dto.Note,
                 RefundMoney = dto.RefundMoney,
                 RefundPercent = dto.RefundPercent,
-                BookingID = dto.BookingID
+                BookingID = dto.BookingID,
+                CreateAt = DateTime.Now
             };
         }
 

@@ -77,11 +77,6 @@ namespace KoiFishCare.Repository
             return booking.ToList();
         }
 
-        public async Task<List<Booking>> GetBookingsByDateAndSlot(DateOnly date, int slotId)
-        {
-            return await _context.Bookings.Where(b => b.BookingDate == date && b.SlotID == slotId).ToListAsync();
-        }
-
         public async Task<List<FromViewBookingDTO>?> GetBookingsByCusIdAsync(string cusID)
         {
             var booking = await _context.Bookings.
@@ -181,10 +176,9 @@ namespace KoiFishCare.Repository
                 .Select(f => f.Comments).FirstOrDefault(),
                 BookingStatus = b.BookingStatus,
             }).ToListAsync();
-            
+
             return bookings;
 
         }
-
     }
 }

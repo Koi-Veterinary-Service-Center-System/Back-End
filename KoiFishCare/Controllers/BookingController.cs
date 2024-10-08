@@ -25,10 +25,11 @@ namespace KoiFishCare.Controllers
         private readonly IServiceRepository _serviceRepo;
         private readonly IBookingRepository _bookingRepo;
         private readonly IVetSlotRepository _vetSlotRepo;
+        private readonly IPrescriptionRecordRepository _presRecRepo;
 
         public BookingController(UserManager<User> userManager, IFishOrPoolRepository fishOrPoolRepo,
         ISlotRepository slotRepo, IServiceRepository serviceRepo, IBookingRepository bookingRepo,
-        IVetSlotRepository vetSlotRepo)
+        IVetSlotRepository vetSlotRepo, IPrescriptionRecordRepository presRecRepo)
         {
             _userManager = userManager;
             _fishOrPoolRepo = fishOrPoolRepo;
@@ -36,6 +37,7 @@ namespace KoiFishCare.Controllers
             _serviceRepo = serviceRepo;
             _bookingRepo = bookingRepo;
             _vetSlotRepo = vetSlotRepo;
+            _presRecRepo = presRecRepo;
         }
 
 
@@ -53,10 +55,14 @@ namespace KoiFishCare.Controllers
             if (userModel == null)
                 return BadRequest("Login before booking!");
 
-            //check role
+            // Check if the booking date is at least 1 day after today
+            var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
+            if (createBookingDto.BookingDate <= currentDate.AddDays(1))
+            {
+                return BadRequest("Booking date must be at least 1 day after today.");
+            }
 
-
-            // Get customer fishorpool
+            // Get customer fishorpool if cus want to examinate
             if (createBookingDto.KoiOrPoolId.HasValue)
             {
                 var fishorpool = await _fishOrPoolRepo.GetKoiOrPoolById(createBookingDto.KoiOrPoolId.Value);
@@ -82,10 +88,6 @@ namespace KoiFishCare.Controllers
                 {
                     return BadRequest("Vet does not exist");
                 }
-
-                // var bookingsInDateAndSlot = await _bookingRepo.GetBookingsByDateAndSlot(createBookingDto.BookingDate, slot.SlotID);
-                // if (bookingsInDateAndSlot.Any(b => b.VetID == vet.Id))
-                //     return BadRequest("The selected vet is already booked");
 
                 var vetSlot = await _vetSlotRepo.GetVetSlot(vet.Id, slot.SlotID);
                 if (vetSlot == null)
@@ -230,15 +232,58 @@ namespace KoiFishCare.Controllers
 
             if (User.IsInRole("Customer"))
             {
-                // if (booking.BookingStatus == BookingStatus.Received_Money)
-                // {
+                if (booking.BookingStatus == BookingStatus.Received_Money)
+                {
                     booking.BookingStatus = newStatus;
                     _bookingRepo.UpdateBooking(booking);
-                // }
+                }
             }
 
             return Ok("Update status successfully!");
         }
+
+
+        [Authorize]
+        [HttpPut("cancel-booking/{bookingId:int}")]
+        [Authorize(Roles = "Staff, Customer")]
+        public async Task<IActionResult> CancelBooking(int bookingId)
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            if (user == null) return Unauthorized("User is not available!");
+
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
+            if (booking == null) return NotFound("Booking not found!");
+
+            if (User.IsInRole("Customer"))
+                if (booking.CustomerID != user.Id)
+                    return Unauthorized("You can only cancel your own bookings.");
+
+            var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
+            var daysBeforeBooking = (booking.BookingDate.ToDateTime(TimeOnly.MinValue) - currentDate.ToDateTime(TimeOnly.MinValue)).Days;
+
+            decimal refundPercent = 0;//default no refund
+            if(daysBeforeBooking > 7) refundPercent = 100;
+            if(daysBeforeBooking > 3) refundPercent = 50;
+
+            var refundMoney = booking.TotalAmount * (refundPercent /100);
+
+            var presRec = new PrescriptionRecord
+            {
+                BookingID = booking.BookingID,
+                RefundPercent = refundPercent,
+                RefundMoney = refundMoney,
+                CreateAt = DateTime.Now
+            };
+
+            await _presRecRepo.Create(presRec);
+
+            booking.BookingStatus = BookingStatus.Cancelled;
+            _bookingRepo.UpdateBooking(booking);
+
+            return Ok(booking.ToBookingDtoFromModel());
+        }
+
+        
 
     }
 }
