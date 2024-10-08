@@ -28,11 +28,11 @@ namespace KoiFishCare.Controllers
             _bookingRepo = bookingRepo;
         }
 
-        [HttpGet("{presRecId:int}")]
+        [HttpGet("{bookingId:int}")]
         [Authorize]
-        public async Task<IActionResult> GetById([FromRoute] int presRecId)
+        public async Task<IActionResult> GetById([FromRoute] int bookingId)
         {
-            var presRec = await _preRecRepo.GetById(presRecId);
+            var presRec = await _preRecRepo.GetById(bookingId);
             if(presRec == null) return NotFound();
             return Ok(presRec.ToPresRecDtoFromModel());
         }

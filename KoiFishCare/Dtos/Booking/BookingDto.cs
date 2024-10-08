@@ -14,7 +14,7 @@ namespace KoiFishCare.Dtos.Booking
         public string? Location { get; set; }
         public string? Note { get; set; }
         public decimal TotalAmount { get; set; }
-        public string? BookingStatus { get; set; }
+        public string? BookingStatus { get; set; }//de string de chuyen tu enum thanh string
         public string? MeetURL { get; set; }
         public int? PaymentID { get; set; }
         public string? PaymentType { get; set; }
@@ -30,8 +30,6 @@ namespace KoiFishCare.Dtos.Booking
         public string? VetName { get; set; }
         public int? KoiOrPoolID { get; set; }
         public string? KoiOrPoolName { get; set; }
-        public PrescriptionRecordDto? PresRec { get; set; }
-        public FeedbackDTO? Feedback { get; set; }
     }
 
 }
