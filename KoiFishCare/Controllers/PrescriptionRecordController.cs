@@ -55,6 +55,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
 
             var booking = await _bookingRepo.GetBookingByIdAsync(createDto.BookingID);
+            if(booking == null) return NotFound("Not found booking!");
 
             //check only the vet of the booking or staff can create
             if(User.IsInRole("Vet"))
