@@ -45,6 +45,5 @@ namespace KoiFishCare.Mappers
                 PaymentType = booking.Payment.Type
             };
         }
-
     }
 }

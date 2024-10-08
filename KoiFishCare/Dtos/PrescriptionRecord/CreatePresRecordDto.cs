@@ -18,7 +18,7 @@ namespace KoiFishCare.Dtos.PrescriptionRecord
 
         public decimal? RefundMoney { get; set; }
 
-        public int? RefundPercent { get; set; }
+        public decimal? RefundPercent { get; set; }
         
         [Required(ErrorMessage = "BookingId is required to create Record!")]
         public int BookingID { get; set; }
