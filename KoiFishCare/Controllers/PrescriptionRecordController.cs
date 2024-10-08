@@ -38,6 +38,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet("list-preRec-CusName/{cusName}")]
+        [Authorize(Roles = "Staff, Vet")]
         public async Task<IActionResult> GetListByCusname([FromRoute] string cusName)
         {
             var list = await _preRecRepo.GetListByCusUsername(cusName);
@@ -59,7 +60,7 @@ namespace KoiFishCare.Controllers
             if(User.IsInRole("Vet"))
             {
                 var user = await _userManager.GetUserAsync(this.User);
-                if(user.UserName != booking.VetID) return Unauthorized("This booking is not yours, you can not create record for this!");
+                if(user.Id != booking.VetID) return Unauthorized("This booking is not yours, you can not create record for this!");
             }
 
             var presRec = await _preRecRepo.Create(createDto.ToModelFromCreate());
@@ -75,7 +76,10 @@ namespace KoiFishCare.Controllers
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var booking = await _bookingRepo.GetBookingByIdAsync(updateDto.BookingID);
+            var presReco = await _preRecRepo.GetById(presRecId);
+            if(presReco == null) return NotFound("Not found Pres Rec");
+            if (presReco.BookingID == null) return BadRequest("Booking ID is null");
+            var booking = await _bookingRepo.GetBookingByIdAsync(presReco.BookingID.Value);
 
             //check only the vet of the booking or staff can create
             if(User.IsInRole("Vet"))
@@ -87,19 +91,22 @@ namespace KoiFishCare.Controllers
             var presRec = await _preRecRepo.Update(presRecId, updateDto.ToModelFromUpdate());
             if(presRec == null) return NotFound();
 
-            return Ok(presRec);
+            return Ok(presRec.ToPresRecDtoFromModel());
         }
 
-        [HttpDelete("delete-presRec/{presRec:int}/{bookingId:int}")]
+        [HttpDelete("delete-presRec/{presRecId:int}")]
         [Authorize(Roles = "Staff, Vet")]
-        public async Task<IActionResult> Delete(int presRecId, int bookingId)
+        public async Task<IActionResult> Delete(int presRecId)
         {
-            var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
+            var preRec = await _preRecRepo.GetById(presRecId);
+            if(preRec == null) return NotFound("Not found Pres Rec");
+            if (preRec.BookingID == null) return BadRequest("Booking ID is null");
+            var booking = await _bookingRepo.GetBookingByIdAsync(preRec.BookingID.Value);
 
             if(User.IsInRole("Vet"))
             {
                 var user = await _userManager.GetUserAsync(this.User);
-                if(user.UserName != booking.VetID) return Unauthorized("This booking is not yours, you can not delete record for this!");
+                if(user.Id != booking.VetID) return Unauthorized("This booking is not yours, you can not delete record for this!");
             }
 
             var presRec = await _preRecRepo.Delete(presRecId);

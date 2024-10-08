@@ -30,7 +30,6 @@ namespace KoiFishCare.Dtos.Booking
         public string? VetName { get; set; }
         public int? KoiOrPoolID { get; set; }
         public string? KoiOrPoolName { get; set; }
-
         public PrescriptionRecordDto? PresRec { get; set; }
         public FeedbackDTO? Feedback { get; set; }
     }
