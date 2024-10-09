@@ -18,9 +18,9 @@ public partial class Feedback
 
     // ---- Booking -----------------------------------------------------------------------
     [ForeignKey("BookingID")]
-    public int? BookingID { get; set; }
+    public int BookingID { get; set; }
 
-    public virtual Booking? Booking { get; set; }
+    public virtual Booking Booking { get; set; } = null!;
     // ---- Control visibility -----------------------------------------------------------------------
     public bool IsVisible { get; set; } = true;
 }

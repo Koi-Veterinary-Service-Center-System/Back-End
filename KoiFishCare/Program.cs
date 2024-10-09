@@ -15,6 +15,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Any;
+using KoiFishCare.Models.Enum;
 // using KoiFishCare.Data;
 // using KoiFishCare.Models;
 // using Microsoft.OpenApi.Models;
@@ -74,6 +75,26 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v2", new OpenApiInfo { Title = "API", Version = "v2" });
+    c.MapType<BookingStatus>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Enum = new List<IOpenApiAny>
+        {
+            new OpenApiString("Pending"),
+            new OpenApiString("Confirmed"),
+            new OpenApiString("Scheduled"),
+            new OpenApiString("Ongoing"),
+            new OpenApiString("Completed"),
+            new OpenApiString("Received Money"),
+            new OpenApiString("Succeeded"),
+            new OpenApiString("Refunded"),
+            new OpenApiString("Cancelled")
+        }
+    });
+});
 
 // Add CORS policy for your Vite frontend
 builder.Services.AddCors(options =>

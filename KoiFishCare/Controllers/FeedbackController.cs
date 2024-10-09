@@ -25,7 +25,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet("all-feedback")]
-        // [Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> GetAllFeedback()
         {
             var feedbacks = await _feedbackRepo.GetAllFeedbackAsync();
@@ -38,10 +38,11 @@ namespace KoiFishCare.Controllers
             return Ok(result);
         }
 
-        [HttpGet("view-feedback-id/{id}")]
-        public async Task<IActionResult> GetFeedbackById([FromRoute] int id)
+        [HttpGet("view-feedback/{bookingID}")]
+        [Authorize(Roles = "Vet, Staff")]
+        public async Task<IActionResult> GetFeedbackById([FromRoute] int bookingID)
         {
-            var feedback = await _feedbackRepo.GetFeedbackByIdAsync(id);
+            var feedback = await _feedbackRepo.GetFeedbackByBookingIdAsync(bookingID);
             if (feedback == null)
             {
                 return NotFound("Can not find any feedback!");
@@ -92,7 +93,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpDelete("delete-feedback/{id}")]
-        // [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteFeedback([FromRoute] int id)
         {
             var feedback = await _feedbackRepo.DeleteFeedback(id);
@@ -104,7 +105,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPut("show-hide-feedback/{id}")]
-        // [Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> UpdateIsVisible(int id, bool isVisible)
         {
             if (!ModelState.IsValid)
@@ -121,7 +122,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet("view-hidden-feedback")]
-        // [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetFeedbackIsHidden()
         {
             var feedbacks = await _feedbackRepo.GetAllFeedbackIsHidden();
