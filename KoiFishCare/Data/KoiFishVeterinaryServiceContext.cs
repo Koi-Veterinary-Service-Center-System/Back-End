@@ -182,35 +182,35 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 SlotID = 1,
                 StartTime = new TimeOnly(9, 0),
                 EndTime = new TimeOnly(10, 0),
-                WeekDate = "Monday"
+                WeekDate = Models.Enum.DayOfWeek.Monday
             },
             new Slot
             {
                 SlotID = 2,
                 StartTime = new TimeOnly(11, 0),
                 EndTime = new TimeOnly(12, 0),
-                WeekDate = "Monday"
+                WeekDate = Models.Enum.DayOfWeek.Monday
             },
             new Slot
             {
                 SlotID = 3,
                 StartTime = new TimeOnly(9, 0),
                 EndTime = new TimeOnly(12, 0),
-                WeekDate = "Tuesday"
+                WeekDate = Models.Enum.DayOfWeek.Tuesday
             },
             new Slot
             {
                 SlotID = 4,
                 StartTime = new TimeOnly(11, 0),
                 EndTime = new TimeOnly(12, 0),
-                WeekDate = "Tuesday"
+                WeekDate = Models.Enum.DayOfWeek.Tuesday
             },
             new Slot
             {
                 SlotID = 5,
                 StartTime = new TimeOnly(11, 0),
                 EndTime = new TimeOnly(12, 0),
-                WeekDate = "Wednesday"
+                WeekDate = Models.Enum.DayOfWeek.Wednesday
             }
         );
 

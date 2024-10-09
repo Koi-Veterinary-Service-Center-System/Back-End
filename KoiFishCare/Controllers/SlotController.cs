@@ -48,7 +48,7 @@ namespace KoiFishCare.Controllers
                 SlotID = vs.Slot.SlotID,
                 StartTime = vs.Slot.StartTime,
                 EndTime = vs.Slot.EndTime,
-                WeekDate = vs.Slot.WeekDate
+                WeekDate = vs.Slot.WeekDate.ToString()
             }
             ).ToList();
 

@@ -18,7 +18,7 @@ namespace KoiFishCare.Mappers
                 SlotID = vetSlot.SlotID,
                 SlotStartTime = vetSlot.Slot?.StartTime,
                 SlotEndTime = vetSlot.Slot?.EndTime,
-                WeekDate = vetSlot.Slot?.WeekDate,
+                WeekDate = vetSlot.Slot?.WeekDate.ToString(),
                 VetId = vetSlot.Veterinarian?.Id,
                 VetName = vetSlot.Veterinarian?.UserName,
                 VetFirstName = vetSlot.Veterinarian?.FirstName,
