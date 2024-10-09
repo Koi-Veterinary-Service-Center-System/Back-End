@@ -90,7 +90,7 @@ namespace KoiFishCare.Controllers
             return Ok(new { Token = userDto.Token, Message = welcomeMessage });
         }
 
-        [HttpGet("google-login")]
+[HttpGet("google-login")]
 public IActionResult GoogleLogin()
 {
     var redirectUrl = Url.Action("GoogleResponse", "User");
