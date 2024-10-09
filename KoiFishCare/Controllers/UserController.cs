@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 using KoiFishCare.Mappers;
 using KoiFishCare.DTOs.User;
 using KoiFishCare.Dtos.User;
+using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace KoiFishCare.Controllers
 {
@@ -87,7 +90,60 @@ namespace KoiFishCare.Controllers
             return Ok(new { Token = userDto.Token, Message = welcomeMessage });
         }
 
+[HttpGet("google-login")]
+public IActionResult GoogleLogin()
+{
+    var redirectUrl = Url.Action("GoogleResponse", "User");
+    var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+    return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+}
 
+[HttpGet("google-response")]
+public async Task<IActionResult> GoogleResponse()
+{
+    var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+
+    if (result.Succeeded && result.Principal != null)
+    {
+        // Extract user info from the claims
+        var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
+
+        // Check if the user exists, if not, create them
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            user = new User
+            {
+                UserName = email,
+                Email = email,
+                FirstName = result.Principal.FindFirst(ClaimTypes.GivenName)?.Value,
+                LastName = result.Principal.FindFirst(ClaimTypes.Surname)?.Value
+            };
+
+            await _userManager.CreateAsync(user);
+            await _userManager.AddToRoleAsync(user, "Customer"); // Assign role if necessary
+        }
+
+        // Generate JWT token
+        var userRoles = await _userManager.GetRolesAsync(user);
+        var userRole = userRoles.FirstOrDefault();
+        var role = await _roleManager.FindByNameAsync(userRole);
+        var token = _tokenService.CreateToken(user, role);
+
+        var userDto = new UserDTO
+        {
+            UserName = user.UserName,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Token = token // Return the JWT token
+        };
+
+        return Ok(new { Token = token, Message = $"Welcome {user.UserName}" }); // Return the user information and token
+    }
+
+    return BadRequest("Google login failed.");
+}
 
 
         [HttpPost("register")]
