@@ -42,7 +42,7 @@ namespace KoiFishCare.Mappers
                 Location = booking.Location,
                 BookingStatus = booking.BookingStatus,
                 Note = booking.Note,
-                PaymentType = booking.Payment.Type
+                PaymentType = booking.Payment.Type,
             };
         }
 

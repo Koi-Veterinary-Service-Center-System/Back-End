@@ -113,7 +113,7 @@ namespace KoiFishCare.Controllers
 
                 await _vetSlotRepo.Update(vetSlot.VetID, vetSlot.SlotID, true);
 
-                return Ok(result.ToBookingDtoFromModel());
+                return Ok(result.ToDtoFromModel());
             }
             else
             {
@@ -135,7 +135,7 @@ namespace KoiFishCare.Controllers
 
                 await _vetSlotRepo.Update(availableVet.VetID, availableVet.SlotID, true);
 
-                return Ok(result.ToBookingDtoFromModel());
+                return Ok(result.ToDtoFromModel());
             }
         }
 
@@ -254,7 +254,7 @@ namespace KoiFishCare.Controllers
 
             var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
             if (booking == null) return NotFound("Booking not found!");
-            if(booking.BookingStatus.Equals(BookingStatus.Cancelled) || booking.BookingStatus.Equals(BookingStatus.Refunded))
+            if (booking.BookingStatus.Equals(BookingStatus.Cancelled) || booking.BookingStatus.Equals(BookingStatus.Refunded))
                 return BadRequest("The booking is already canceled");
 
             if (User.IsInRole("Customer"))
@@ -264,11 +264,14 @@ namespace KoiFishCare.Controllers
             var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
             var daysBeforeBooking = (booking.BookingDate.ToDateTime(TimeOnly.MinValue) - currentDate.ToDateTime(TimeOnly.MinValue)).Days;
 
-            decimal refundPercent = 0;//default no refund
-            if(daysBeforeBooking > 7) refundPercent = 100;
-            if(daysBeforeBooking > 3) refundPercent = 50;
+            decimal refundPercent = 0; // default no refund
+            if (daysBeforeBooking > 7)
+                refundPercent = 100;
+            else if (daysBeforeBooking > 3)
+                refundPercent = 50;
 
-            var refundMoney = booking.TotalAmount * (refundPercent /100);
+
+            var refundMoney = booking.TotalAmount * (refundPercent / 100);
 
             var presRec = new PrescriptionRecord
             {
@@ -291,7 +294,7 @@ namespace KoiFishCare.Controllers
         public async Task<IActionResult> GetAllBooking()
         {
             var bookings = await _bookingRepo.GetAllBooking();
-            if(!bookings.Any()) return NotFound("No booking!");
+            if (!bookings.Any()) return NotFound("No booking!");
 
             return Ok(bookings);
         }
