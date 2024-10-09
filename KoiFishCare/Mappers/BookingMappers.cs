@@ -64,7 +64,7 @@ namespace KoiFishCare.Mappers
                 SlotID = booking.SlotID,
                 SlotStartTime = booking.Slot?.StartTime,
                 SlotEndTime = booking.Slot?.EndTime,
-                SlotWeekDate = booking.Slot?.WeekDate,
+                SlotWeekDate = booking.Slot?.WeekDate.ToString(),
                 CustomerID = booking.CustomerID,
                 CustomerName = booking.Customer?.UserName,
                 VetID = booking.VetID,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using KoiFishCare.Models;
+using KoiFishCare.Models.Enum;
 
 namespace KoiFishCare.Models;
 
@@ -16,7 +17,7 @@ public partial class Slot
 
     public TimeOnly EndTime { get; set; }
 
-    public string WeekDate { get; set; } = null!;
+    public Enum.DayOfWeek WeekDate { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     
