@@ -169,7 +169,9 @@ namespace KoiFishCare.Controllers
                 {
                     return NotFound("There is no booking!");
                 }
-                return Ok(bookings);
+
+                var result = bookings.Select(x => x.ToDtoFromModel());
+                return Ok(result);
             }
 
             if (isCus)
@@ -179,7 +181,9 @@ namespace KoiFishCare.Controllers
                 {
                     return NotFound("There is no booking!");
                 }
-                return Ok(bookings);
+
+                var result = bookings.Select(x => x.ToDtoFromModel());
+                return Ok(result);
             }
 
             return BadRequest("Invalid request");
@@ -195,13 +199,14 @@ namespace KoiFishCare.Controllers
                 return Unauthorized("User is not available!");
             }
 
-            var bookingHistoryDTOs = await _bookingRepo.GetBookingByStatusAsync(user.Id);
-            if (bookingHistoryDTOs == null || !bookingHistoryDTOs.Any())
+            var bookingHistorys = await _bookingRepo.GetBookingByStatusAsync(user.Id);
+            if (bookingHistorys == null || !bookingHistorys.Any())
             {
                 return NotFound("There is no booking!");
             }
-
-            return Ok(bookingHistoryDTOs);
+            
+            var result = bookingHistorys.Select(x => x.ToDtoFromModel());
+            return Ok(result);
         }
 
         [Authorize]

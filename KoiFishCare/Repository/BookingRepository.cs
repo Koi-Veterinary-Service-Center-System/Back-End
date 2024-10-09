@@ -7,6 +7,7 @@ using KoiFishCare.Dtos.Booking;
 using KoiFishCare.DTOs.Booking;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
+using KoiFishCare.Migrations;
 using KoiFishCare.Models;
 using KoiFishCare.Models.Enum;
 using Microsoft.EntityFrameworkCore;
@@ -48,65 +49,8 @@ namespace KoiFishCare.Repository
             return bookingModel;
         }
 
-        public async Task<List<FromViewBookingForVetDTO>?> GetBookingByVetIdAsync(string vetID)
-        {
-            var booking = await _context.Bookings.
-            Where(b => b.VetID == vetID && (b.BookingStatus == BookingStatus.Scheduled || b.BookingStatus == BookingStatus.Ongoing || b.BookingStatus == BookingStatus.Completed || b.BookingStatus == BookingStatus.Received_Money)).
-            Select(b => new FromViewBookingForVetDTO
-            {
-                BookingID = b.BookingID,
-                BookingDate = b.BookingDate,
-                ServiceName = b.Service.ServiceName,
-                SlotID = b.Slot.SlotID,
-                StartTime = b.Slot.StartTime,
-                EndTime = b.Slot.EndTime,
-                CustomerName = b.Customer.FirstName + " " + b.Customer.LastName,
-                KoiOrPoolType = b.KoiOrPool != null ? b.KoiOrPool.IsPool : (bool?)null,
-                KoiOrPoolName = b.KoiOrPool != null ? b.KoiOrPool.Name : null,
-                Location = b.Location,
-                PaymentType = b.Payment.Type,
-                TotalAmount = b.TotalAmount,
-                Note = b.Note,
-                BookingStatus = b.BookingStatus,
-            }).ToListAsync();
 
-            if (booking == null)
-            {
-                return null;
-            }
 
-            return booking.ToList();
-        }
-
-        public async Task<List<FromViewBookingDTO>?> GetBookingsByCusIdAsync(string cusID)
-        {
-            var booking = await _context.Bookings.
-                        Where(b => b.CustomerID == cusID && (b.BookingStatus == BookingStatus.Pending || b.BookingStatus == BookingStatus.Confirmed || b.BookingStatus == BookingStatus.Scheduled || b.BookingStatus == BookingStatus.Ongoing || b.BookingStatus == BookingStatus.Completed || b.BookingStatus == BookingStatus.Received_Money)).
-                        Select(b => new FromViewBookingDTO
-                        {
-                            BookingID = b.BookingID,
-                            CustomerName = b.Customer.FirstName + " " + b.Customer.LastName,
-                            Location = b.Location,
-                            ServiceName = b.Service.ServiceName,
-                            KoiOrPoolType = b.KoiOrPool != null ? b.KoiOrPool.IsPool : (bool?)null,
-                            KoiOrPoolName = b.KoiOrPool != null ? b.KoiOrPool.Name : null,
-                            StartTime = b.Slot.StartTime,
-                            EndTime = b.Slot.EndTime,
-                            VetName = b.Veterinarian.FirstName + " " + b.Veterinarian.LastName,
-                            Note = b.Note,
-                            PaymentType = b.Payment.Type,
-                            BookingDate = b.BookingDate,
-                            BookingStatus = b.BookingStatus,
-                        }).ToListAsync();
-
-            if (booking == null)
-            {
-                return null;
-            }
-
-            return booking.ToList();
-
-        }
 
         public async Task<Booking?> GetBookingByIdAsync(int bookingID)
         {
@@ -126,61 +70,7 @@ namespace KoiFishCare.Repository
             _context.SaveChanges();
         }
 
-        public async Task<List<FromViewBookingHistoryDTO>?> GetBookingByStatusAsync(string userID)
-        {
-            var bookings = await _context.Bookings.
-            Include(c => c.Customer).
-            Where(x => x.Customer.Id.Equals(userID) && (x.BookingStatus == BookingStatus.Succeeded || x.BookingStatus == BookingStatus.Cancelled)).
-            Select(b => new FromViewBookingHistoryDTO
-            {
-                BookingID = b.BookingID,
-                CustomerName = b.Customer.FirstName + " " + b.Customer.LastName,
-                KoiOrPoolType = b.KoiOrPool != null ? b.KoiOrPool.IsPool : (bool?)null,
-                KoiOrPoolName = b.KoiOrPool != null ? b.KoiOrPool.Name : null,
-                VetName = b.Veterinarian.FirstName + " " + b.Veterinarian.LastName,
-                Location = b.Location,
-                StartTime = b.Slot.StartTime,
-                EndTime = b.Slot.EndTime,
-                ServiceName = b.Service.ServiceName,
-                PaymentType = b.Payment.Type,
-                DiseaseName = _context.PrescriptionRecords
-                .Where(pr => pr.BookingID == b.BookingID)
-                .Select(pr => pr.DiseaseName)
-                .FirstOrDefault(),
-                Symptoms = _context.PrescriptionRecords
-                .Where(pr => pr.BookingID == b.BookingID)
-                .Select(pr => pr.Symptoms)
-                .FirstOrDefault(),
-                Medication = _context.PrescriptionRecords
-                .Where(pr => pr.BookingID == b.BookingID)
-                .Select(pr => pr.Medication)
-                .FirstOrDefault(),
-                PrescriptionNote = _context.PrescriptionRecords
-                .Where(pr => pr.BookingID == b.BookingID)
-                .Select(pr => pr.Note)
-                .FirstOrDefault(),
-                RefundPercent = _context.PrescriptionRecords
-                .Where(pr => pr.BookingID == b.BookingID)
-                .Select(pr => pr.RefundPercent)
-                .FirstOrDefault(),
-                RefundMoney = _context.PrescriptionRecords
-                .Where(pr => pr.BookingID == b.BookingID)
-                .Select(pr => pr.RefundMoney)
-                .FirstOrDefault(),
-                BookingDate = b.BookingDate,
-                TotalAmount = b.TotalAmount,
-                Rate = _context.Feedbacks
-                .Where(f => f.BookingID == b.BookingID)
-                .Select(f => f.Rate).FirstOrDefault(),
-                Comments = _context.Feedbacks
-                .Where(f => f.BookingID == b.BookingID)
-                .Select(f => f.Comments).FirstOrDefault(),
-                BookingStatus = b.BookingStatus,
-            }).ToListAsync();
 
-            return bookings;
-
-        }
 
         public async Task<List<BookingDTO>> GetAllBooking()
         {
@@ -194,5 +84,78 @@ namespace KoiFishCare.Repository
                 .Select(b => b.ToDtoFromModel())
                 .ToListAsync();
         }
+
+        public async Task<List<Booking>?> GetBookingsByCusIdAsync(string cusID)
+        {
+            var bookings = await _context.Bookings
+                .Include(b => b.Service)
+                .Include(b => b.Slot)
+                .Include(b => b.Customer)
+                .Include(b => b.Veterinarian)
+                .Include(b => b.KoiOrPool)
+                .Include(b => b.Payment)
+                .Where(b => b.CustomerID == cusID &&
+                    (b.BookingStatus == BookingStatus.Pending ||
+                        b.BookingStatus == BookingStatus.Confirmed ||
+                        b.BookingStatus == BookingStatus.Scheduled ||
+                        b.BookingStatus == BookingStatus.Ongoing ||
+                        b.BookingStatus == BookingStatus.Completed ||
+                        b.BookingStatus == BookingStatus.Received_Money
+                    )).ToListAsync();
+
+            if (bookings == null)
+            {
+                return null;
+            }
+
+            return bookings.ToList();
+        }
+
+        public async Task<List<Booking>?> GetBookingByVetIdAsync(string vetID)
+        {
+            var bookings = await _context.Bookings
+                .Include(b => b.Payment)
+                .Include(b => b.Service)
+                .Include(b => b.Slot)
+                .Include(b => b.Customer)
+                .Include(b => b.Veterinarian)
+                .Include(b => b.KoiOrPool)
+                .Where(b => b.VetID == vetID &&
+                    (b.BookingStatus == BookingStatus.Scheduled ||
+                        b.BookingStatus == BookingStatus.Ongoing ||
+                        b.BookingStatus == BookingStatus.Completed ||
+                        b.BookingStatus == BookingStatus.Received_Money
+                    )).ToListAsync();
+
+            if (bookings == null)
+            {
+                return null;
+            }
+
+            return bookings.ToList();
+        }
+
+        public async Task<List<Booking>?> GetBookingByStatusAsync(string userID)
+        {
+            var bookings = await _context.Bookings
+                .Include(b => b.Payment)
+                .Include(b => b.Service)
+                .Include(b => b.Slot)
+                .Include(b => b.Customer)
+                .Include(b => b.Veterinarian)
+                .Include(b => b.KoiOrPool)
+                .Where(x => x.Customer.Id.Equals(userID) &&
+                    (x.BookingStatus == BookingStatus.Succeeded ||
+                        x.BookingStatus == BookingStatus.Cancelled
+                      )).ToListAsync();
+
+            if (bookings == null)
+            {
+                return null;
+            }
+
+            return bookings.ToList();
+        }
+
     }
 }
