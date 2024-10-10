@@ -93,9 +93,9 @@ namespace KoiFishCare.Controllers
 [HttpGet("google-login")]
 public IActionResult GoogleLogin()
 {
-    var redirectUrl = Url.Action("GoogleResponse", "User");
+    var redirectUrl = Url.Action("GoogleResponse", "User"); // No page required, this is an API endpoint
     var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-    return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+    return Challenge(properties, GoogleDefaults.AuthenticationScheme); // Redirects to Google for login
 }
 
 [HttpGet("google-response")]
@@ -108,42 +108,29 @@ public async Task<IActionResult> GoogleResponse()
         // Extract user info from the claims
         var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
 
-        // Check if the user exists, if not, create them
+        // Check if the user exists
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
         {
-            user = new User
-            {
-                UserName = email,
-                Email = email,
-                FirstName = result.Principal.FindFirst(ClaimTypes.GivenName)?.Value,
-                LastName = result.Principal.FindFirst(ClaimTypes.Surname)?.Value
-            };
-
-            await _userManager.CreateAsync(user);
-            await _userManager.AddToRoleAsync(user, "Customer"); // Assign role if necessary
+            // User does not exist; redirect with an error message
+            return Redirect($"http://localhost:5173/?error=UserNotFound");
         }
 
-        // Generate JWT token
+        // Generate JWT token for the authenticated user
         var userRoles = await _userManager.GetRolesAsync(user);
         var userRole = userRoles.FirstOrDefault();
         var role = await _roleManager.FindByNameAsync(userRole);
         var token = _tokenService.CreateToken(user, role);
 
-        var userDto = new UserDTO
-        {
-            UserName = user.UserName,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Token = token // Return the JWT token
-        };
-
-        return Ok(new { Token = token, Message = $"Welcome {user.UserName}" }); // Return the user information and token
+        // Redirect to the frontend with token and username as query params
+        return Redirect($"http://localhost:5173/?token={token}&username={user.UserName}");
     }
 
-    return BadRequest("Google login failed.");
+    // If the authentication failed, redirect to the frontend with an error
+    return Redirect($"http://localhost:5173/?error=GoogleLoginFailed");
 }
+
+
 
 
         [HttpPost("register")]
