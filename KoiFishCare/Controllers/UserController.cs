@@ -90,45 +90,45 @@ namespace KoiFishCare.Controllers
             return Ok(new { Token = userDto.Token, Message = welcomeMessage });
         }
 
-[HttpGet("google-login")]
-public IActionResult GoogleLogin()
-{
-    var redirectUrl = Url.Action("GoogleResponse", "User"); // No page required, this is an API endpoint
-    var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-    return Challenge(properties, GoogleDefaults.AuthenticationScheme); // Redirects to Google for login
-}
-
-[HttpGet("google-response")]
-public async Task<IActionResult> GoogleResponse()
-{
-    var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
-    if (result.Succeeded && result.Principal != null)
-    {
-        // Extract user info from the claims
-        var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
-
-        // Check if the user exists
-        var user = await _userManager.FindByEmailAsync(email);
-        if (user == null)
+        [HttpGet("google-login")]
+        public IActionResult GoogleLogin()
         {
-            // User does not exist; redirect with an error message
-            return Redirect($"http://localhost:5173/?error=UserNotFound");
+            var redirectUrl = Url.Action("GoogleResponse", "User"); // No page required, this is an API endpoint
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme); // Redirects to Google for login
         }
 
-        // Generate JWT token for the authenticated user
-        var userRoles = await _userManager.GetRolesAsync(user);
-        var userRole = userRoles.FirstOrDefault();
-        var role = await _roleManager.FindByNameAsync(userRole);
-        var token = _tokenService.CreateToken(user, role);
+        [HttpGet("google-response")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-        // Redirect to the frontend with token and username as query params
-        return Redirect($"http://localhost:5173/?token={token}&username={user.UserName}");
-    }
+            if (result.Succeeded && result.Principal != null)
+            {
+                // Extract user info from the claims
+                var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
 
-    // If the authentication failed, redirect to the frontend with an error
-    return Redirect($"http://localhost:5173/?error=GoogleLoginFailed");
-}
+                // Check if the user exists
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    // User does not exist; redirect with an error message
+                    return Redirect($"http://localhost:5173/?error=UserNotFound");
+                }
+
+                // Generate JWT token for the authenticated user
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var userRole = userRoles.FirstOrDefault();
+                var role = await _roleManager.FindByNameAsync(userRole);
+                var token = _tokenService.CreateToken(user, role);
+
+                // Redirect to the frontend with token and username as query params
+                return Redirect($"http://localhost:5173/?token={token}&username={user.UserName}");
+            }
+
+            // If the authentication failed, redirect to the frontend with an error
+            return Redirect($"http://localhost:5173/?error=GoogleLoginFailed");
+        }
 
 
 
@@ -170,6 +170,7 @@ public async Task<IActionResult> GoogleResponse()
             return BadRequest(result.Errors);
         }
 
+        [Authorize]
         [HttpGet("profile")]
         public async Task<IActionResult> ViewProfile()
         {
@@ -259,7 +260,7 @@ public async Task<IActionResult> GoogleResponse()
 
 
         [HttpPost("create-user")]
-        // [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO userDTO)
         {
             if (!ModelState.IsValid)
@@ -362,7 +363,7 @@ public async Task<IActionResult> GoogleResponse()
 
 
         [HttpDelete("delete-user")]
-        // [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteUser(string userID)
         {
             var user = await _userManager.FindByIdAsync(userID);
@@ -376,7 +377,7 @@ public async Task<IActionResult> GoogleResponse()
         }
 
         [HttpGet("all-user")]
-        // [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetAllUser()
         {
             var users = await _userRepo.GetAllUserAsync();
@@ -404,14 +405,32 @@ public async Task<IActionResult> GoogleResponse()
             return Ok(userDTOs);
         }
 
-        [HttpPut("update-user")]
-        // [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> UpdateUser(string userID, string role)
+        [HttpPatch("update-role-user")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> UpdateRoleUser(string userID, string role)
         {
             var user = await _userManager.FindByIdAsync(userID);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("Can not find this user!");
+            }
+
+            if (!role.Equals("Vet") && !role.Equals("Staff") && !role.Equals("Manager"))
+            {
+                return BadRequest("This role is not available!");
+            }
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            if (currentRoles.Count > 0)
+            {
+                await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            }
+            await _userManager.AddToRoleAsync(user, role);
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
             }
 
             var userDTO = new ViewUserDTO()
@@ -426,6 +445,7 @@ public async Task<IActionResult> GoogleResponse()
             };
 
             return Ok(userDTO);
+
         }
 
         private bool IsValidPhoneNumber(string phoneNumber)
