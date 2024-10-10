@@ -16,9 +16,33 @@ namespace KoiFishCare.Repository
         {
             _context = context;
         }
+
+        public async Task Add(Payment payment)
+        {
+            await _context.Payments.AddAsync(payment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete(Payment payment)
+        {
+            _context.Payments.Remove(payment);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<Payment>> GetAllPayment()
         {
             return await _context.Payments.ToListAsync();
+        }
+
+        public async Task<Payment?> GetPaymentByID(int id)
+        {
+            return await _context.Payments.FirstOrDefaultAsync(x => x.PaymentID == id);
+        }
+
+        public async Task Update(Payment payment)
+        {
+            _context.Payments.Update(payment);
+            await _context.SaveChangesAsync();
         }
     }
 }

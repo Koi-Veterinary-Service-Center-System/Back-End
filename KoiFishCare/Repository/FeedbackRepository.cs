@@ -57,7 +57,7 @@ namespace KoiFishCare.Repository
             return await _context.Feedbacks.Where(c => c.Booking.Customer.UserName == userName).ToListAsync();
         }
 
-        public async Task<Feedback?> GetFeedbackByBookingIdAsync(int id)
+        public async Task<Feedback?> GetFeedbackByBookingIDAsync(int id)
         {
             return await _context.Feedbacks.FirstOrDefaultAsync(x => x.Booking.BookingID == id);
         }

@@ -40,9 +40,9 @@ namespace KoiFishCare.Controllers
 
         [HttpGet("view-feedback/{bookingID}")]
         [Authorize(Roles = "Vet, Staff")]
-        public async Task<IActionResult> GetFeedbackById([FromRoute] int bookingID)
+        public async Task<IActionResult> GetFeedbackByBookingID([FromRoute] int bookingID)
         {
-            var feedback = await _feedbackRepo.GetFeedbackByBookingIdAsync(bookingID);
+            var feedback = await _feedbackRepo.GetFeedbackByBookingIDAsync(bookingID);
             if (feedback == null)
             {
                 return NotFound("Can not find any feedback!");
