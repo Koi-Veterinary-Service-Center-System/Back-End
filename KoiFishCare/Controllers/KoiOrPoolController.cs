@@ -67,6 +67,14 @@ namespace KoiFishCare.Controllers
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var customer = await _userManager.GetUserAsync(this.User);
+                if(customer == null) return Unauthorized();
+
+            var model = await _fishOrPoolRepo.GetKoiOrPoolById(id);
+            if(model != null)
+                if(model.CustomerID != customer.Id)
+                    return BadRequest("Not your koi or pool!");
+
             var result = await _fishOrPoolRepo.Update(id, dto.ToModelFromCreateUpdate());
             if(result == null) return NotFound("Can not find koi or pool");
 
@@ -80,6 +88,14 @@ namespace KoiFishCare.Controllers
         {
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            var customer = await _userManager.GetUserAsync(this.User);
+                if(customer == null) return Unauthorized();
+
+            var model = await _fishOrPoolRepo.GetKoiOrPoolById(id);
+            if(model != null)
+                if(model.CustomerID != customer.Id)
+                    return BadRequest("Not your koi or pool!");
 
             var result = await _fishOrPoolRepo.Delete(id);
             if(result == null) return NotFound("Can not find koi or pool");
