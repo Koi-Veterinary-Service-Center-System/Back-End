@@ -215,7 +215,7 @@ public async Task<IActionResult> GoogleResponse()
                 return BadRequest("User name length must be more than 3!");
             }
 
-            if (IsValidEmail(updateDTO.Email))
+            if (!IsValidEmail(updateDTO.Email))
             {
                 return BadRequest("Invalid email!");
             }

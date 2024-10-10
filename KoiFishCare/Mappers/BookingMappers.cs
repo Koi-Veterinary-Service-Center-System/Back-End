@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using KoiFishCare.Dtos.Booking;
 using KoiFishCare.DTOs;
-using KoiFishCare.DTOs.Booking;
 using KoiFishCare.Models;
 using KoiFishCare.Models.Enum;
 
@@ -48,6 +47,7 @@ namespace KoiFishCare.Mappers
                 SlotWeekDate = booking.Slot?.WeekDate.ToString(),
                 CustomerID = booking.CustomerID,
                 CustomerName = booking.Customer?.UserName,
+                PhoneNumber = booking.Customer?.PhoneNumber,
                 VetID = booking.VetID,
                 VetName = booking.Veterinarian?.UserName,
                 KoiOrPoolID = booking.KoiOrPoolID,

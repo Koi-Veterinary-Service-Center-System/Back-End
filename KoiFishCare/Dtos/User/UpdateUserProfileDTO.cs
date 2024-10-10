@@ -21,11 +21,11 @@ namespace KoiFishCare.DTOs.User
 
         public bool? Gender { get; set; }
         
-        public string Email { get; set; } = string.Empty;
+        public string? Email { get; set; }
 
-        public string Address { get; set; } = string.Empty;
+        public string? Address { get; set; }
 
-        public string ImageURL { get; set; } = string.Empty;
+        public string? ImageURL { get; set; }
 
 
         [Required(ErrorMessage = "Phone Number is required!")]
