@@ -26,6 +26,7 @@ namespace KoiFishCare.Dtos.Booking
         public string? SlotWeekDate { get; set; } = null!;
         public string? CustomerID { get; set; }
         public string? CustomerName { get; set; }
+        public string? PhoneNumber { get; set; }
         public string? VetID { get; set; }
         public string? VetName { get; set; }
         public int? KoiOrPoolID { get; set; }
