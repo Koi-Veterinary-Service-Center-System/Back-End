@@ -46,6 +46,12 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Booking>()
+            .HasOne(b => b.KoiOrPool)
+            .WithMany()
+            .HasForeignKey(b => b.KoiOrPoolID)
+            .OnDelete(DeleteBehavior.SetNull);  // Set the foreign key to null on delete
+
         //add role
         List<IdentityRole> roles = new List<IdentityRole>
         {
