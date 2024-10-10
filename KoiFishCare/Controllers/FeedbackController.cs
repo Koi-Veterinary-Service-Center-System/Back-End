@@ -40,7 +40,7 @@ namespace KoiFishCare.Controllers
 
         [HttpGet("view-feedback/{bookingID}")]
         [Authorize(Roles = "Vet, Staff")]
-        public async Task<IActionResult> GetFeedbackById([FromRoute] int bookingID)
+        public async Task<IActionResult> GetFeedbackByBookingID([FromRoute] int bookingID)
         {
             var feedback = await _feedbackRepo.GetFeedbackByBookingIdAsync(bookingID);
             if (feedback == null)

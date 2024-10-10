@@ -189,8 +189,9 @@ namespace KoiFishCare.Controllers
             return BadRequest("Invalid request");
         }
 
-        [Authorize]
         [HttpGet("view-booking-history")]
+        [Authorize(Roles = "Customer, Vet")]
+
         public async Task<IActionResult> GetBookingHistory()
         {
             var user = await _userManager.GetUserAsync(this.User);
@@ -204,53 +205,196 @@ namespace KoiFishCare.Controllers
             {
                 return NotFound("There is no booking!");
             }
-            
+
             var result = bookingHistorys.Select(x => x.ToDtoFromModel());
             return Ok(result);
         }
 
-        [Authorize]
-        [HttpPut("update-status")]
-        [Authorize(Roles = "Staff, Customer, Vet")]
-        public async Task<IActionResult> UpdateStatusForVet(int bookingID, BookingStatus newStatus)
+        [HttpPatch("confirm/{bookingID:int}")]
+        [Authorize(Roles = "Staff")]
+        public async Task<IActionResult> ConfirmBooking(int bookingID)
         {
             var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
             if (booking == null)
             {
-                return NotFound();
+                return NotFound("Booking not found!");
+            }
+
+            if (booking.BookingStatus == BookingStatus.Confirmed)
+            {
+                return BadRequest("The booking is already confirmed!");
+            }
+
+            booking.BookingStatus = BookingStatus.Confirmed;
+            _bookingRepo.UpdateBooking(booking);
+
+            return Ok("Booking status updated successfully!");
+        }
+
+        [HttpPatch("schedule/{bookingID:int}")]
+        [Authorize(Roles = "Staff")]
+        public async Task<IActionResult> ScheduleBooking(int bookingID)
+        {
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+            if (booking == null)
+            {
+                return NotFound("Booking not found!");
+            }
+
+            if (booking.BookingStatus == BookingStatus.Confirmed)
+            {
+                return BadRequest("The booking is already scheduled!");
+            }
+
+            booking.BookingStatus = BookingStatus.Confirmed;
+            _bookingRepo.UpdateBooking(booking);
+
+            return Ok("Booking status updated successfully!");
+        }
+
+
+        [HttpPatch("ongoing/{bookingID:int}")]
+        [Authorize(Roles = "Vet")]
+        public async Task<IActionResult> OnGoingBooking(int bookingID)
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return Unauthorized("User is not available!");
+            }
+
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+            if (booking == null)
+            {
+                return NotFound("Booking not found!");
+            }
+
+            if (booking.BookingStatus == BookingStatus.Ongoing)
+            {
+                return BadRequest("The booking is already on-going!");
             }
 
             if (User.IsInRole("Vet"))
-                if (booking.BookingStatus == BookingStatus.Ongoing || booking.BookingStatus == BookingStatus.Completed)
-                {
-                    booking.BookingStatus = newStatus;
-                    _bookingRepo.UpdateBooking(booking);
-                }
-
-            if (User.IsInRole("Staff"))
             {
-                if (booking.BookingStatus == BookingStatus.Pending || booking.BookingStatus == BookingStatus.Scheduled)
+                if (booking.VetID != user.Id)
                 {
-                    booking.BookingStatus = newStatus;
-                    _bookingRepo.UpdateBooking(booking);
+                    return Unauthorized("You can only set on-going to your own bookings!");
                 }
+            }
+
+            booking.BookingStatus = BookingStatus.Ongoing;
+            _bookingRepo.UpdateBooking(booking);
+
+            return Ok("Booking status updated successfully!");
+        }
+
+        [HttpPatch("complete/{bookingID:int}")]
+        [Authorize(Roles = "Vet")]
+        public async Task<IActionResult> CompleteServiceBooking(int bookingID)
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return Unauthorized("User is not available!");
+            }
+
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+            if (booking == null)
+            {
+                return NotFound("Booking not found!");
+            }
+
+            if (booking.BookingStatus == BookingStatus.Completed)
+            {
+                return BadRequest("The booking is already completed!");
+            }
+
+            if (User.IsInRole("Vet"))
+            {
+                if (booking.VetID != user.Id)
+                {
+                    return Unauthorized("You can only complete your own bookings!");
+                }
+            }
+
+            booking.BookingStatus = BookingStatus.Completed;
+            _bookingRepo.UpdateBooking(booking);
+
+            return Ok("Booking status updated successfully!");
+        }
+
+        [HttpPatch("receive-money/{bookingID:int}")]
+        [Authorize(Roles = "Vet")]
+        public async Task<IActionResult> ReceiveMoneyBooking(int bookingID)
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return Unauthorized("User is not available!");
+            }
+
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+            if (booking == null)
+            {
+                return NotFound("Booking not found!");
+            }
+
+            if (booking.BookingStatus == BookingStatus.Received_Money)
+            {
+                return BadRequest("The booking is already received money!");
+            }
+
+            if (User.IsInRole("Vet"))
+            {
+                if (booking.VetID != user.Id)
+                {
+                    return Unauthorized("You can only receive money from your own bookings!");
+                }
+            }
+            
+            booking.BookingStatus = BookingStatus.Received_Money;
+            _bookingRepo.UpdateBooking(booking);
+
+            return Ok("Booking status updated successfully!");
+        }
+        
+        [HttpPatch("success/{bookingID:int}")]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> SuccessBooking(int bookingID)
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return Unauthorized("User is not available!");
+            }
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+            if (booking == null)
+            {
+                return NotFound("Booking not found!");
+            }
+
+            if (booking.BookingStatus == BookingStatus.Succeeded)
+            {
+                return BadRequest("The booking is already succeeded!");
             }
 
             if (User.IsInRole("Customer"))
             {
-                if (booking.BookingStatus == BookingStatus.Received_Money)
+                if (booking.CustomerID != user.Id)
                 {
-                    booking.BookingStatus = newStatus;
-                    _bookingRepo.UpdateBooking(booking);
+                    return Unauthorized("You can only success your own bookings!");
                 }
             }
 
-            return Ok("Update status successfully!");
+            booking.BookingStatus = BookingStatus.Succeeded;
+            _bookingRepo.UpdateBooking(booking);
+            await _vetSlotRepo.Update(booking.VetID, booking.SlotID, false);
+
+            return Ok("Booking status updated successfully!");
         }
 
-
         [Authorize]
-        [HttpPut("cancel-booking/{bookingId:int}")]
+        [HttpPatch("cancel-booking/{bookingId:int}")]
         [Authorize(Roles = "Staff, Customer")]
         public async Task<IActionResult> CancelBooking(int bookingId)
         {
@@ -290,6 +434,7 @@ namespace KoiFishCare.Controllers
 
             booking.BookingStatus = BookingStatus.Cancelled;
             _bookingRepo.UpdateBooking(booking);
+            await _vetSlotRepo.Update(booking.VetID, booking.SlotID, false);
 
             return Ok(presRec.ToPresRecDtoFromModel());
         }

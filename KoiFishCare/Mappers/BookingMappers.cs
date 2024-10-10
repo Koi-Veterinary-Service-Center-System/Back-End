@@ -22,7 +22,7 @@ namespace KoiFishCare.Mappers
                 BookingDate = createBookingDto.BookingDate,
                 Location = createBookingDto.Location,
                 Note = createBookingDto.Note,
-                BookingStatus = BookingStatus.Pending
+                BookingStatus = createBookingDto.PaymentId == 1 ? BookingStatus.Scheduled : BookingStatus.Pending
             };
         }
 
