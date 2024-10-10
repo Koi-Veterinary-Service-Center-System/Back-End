@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Any;
 using KoiFishCare.Models.Enum;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 // using KoiFishCare.Data;
 // using KoiFishCare.Models;
 // using Microsoft.OpenApi.Models;
@@ -160,6 +163,8 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -174,8 +179,7 @@ builder.Services.AddAuthentication(options =>
             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
         )
     };
-}).AddGoogle(options =>
-{
+}).AddGoogle(options => {
     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 
@@ -192,12 +196,21 @@ if (app.Environment.IsDevelopment())
 }
 
 // Enable CORS for the specified policy before handling requests
-app.UseCors("AllowViteFrontend");
+
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();  // Optional, if serving static files
+
+app.UseRouting();  
+app.UseCors("AllowViteFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+    });
+
 
 app.Run();
