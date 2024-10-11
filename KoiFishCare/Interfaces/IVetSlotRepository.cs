@@ -10,6 +10,7 @@ namespace KoiFishCare.Interfaces
     {
         Task<List<VetSlot>> GetAllVetSlot();
         Task<VetSlot?> GetVetSlot(string vetId, int slotId);
+        Task<List<VetSlot>?> GetVetSlotByVetID(string vetID);
         Task<VetSlot> Create(string vetId, int slotId, bool isBooked);
         Task<VetSlot?> Update(string vetId, int slotId, bool isBooked);
         Task<VetSlot?> Delete(string vetId, int slotId);

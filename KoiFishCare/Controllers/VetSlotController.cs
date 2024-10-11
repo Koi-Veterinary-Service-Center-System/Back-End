@@ -61,10 +61,10 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
 
             var slot = await _slotRepo.GetSlotById(dto.SlotID);
-            if(slot == null) return BadRequest("Invalid SlotId");
+            if (slot == null) return BadRequest("Invalid SlotId");
 
             var vet = await _vetRepo.GetVetById(dto.VetID);
-            if(vet == null) return BadRequest("Invalid VetId");
+            if (vet == null) return BadRequest("Invalid VetId");
 
             var result = await _vetSlotRepo.Create(dto.VetID, dto.SlotID, false);
             return Ok(result.ToVetSlotDtoFromModel());
@@ -91,9 +91,27 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
 
             var vetSlot = await _vetSlotRepo.Delete(vetId, slotId);
-            if(vetSlot == null) return NotFound();
+            if (vetSlot == null) return NotFound();
 
             return NoContent();
+        }
+
+        [Authorize]
+        [HttpGet("{vetID}")]
+        public async Task<IActionResult> GetVetSlotByVetID([FromRoute] string vetID)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var vetSlots = await _vetSlotRepo.GetVetSlotByVetID(vetID);
+            if (vetSlots == null || !vetSlots.Any())
+            {
+                return NotFound();
+            }
+
+            var result = vetSlots.Select(x => x.ToVetSlotDtoFromModel());
+
+            return Ok(result);
         }
     }
 }
