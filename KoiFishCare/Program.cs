@@ -147,12 +147,12 @@ builder.Services.AddScoped<IPrescriptionRecordRepository, PrescriptionRecordRepo
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 
-builder.Services.AddAuthorization(options => 
+builder.Services.AddAuthorization(options =>
 {
 
 });
 
-builder.Services.AddControllers(options => 
+builder.Services.AddControllers(options =>
 {
     //add authorization Policy
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -163,8 +163,6 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -179,11 +177,12 @@ builder.Services.AddAuthentication(options =>
             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
         )
     };
-}).AddGoogle(options => {
+}).AddGoogle(options =>
+{
     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-
 });
+
 
 // Build the app
 var app = builder.Build();
@@ -202,7 +201,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();  // Optional, if serving static files
 
-app.UseRouting();  
+app.UseRouting();
 app.UseCors("AllowViteFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
