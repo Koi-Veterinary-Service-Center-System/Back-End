@@ -14,6 +14,8 @@ namespace KoiFishCare.Dtos.PrescriptionRecord
 
         public string? Medication { get; set; }
 
+        public string? Frequency { get; set; }
+
         public string? Note { get; set; }
     }
 }

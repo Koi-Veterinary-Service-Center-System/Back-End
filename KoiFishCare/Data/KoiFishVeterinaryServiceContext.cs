@@ -46,11 +46,47 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
     {
         base.OnModelCreating(modelBuilder);
 
+        // ---- Payment Relationship -----------------------------------------------------------------------
+        modelBuilder.Entity<Booking>()
+            .HasOne(b => b.Payment)
+            .WithMany(p => p.Bookings)  // Assuming Payment has a Bookings collection
+            .HasForeignKey(b => b.PaymentID)
+            .OnDelete(DeleteBehavior.Restrict);  // No cascading delete to avoid cycles
+
+        // ---- Service Relationship -----------------------------------------------------------------------
+        modelBuilder.Entity<Booking>()
+            .HasOne(b => b.Service)
+            .WithMany(s => s.Bookings)  // Assuming Service has a Bookings collection
+            .HasForeignKey(b => b.ServiceID)
+            .OnDelete(DeleteBehavior.Restrict);  // No cascading delete
+
+        // ---- Slot Relationship -----------------------------------------------------------------------
+        modelBuilder.Entity<Booking>()
+            .HasOne(b => b.Slot)
+            .WithMany(s => s.Bookings)  // Assuming Slot has a Bookings collection
+            .HasForeignKey(b => b.SlotID)
+            .OnDelete(DeleteBehavior.Restrict);  // No cascading delete
+
+        // ---- Customer Relationship -----------------------------------------------------------------------
+        modelBuilder.Entity<Booking>()
+            .HasOne(b => b.Customer)
+            .WithMany(c => c.Bookings)  // Assuming Customer has a Bookings collection
+            .HasForeignKey(b => b.CustomerID)
+            .OnDelete(DeleteBehavior.Restrict);  // Cascade delete when Customer is deleted
+
+        // ---- Veterinarian Relationship -----------------------------------------------------------------------
+        modelBuilder.Entity<Booking>()
+            .HasOne(b => b.Veterinarian)
+            .WithMany(v => v.Bookings)  // Assuming Veterinarian has a Bookings collection
+            .HasForeignKey(b => b.VetID)
+            .OnDelete(DeleteBehavior.Restrict);  // No cascading delete
+
+        // ---- KoiOrPool Relationship -----------------------------------------------------------------------
         modelBuilder.Entity<Booking>()
             .HasOne(b => b.KoiOrPool)
-            .WithMany()
+            .WithMany(k => k.Bookings)  // Assuming KoiOrPool has a Bookings collection
             .HasForeignKey(b => b.KoiOrPoolID)
-            .OnDelete(DeleteBehavior.SetNull);  // Set the foreign key to null on delete
+            .OnDelete(DeleteBehavior.Restrict);  // Set KoiOrPoolID to null on delete
 
         //add role
         List<IdentityRole> roles = new List<IdentityRole>
@@ -2972,33 +3008,33 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
         // Seed data for staff
         // modelBuilder.Entity<Staff>().HasData(
-            // new Staff
-            // {
-            //     Id = "s1",
-            //     FirstName = "staff1",
-            //     LastName = "Johnson",
-            //     UserName = "sitap",
-            //     NormalizedUserName = "SITAP",
-            //     Gender = false,
-            //     Address = "789 Staff Lane",
-            //     ImageURL = "https://example.com/staff1.jpg",
-            //     ImagePublicId = "staff_image_id",
-            //     IsManager = false
-            // },
-            // new Staff
-            // {
-            //     Id = "m2",
-            //     FirstName = "manager",
-            //     LastName = "Williams",
-            //     UserName = "manager",
-            //     NormalizedUserName = "MANAGER",
-            //     Gender = true,
-            //     Address = "123 Staff Ave",
-            //     ImageURL = "https://example.com/staff2.jpg",
-            //     ImagePublicId = "staff2_image_id",
-            //     IsManager = true
+        // new Staff
+        // {
+        //     Id = "s1",
+        //     FirstName = "staff1",
+        //     LastName = "Johnson",
+        //     UserName = "sitap",
+        //     NormalizedUserName = "SITAP",
+        //     Gender = false,
+        //     Address = "789 Staff Lane",
+        //     ImageURL = "https://example.com/staff1.jpg",
+        //     ImagePublicId = "staff_image_id",
+        //     IsManager = false
+        // },
+        // new Staff
+        // {
+        //     Id = "m2",
+        //     FirstName = "manager",
+        //     LastName = "Williams",
+        //     UserName = "manager",
+        //     NormalizedUserName = "MANAGER",
+        //     Gender = true,
+        //     Address = "123 Staff Ave",
+        //     ImageURL = "https://example.com/staff2.jpg",
+        //     ImagePublicId = "staff2_image_id",
+        //     IsManager = true
 
-            // }
+        // }
         // );
     }
 
