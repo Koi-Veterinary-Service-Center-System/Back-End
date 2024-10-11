@@ -17,6 +17,7 @@ namespace KoiFishCare.Mappers
                 DiseaseName = model.DiseaseName,
                 Symptoms = model.Symptoms,
                 Medication = model.Medication,
+                Frequency = model.Frequency,
                 Note = model.Note,
                 RefundMoney = model.RefundMoney,
                 RefundPercent = model.RefundPercent,
@@ -32,6 +33,7 @@ namespace KoiFishCare.Mappers
                 DiseaseName = dto.DiseaseName,
                 Symptoms = dto.Symptoms,
                 Medication = dto.Medication,
+                Frequency = dto.Frequency,
                 Note = dto.Note,
                 BookingID = dto.BookingID,
                 CreateAt = DateTime.Now
@@ -45,6 +47,7 @@ namespace KoiFishCare.Mappers
                 DiseaseName = dto.DiseaseName,
                 Symptoms = dto.Symptoms,
                 Medication = dto.Medication,
+                Frequency = dto.Frequency,
                 Note = dto.Note
             };
         }

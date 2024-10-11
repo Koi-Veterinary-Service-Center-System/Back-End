@@ -12,6 +12,7 @@ using KoiFishCare.Mappers;
 using Microsoft.VisualBasic;
 using KoiFishCare.Models.Enum;
 using Microsoft.AspNetCore.Http.HttpResults;
+using KoiFishCare.Dtos.Booking;
 
 namespace KoiFishCare.Controllers
 {
@@ -55,12 +56,19 @@ namespace KoiFishCare.Controllers
             var userModel = await _userManager.GetUserAsync(this.User);
             if (userModel == null)
                 return BadRequest("Login before booking!");
+            if (userModel.PhoneNumber == null)
+                return BadRequest("Update your phone number before booking!");
 
             // Check if the booking date is at least 1 day after today
             var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
             if (createBookingDto.BookingDate <= currentDate.AddDays(1))
             {
                 return BadRequest("Booking date must be at least 1 day after today.");
+            }
+            // Check if booking date is within 365 days from today
+            if (createBookingDto.BookingDate > currentDate.AddDays(365))
+            {
+                return BadRequest("Booking date cannot be more than 365 days from today.");
             }
 
             // Get customer fishorpool if cus want to examinate
@@ -351,13 +359,13 @@ namespace KoiFishCare.Controllers
                     return Unauthorized("You can only receive money from your own bookings!");
                 }
             }
-            
+
             booking.BookingStatus = BookingStatus.Received_Money;
             _bookingRepo.UpdateBooking(booking);
 
             return Ok("Booking status updated successfully!");
         }
-        
+
         [HttpPatch("success/{bookingID:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> SuccessBooking(int bookingID)
@@ -396,7 +404,7 @@ namespace KoiFishCare.Controllers
         [Authorize]
         [HttpPatch("cancel-booking/{bookingId:int}")]
         [Authorize(Roles = "Staff, Customer")]
-        public async Task<IActionResult> CancelBooking(int bookingId)
+        public async Task<IActionResult> CancelBooking(int bookingId, [FromBody] CancelBookingDto dto)
         {
             var user = await _userManager.GetUserAsync(this.User);
             if (user == null) return Unauthorized("User is not available!");
@@ -407,8 +415,12 @@ namespace KoiFishCare.Controllers
                 return BadRequest("The booking is already canceled");
 
             if (User.IsInRole("Customer"))
+            {
                 if (booking.CustomerID != user.Id)
                     return Unauthorized("You can only cancel your own bookings.");
+                // if(dto.BankName == null || dto.CustomerBankAccountName == null || dto.CustomerBankNumber == null)
+                //     return BadRequest("Fill your banking info for us to refund!");
+            }
 
             var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
             var daysBeforeBooking = (booking.BookingDate.ToDateTime(TimeOnly.MinValue) - currentDate.ToDateTime(TimeOnly.MinValue)).Days;
