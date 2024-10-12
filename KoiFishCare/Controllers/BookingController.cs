@@ -249,12 +249,12 @@ namespace KoiFishCare.Controllers
                 return NotFound("Booking not found!");
             }
 
-            if (booking.BookingStatus == BookingStatus.Confirmed)
+            if (booking.BookingStatus == BookingStatus.Scheduled)
             {
                 return BadRequest("The booking is already scheduled!");
             }
 
-            booking.BookingStatus = BookingStatus.Confirmed;
+            booking.BookingStatus = BookingStatus.Scheduled;
             _bookingRepo.UpdateBooking(booking);
 
             return Ok("Booking status updated successfully!");
