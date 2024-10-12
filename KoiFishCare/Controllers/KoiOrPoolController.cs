@@ -42,7 +42,6 @@ namespace KoiFishCare.Controllers
             return Ok(dto);
         }
 
-        [Authorize]
         [HttpPost("create-koiorpool")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromBody] CreateUpdateKoiOrPoolDto dto)

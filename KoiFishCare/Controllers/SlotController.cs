@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KoiFishCare.Dtos.Slot;
 using KoiFishCare.DTOs.Slot;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
@@ -53,6 +54,40 @@ namespace KoiFishCare.Controllers
             ).ToList();
 
             return Ok(slotsDto);
+        }
+
+        [Authorize(Roles = "Staff")]
+        [HttpPost("create-slot")]
+        public async Task<IActionResult> Create([FromBody] CreateUpdateSlotDto dto)
+        {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            var result = await _slotRepo.Create(dto.ToSlotModel());
+            return Ok(result.ToSlotDto());
+        }
+
+        [Authorize(Roles = "Staff")]
+        [HttpPut("update-slot/{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id ,[FromBody] CreateUpdateSlotDto dto)
+        {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            var result = await _slotRepo.Update(id, dto.ToSlotModel());
+            if(result == null) return NotFound("Slot not found");
+
+            return Ok(result.ToSlotDto());
+        }
+
+        [Authorize(Roles = "Staff")]
+        [HttpDelete("delete-slot/{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            var result = await _slotRepo.Delete(id);
+            if(result == null) return NotFound("Slot not found");
+
+            return NoContent();
         }
     }
 }
