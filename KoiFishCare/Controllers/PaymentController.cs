@@ -6,8 +6,11 @@ using KoiFishCare.Dtos.Payment;
 using KoiFishCare.DTOs.Payment;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
+using KoiFishCare.service.VnpayService.Models;
+using KoiFishCare.service.VnpayService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace KoiFishCare.Controllers
 {
@@ -17,9 +20,11 @@ namespace KoiFishCare.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentRepository _paymentRepo;
-        public PaymentController(IPaymentRepository paymentRepo)
+        private readonly IVnPayService _vnPayService;
+        public PaymentController(IPaymentRepository paymentRepo, IVnPayService vnPayService)
         {
             _paymentRepo = paymentRepo;
+            _vnPayService = vnPayService;
         }
 
         [HttpGet("all-payment")]
@@ -98,5 +103,37 @@ namespace KoiFishCare.Controllers
             await _paymentRepo.Delete(paymentModel);
             return Ok("Deleted successfully!");
         }
+
+        [HttpPost("create-paymentUrl")]
+        public IActionResult CreatePaymentUrl([FromBody] PaymentInformationModel model)
+        {
+            var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
+
+            // Thay vì redirect, trả về URL dưới dạng JSON
+            return Ok(new { PaymentUrl = url });
+        }
+
+        [HttpGet("paymentCallback")]
+        public IActionResult PaymentCallback()
+        {
+            var response = _vnPayService.PaymentExecute(Request.Query);
+
+            if (response == null || response.VnPayResponseCode != "00")
+            {
+                return BadRequest(new
+                {
+                    Message = $"VN Pay payment failed, response code: {response?.VnPayResponseCode ?? "No response"}"
+                });
+            }
+
+            
+            return Ok(new
+            {
+                Message = "VN Pay payment succeeded"
+            });
+
+            // return Ok(response); // Trả về kết quả dưới dạng JSON
+        }
+
     }
 }

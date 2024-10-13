@@ -26,8 +26,8 @@ namespace KoiFishCare.Controllers
         public async Task<IActionResult> GetAllSlot()
         {
             var slots = await _slotRepo.GetAllSlot();
-            if(slots == null || !slots.Any()) return BadRequest("Can not find any slot");
-            
+            if (slots == null || !slots.Any()) return BadRequest("Can not find any slot");
+
             var slotsDto = slots.Select(s => s.ToSlotDto()).ToList();
             return Ok(slotsDto);
         }
@@ -60,20 +60,41 @@ namespace KoiFishCare.Controllers
         [HttpPost("create-slot")]
         public async Task<IActionResult> Create([FromBody] CreateUpdateSlotDto dto)
         {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var result = await _slotRepo.Create(dto.ToSlotModel());
+            if (!TimeOnly.TryParse(dto.StartTime, out var parsedStartTime))
+            {
+                return BadRequest("Invalid StartTime format.");
+            }
+
+            if (!TimeOnly.TryParse(dto.EndTime, out var parsedEndTime))
+            {
+                return BadRequest("Invalid EndTime format.");
+            }
+
+            var result = await _slotRepo.Create(dto.ToSlotModel(parsedStartTime, parsedEndTime));
             return Ok(result.ToSlotDto());
         }
 
+
         [Authorize(Roles = "Staff")]
         [HttpPut("update-slot/{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id ,[FromBody] CreateUpdateSlotDto dto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CreateUpdateSlotDto dto)
         {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var result = await _slotRepo.Update(id, dto.ToSlotModel());
-            if(result == null) return NotFound("Slot not found");
+            if (!TimeOnly.TryParse(dto.StartTime, out var parsedStartTime))
+            {
+                return BadRequest("Invalid StartTime format.");
+            }
+
+            if (!TimeOnly.TryParse(dto.EndTime, out var parsedEndTime))
+            {
+                return BadRequest("Invalid EndTime format.");
+            }
+
+            var result = await _slotRepo.Update(id, dto.ToSlotModel(parsedStartTime, parsedEndTime));
+            if (result == null) return NotFound("Slot not found");
 
             return Ok(result.ToSlotDto());
         }
@@ -82,10 +103,10 @@ namespace KoiFishCare.Controllers
         [HttpDelete("delete-slot/{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var result = await _slotRepo.Delete(id);
-            if(result == null) return NotFound("Slot not found");
+            if (result == null) return NotFound("Slot not found");
 
             return NoContent();
         }

@@ -19,6 +19,7 @@ using KoiFishCare.Models.Enum;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using KoiFishCare.service.VnpayService.Services;
 // using KoiFishCare.Data;
 // using KoiFishCare.Models;
 // using Microsoft.OpenApi.Models;
@@ -156,6 +157,7 @@ builder.Services.AddScoped<IDistanceRepository, DistanceRepository>();
 builder.Services.AddScoped<IPrescriptionRecordRepository, PrescriptionRecordRepository>();
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 builder.Services.AddAuthorization(options =>
 {
