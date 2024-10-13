@@ -21,12 +21,12 @@ namespace KoiFishCare.Mappers
             };
         }
 
-        public static Slot ToSlotModel(this CreateUpdateSlotDto dto)
+        public static Slot ToSlotModel(this CreateUpdateSlotDto dto, TimeOnly startTime, TimeOnly endTime)
         {
             return new Slot
             {
-                StartTime = TimeOnly.TryParse(dto.StartTime, out var parsedStartTime) ? parsedStartTime : throw new ArgumentException("Invalid StartTime"),
-                EndTime = TimeOnly.TryParse(dto.EndTime, out var parsedEndTime) ? parsedEndTime : throw new ArgumentException("Invalid EndTime"),
+                StartTime = startTime,
+                EndTime = endTime,
                 WeekDate = dto.WeekDate
             };
         }
