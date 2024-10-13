@@ -19,7 +19,6 @@ namespace KoiFishCare.service.VnpayService.Services
         {
             var timeZoneById = TimeZoneInfo.FindSystemTimeZoneById(_configuration["TimeZoneId"]);
             var timeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneById);
-            var tick = DateTime.Now.Ticks.ToString();
             var pay = new VnPayLibrary();
             var urlCallBack = _configuration["PaymentCallBack:ReturnUrl"];
 
@@ -31,10 +30,10 @@ namespace KoiFishCare.service.VnpayService.Services
             pay.AddRequestData("vnp_CurrCode", _configuration["Vnpay:CurrCode"]);
             pay.AddRequestData("vnp_IpAddr", pay.GetIpAddress(context));
             pay.AddRequestData("vnp_Locale", _configuration["Vnpay:Locale"]);
-            pay.AddRequestData("vnp_OrderInfo", $"{model.Name} {model.OrderDescription} {model.Amount}");
+            pay.AddRequestData("vnp_OrderInfo", $"Koi Fish Care Service, {model.ServiceName}, {model.Amount}");
             pay.AddRequestData("vnp_OrderType", _configuration["Vnpay:OrderType"]);
             pay.AddRequestData("vnp_ReturnUrl", urlCallBack);
-            pay.AddRequestData("vnp_TxnRef", tick);
+            pay.AddRequestData("vnp_TxnRef", ((int)model.BookingID).ToString());
 
             var paymentUrl =
                 pay.CreateRequestUrl(_configuration["Vnpay:BaseUrl"], _configuration["Vnpay:HashSecret"]);

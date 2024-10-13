@@ -13,6 +13,7 @@ using Microsoft.VisualBasic;
 using KoiFishCare.Models.Enum;
 using Microsoft.AspNetCore.Http.HttpResults;
 using KoiFishCare.Dtos.Booking;
+using Microsoft.IdentityModel.Tokens;
 
 namespace KoiFishCare.Controllers
 {
@@ -41,8 +42,6 @@ namespace KoiFishCare.Controllers
             _presRecRepo = presRecRepo;
         }
 
-
-        [Authorize]
         [HttpPost("create-booking")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> CreateBooking([FromBody] FromCreateBookingDTO createBookingDto)
@@ -79,7 +78,6 @@ namespace KoiFishCare.Controllers
                 if (fishorpool.CustomerID != userModel.Id) return BadRequest("Not your koi or pool");
             }
 
-
             // Get Slot
             var slot = await _slotRepo.GetSlotById(createBookingDto.SlotId);
             if (slot == null) return BadRequest("Slot does not exist");
@@ -90,7 +88,7 @@ namespace KoiFishCare.Controllers
 
             // Get vet
             var vetUsername = createBookingDto.VetName;
-            if (vetUsername != null)
+            if (vetUsername != null && !vetUsername.IsNullOrEmpty())
             {
                 var vet = await _userManager.FindByNameAsync(vetUsername) as Veterinarian;
                 if (vet == null)
@@ -129,15 +127,13 @@ namespace KoiFishCare.Controllers
                 if (availableVet == null)
                     return BadRequest("No available vet for the chosen slot");
 
-
-
                 var bookingModel = createBookingDto.ToBookingFromCreate();
                 bookingModel.CustomerID = userModel.Id;
                 bookingModel.VetID = availableVet.VetID;
                 bookingModel.ServiceID = service.ServiceID;
                 bookingModel.Slot = slot;
                 bookingModel.Service = service;
-                bookingModel.TotalAmount = service.Price;
+                bookingModel.TotalAmount = createBookingDto.TotalAmount;
 
                 var result = await _bookingRepo.CreateBooking(bookingModel);
 
