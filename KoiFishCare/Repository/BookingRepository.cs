@@ -58,6 +58,26 @@ namespace KoiFishCare.Repository
             {
                 return null;
             }
+
+            //load relate entities
+            await _context.Entry(booking)
+            .Reference(b => b.Customer).LoadAsync();
+
+            await _context.Entry(booking)
+            .Reference(b => b.Veterinarian).LoadAsync();
+
+            await _context.Entry(booking)
+            .Reference(b => b.Slot).LoadAsync();
+
+            await _context.Entry(booking)
+            .Reference(b => b.Service).LoadAsync();
+
+            await _context.Entry(booking)
+            .Reference(b => b.KoiOrPool).LoadAsync();
+
+            await _context.Entry(booking)
+            .Reference(b => b.Payment).LoadAsync();
+
             return booking;
 
         }

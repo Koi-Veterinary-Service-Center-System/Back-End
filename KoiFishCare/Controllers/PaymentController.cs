@@ -21,10 +21,12 @@ namespace KoiFishCare.Controllers
     {
         private readonly IPaymentRepository _paymentRepo;
         private readonly IVnPayService _vnPayService;
-        public PaymentController(IPaymentRepository paymentRepo, IVnPayService vnPayService)
+        private readonly IBookingRepository _bookingRepo;
+        public PaymentController(IPaymentRepository paymentRepo, IVnPayService vnPayService, IBookingRepository bookingRepo)
         {
             _paymentRepo = paymentRepo;
             _vnPayService = vnPayService;
+            _bookingRepo = bookingRepo;
         }
 
         [HttpGet("all-payment")]
@@ -105,16 +107,31 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPost("create-paymentUrl")]
-        public IActionResult CreatePaymentUrl([FromBody] PaymentInformationModel model)
+        public async Task<IActionResult> CreatePaymentUrl(int bookingId)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
+            if (booking == null)
+                return NotFound("Invalid bookingId");
+
+            var model = new PaymentInformationModel()
+            {
+                BookingID = booking.BookingID,
+                Amount = booking.TotalAmount,
+                ServiceName = booking.Service.ServiceName
+            };
+
             var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 
-            // Thay vì redirect, trả về URL dưới dạng JSON
             return Ok(new { PaymentUrl = url });
         }
 
         [HttpGet("paymentCallback")]
-        public IActionResult PaymentCallback()
+        public async Task<IActionResult> PaymentCallback()
         {
             var response = _vnPayService.PaymentExecute(Request.Query);
 
@@ -126,14 +143,31 @@ namespace KoiFishCare.Controllers
                 });
             }
 
-            
-            return Ok(new
+            if (int.TryParse(response.OrderId, out int bookingId))
             {
-                Message = "VN Pay payment succeeded"
-            });
+                var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
+                if (booking != null)
+                {
+                    booking.BookingStatus = Models.Enum.BookingStatus.Scheduled;
+                    _bookingRepo.UpdateBooking(booking);
 
-            // return Ok(response); // Trả về kết quả dưới dạng JSON
+                    return Ok(booking.ToDtoFromModel());
+                }
+                else
+                {
+                    return NotFound(new
+                    {
+                        Message = "Booking not found"
+                    });
+                }
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    Message = "Invalid booking ID"
+                });
+            }
         }
-
     }
 }
