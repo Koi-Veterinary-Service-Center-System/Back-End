@@ -17,6 +17,23 @@ namespace KoiFishCare.Repository
             _context = context;
         }
 
+        public async Task<Slot> Create(Slot model)
+        {
+            await _context.Slots.AddAsync(model);
+            await _context.SaveChangesAsync();
+            return model;
+        }
+
+        public async Task<Slot?> Delete(int id)
+        {
+            var result = await _context.Slots.FirstOrDefaultAsync(s => s.SlotID == id);
+            if(result == null) return null;
+
+            _context.Slots.Remove(result);
+            await _context.SaveChangesAsync();
+            return result;
+        }
+
         public async Task<List<Slot>> GetAllSlot()
         {
             return await _context.Slots.ToListAsync();
@@ -48,6 +65,19 @@ namespace KoiFishCare.Repository
         public async Task<Slot?> GetSlotById(int id)
         {
             return await _context.Slots.FirstOrDefaultAsync(s => s.SlotID == id);
+        }
+
+        public async Task<Slot?> Update(int id, Slot model)
+        {
+            var result = await _context.Slots.FirstOrDefaultAsync(s => s.SlotID == id);
+            if(result == null) return null;
+
+            result.StartTime = model.StartTime;
+            result.EndTime = model.EndTime;
+            result.WeekDate = model.WeekDate;
+
+            await _context.SaveChangesAsync();
+            return result;
         }
     }
 }

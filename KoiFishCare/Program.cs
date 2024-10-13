@@ -70,14 +70,24 @@ builder.Services.AddSwaggerGen(option =>
 //format date for booking
 builder.Services.AddSwaggerGen(c =>
 {
+    // Mapping DateOnly to a string with date format
     c.MapType<DateOnly>(() => new OpenApiSchema
     {
         Type = "string",
         Format = "date",
         Example = new OpenApiString("2024-10-15")
     });
+
+    // Mapping TimeOnly to a string with time format (e.g., "07:00")
+    c.MapType<TimeOnly>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Format = "time",  // you can also use custom format string if needed
+        Example = new OpenApiString("07:00")
+    });
 });
 
+// Show enum string
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v2", new OpenApiInfo { Title = "API", Version = "v2" });

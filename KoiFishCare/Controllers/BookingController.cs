@@ -442,6 +442,12 @@ namespace KoiFishCare.Controllers
                 CreateAt = DateTime.Now
             };
 
+            if(booking.Payment.Type.Contains("cash"))
+            {
+                presRec.RefundMoney = 0;
+                presRec.RefundPercent = 0;
+            }
+
             await _presRecRepo.Create(presRec);
 
             booking.BookingStatus = BookingStatus.Cancelled;

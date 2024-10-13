@@ -13,5 +13,8 @@ namespace KoiFishCare.Interfaces
         Task<List<Slot>> GetAllSlot();
         Task<List<VetSlot?>> GetListAvailableSlot(string vetId);
         Task<List<VetSlot?>> GetListAvailableVet(int slotId);
+        Task<Slot> Create(Slot model);
+        Task<Slot?> Update(int id, Slot model);
+        Task<Slot?> Delete(int id);
     }
 }
