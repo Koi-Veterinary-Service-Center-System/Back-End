@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using KoiFishCare.Dtos.VetSlot;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
+using KoiFishCare.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KoiFishCare.Controllers
@@ -17,11 +19,14 @@ namespace KoiFishCare.Controllers
         private readonly IVetSlotRepository _vetSlotRepo;
         private readonly ISlotRepository _slotRepo;
         private readonly IVetRepository _vetRepo;
-        public VetSlotController(IVetSlotRepository vetSlotRepo, ISlotRepository slotRepo, IVetRepository vetRepo)
+
+        private readonly UserManager<User> _userManager;
+        public VetSlotController(IVetSlotRepository vetSlotRepo, ISlotRepository slotRepo, IVetRepository vetRepo, UserManager<User> userManager)
         {
             _vetSlotRepo = vetSlotRepo;
             _slotRepo = slotRepo;
             _vetRepo = vetRepo;
+            _userManager = userManager;
         }
 
         [Authorize]
@@ -96,14 +101,20 @@ namespace KoiFishCare.Controllers
             return NoContent();
         }
 
-        [Authorize]
-        [HttpGet("{vetID}")]
-        public async Task<IActionResult> GetVetSlotByVetID([FromRoute] string vetID)
+        [Authorize(Roles = "Vet")]
+        [HttpGet]
+        public async Task<IActionResult> GetVetSlotByVetID()
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var vetSlots = await _vetSlotRepo.GetVetSlotByVetID(vetID);
+            var id = _userManager.GetUserId(this.User);
+            if (id == null)
+            {
+                return Unauthorized();
+            }
+
+            var vetSlots = await _vetSlotRepo.GetVetSlotByVetID(id);
             if (vetSlots == null || !vetSlots.Any())
             {
                 return NotFound();
