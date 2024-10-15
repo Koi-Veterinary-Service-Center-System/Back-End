@@ -21,9 +21,20 @@ namespace KoiFishCare.Repository
             _context = context;
         }
 
+        public async Task UpdateAsync(User user)
+        {
+            var updateUser = _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<User>?> GetAllUserAsync()
         {
             return await _context.Users.ToListAsync();
+        }
+
+        public async Task<User?> GetUserByIdAsync(string userID)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == userID);
         }
 
         public async Task<User?> UpdateAsync(string userID, UpdateUserProfileDTO userDTO)
