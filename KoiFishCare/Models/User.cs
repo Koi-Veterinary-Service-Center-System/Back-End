@@ -23,4 +23,6 @@ public partial class User : IdentityUser
 
     public string? ImagePublicId { get; set; } //id của hình lưu trên cloud
 
+    public bool isBanned { get; set; }
+
 }

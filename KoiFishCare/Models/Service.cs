@@ -23,5 +23,7 @@ public partial class Service
 
     public double EstimatedDuration { get; set; }
 
+    public string? NoteQuantity { get; set; }
+
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

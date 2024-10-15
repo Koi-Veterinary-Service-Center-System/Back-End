@@ -459,5 +459,20 @@ namespace KoiFishCare.Controllers
             string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             return Regex.IsMatch(email, pattern);
         }
+
+        [HttpPatch("ban-user")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> BanUser(string userID)
+        {
+            var userExist = await _userRepo.GetUserByIdAsync(userID);
+            if (userExist == null)
+            {
+                return NotFound("Can not find user!");
+            }
+
+            userExist.isBanned = true;
+            await _userRepo.UpdateAsync(userExist);
+            return Ok("Banned successfully!");
+        }
     }
 }
