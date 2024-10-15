@@ -57,6 +57,11 @@ namespace KoiFishCare.Controllers
                 return Unauthorized("Invalid login");
             }
 
+            if (user.isBanned)
+            {
+                return Unauthorized("Mày bị cấm cửa r con");
+            }
+
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
             if (!result.Succeeded)
             {
