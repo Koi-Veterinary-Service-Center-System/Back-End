@@ -15,7 +15,6 @@ namespace KoiFishCare.Mappers
         {
             return new Feedback
             {
-                BookingID = addFeedbackDTO.BookingID,
                 Rate = addFeedbackDTO.Rate,
                 Comments = addFeedbackDTO.Comments,
                 IsVisible = true
