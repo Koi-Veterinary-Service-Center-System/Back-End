@@ -102,7 +102,7 @@ namespace KoiFishCare.Controllers
         }
 
         [Authorize(Roles = "Vet")]
-        [HttpGet]
+        [HttpGet("vet-schedule")]
         public async Task<IActionResult> GetVetSlotByVetID()
         {
             if (!ModelState.IsValid)
