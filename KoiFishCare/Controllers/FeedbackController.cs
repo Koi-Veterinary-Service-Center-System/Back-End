@@ -6,6 +6,7 @@ using KoiFishCare.Dtos.Feedback;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
 using KoiFishCare.Models;
+using KoiFishCare.Models.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,12 @@ namespace KoiFishCare.Controllers
     {
         private readonly IFeedbackRepository _feedbackRepo;
         private readonly UserManager<User> _userManager;
-        public FeedbackController(IFeedbackRepository feedbackRepo, UserManager<User> userManager)
+        private readonly IBookingRepository _bookingRepo;
+        public FeedbackController(IFeedbackRepository feedbackRepo, UserManager<User> userManager, IBookingRepository bookingRepo)
         {
             _feedbackRepo = feedbackRepo;
             _userManager = userManager;
+            _bookingRepo = bookingRepo;
         }
 
         [HttpGet("all-feedback")]
@@ -64,9 +67,9 @@ namespace KoiFishCare.Controllers
             return Ok(result);
         }
 
-        [HttpPost("create-feedback")]
+        [HttpPost("create-feedback/{bookingID}")]
         [Authorize(Roles = "Customer")]
-        public async Task<IActionResult> CreateFeedback(AddFeedbackDTO addFeedbackDTO)
+        public async Task<IActionResult> CreateFeedback([FromRoute] int bookingID, [FromBody] AddFeedbackDTO addFeedbackDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -80,14 +83,31 @@ namespace KoiFishCare.Controllers
                 return BadRequest("Could not determine the logged-in user's username.");
             }
 
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+            if (booking == null)
+            {
+                return NotFound("Can not find this booking with succeed status");
+            }
+
+            else if (booking.Customer.UserName != user.UserName)
+            {
+                return Unauthorized("You can only feedback on your booking!");
+            }
+
+
+            if (addFeedbackDTO.Rate < 0 || addFeedbackDTO.Rate > 5)
+            {
+                return BadRequest("Rate must between 1-5!");
+            }
+
             var feedbackModel = addFeedbackDTO.ToModelFromDTO();
             feedbackModel.CustomerName = user.UserName;
+            feedbackModel.BookingID = booking.BookingID;
             var feedback = await _feedbackRepo.CreateFeedbackAsync(feedbackModel);
             if (feedback == null)
             {
                 return NotFound("Can not find bookingID");
             }
-
 
             return Ok(feedback.ToViewFeedback());
         }
