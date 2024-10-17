@@ -151,7 +151,7 @@ namespace KoiFishCare.Controllers
                     booking.BookingStatus = Models.Enum.BookingStatus.Scheduled;
                     _bookingRepo.UpdateBooking(booking);
 
-                    return Ok(booking.ToDtoFromModel());
+                    return Redirect($"http://localhost:5173/paymentsuccess/{bookingId}");
                 }
                 else
                 {
