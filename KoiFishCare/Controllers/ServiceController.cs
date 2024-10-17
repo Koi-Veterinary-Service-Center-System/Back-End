@@ -49,7 +49,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPost("add-service")]
-        // [Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> AddService([FromBody] AddUpdateServiceDTO serviceDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -62,6 +62,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPut("update-service/{id:int}")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> UpdateService([FromRoute] int id, [FromBody] AddUpdateServiceDTO serviceDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -76,6 +77,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpDelete("delete-service/{id:int}")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> DeleteService([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -86,6 +88,21 @@ namespace KoiFishCare.Controllers
             if (serviceModel == null) return NotFound("Can not find service");
 
             return NoContent();
+        }
+
+        [HttpPatch("soft-delete/{id}")]
+        [Authorize(Roles = "Staff")]
+        public async Task<IActionResult> SoftDeleteService([FromRoute] int id)
+        {
+            var existingService = await _serviceRepo.GetServiceById(id);
+            if (existingService == null)
+            {
+                return NotFound("Can not find this service");
+            }
+
+            existingService.isDeleted = true;
+            await _serviceRepo.Update(existingService);
+            return Ok("Deleted successfully!");
         }
     }
 }

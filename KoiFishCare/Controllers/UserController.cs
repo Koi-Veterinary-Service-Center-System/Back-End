@@ -367,11 +367,11 @@ namespace KoiFishCare.Controllers
         }
 
 
-        [HttpDelete("delete-user")]
+        [HttpDelete("delete-user/{id}")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> DeleteUser(string userID)
+        public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
-            var user = await _userManager.FindByIdAsync(userID);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -410,11 +410,11 @@ namespace KoiFishCare.Controllers
             return Ok(userDTOs);
         }
 
-        [HttpPatch("update-role-user")]
+        [HttpPatch("update-role-user/{id}/{role}")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> UpdateRoleUser(string userID, string role)
+        public async Task<IActionResult> UpdateRoleUser([FromRoute] string id, string role)
         {
-            var user = await _userManager.FindByIdAsync(userID);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound("Can not find this user!");
@@ -465,18 +465,18 @@ namespace KoiFishCare.Controllers
             return Regex.IsMatch(email, pattern);
         }
 
-        [HttpPatch("ban-user")]
+        [HttpPatch("ban-user/{id}")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> BanUser(string userID)
+        public async Task<IActionResult> BanUser([FromRoute] string id)
         {
-            var userExist = await _userRepo.GetUserByIdAsync(userID);
-            if (userExist == null)
+            var existingUser = await _userRepo.GetUserByIdAsync(id);
+            if (existingUser == null)
             {
                 return NotFound("Can not find user!");
             }
 
-            userExist.isBanned = true;
-            await _userRepo.UpdateAsync(userExist);
+            existingUser.isBanned = true;
+            await _userRepo.UpdateAsync(existingUser);
             return Ok("Banned successfully!");
         }
     }

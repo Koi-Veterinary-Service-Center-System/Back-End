@@ -16,10 +16,12 @@ public partial class KoiOrPool
 
     public string? Description { get; set; }
 
-    //Customer
+    public bool isDeleted { get; set; }
+
+     // ---- Customer -----------------------------------------------------------------------
     [ForeignKey("CustomerID")]
     public string CustomerID { get; set; } = null!;
-    
+
     public Customer Customer { get; set; } = null!;
 
     // ---- Booking -----------------------------------------------------------------------

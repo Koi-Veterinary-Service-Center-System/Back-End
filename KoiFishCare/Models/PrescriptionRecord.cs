@@ -33,4 +33,6 @@ public partial class PrescriptionRecord
     public int? BookingID { get; set; }
 
     public virtual Booking? Booking { get; set; }
+
+    //  public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

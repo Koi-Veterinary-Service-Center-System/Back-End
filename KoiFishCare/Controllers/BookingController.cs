@@ -214,27 +214,6 @@ namespace KoiFishCare.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("confirm/{bookingID:int}")]
-        [Authorize(Roles = "Staff")]
-        public async Task<IActionResult> ConfirmBooking(int bookingID)
-        {
-            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
-            if (booking == null)
-            {
-                return NotFound("Booking not found!");
-            }
-
-            if (booking.BookingStatus == BookingStatus.Confirmed)
-            {
-                return BadRequest("The booking is already confirmed!");
-            }
-
-            booking.BookingStatus = BookingStatus.Confirmed;
-            _bookingRepo.UpdateBooking(booking);
-
-            return Ok("Booking status updated successfully!");
-        }
-
         [HttpPatch("schedule/{bookingID:int}")]
         [Authorize(Roles = "Staff")]
         public async Task<IActionResult> ScheduleBooking(int bookingID)
@@ -277,6 +256,10 @@ namespace KoiFishCare.Controllers
             {
                 return BadRequest("The booking is already on-going!");
             }
+            else if (booking.BookingStatus != BookingStatus.Scheduled)
+            {
+                return BadRequest("The booking is not ready to set!");
+            }
 
             if (User.IsInRole("Vet"))
             {
@@ -311,6 +294,10 @@ namespace KoiFishCare.Controllers
             if (booking.BookingStatus == BookingStatus.Completed)
             {
                 return BadRequest("The booking is already completed!");
+            }
+            else if (booking.BookingStatus != BookingStatus.Ongoing)
+            {
+                return BadRequest("The booking is not ready to set!");
             }
 
             if (User.IsInRole("Vet"))
@@ -347,6 +334,10 @@ namespace KoiFishCare.Controllers
             {
                 return BadRequest("The booking is already received money!");
             }
+            else if (booking.BookingStatus != BookingStatus.Completed)
+            {
+                return BadRequest("The booking is not ready to set!");
+            }
 
             if (User.IsInRole("Vet"))
             {
@@ -380,6 +371,10 @@ namespace KoiFishCare.Controllers
             if (booking.BookingStatus == BookingStatus.Succeeded)
             {
                 return BadRequest("The booking is already succeeded!");
+            }
+            else if (booking.BookingStatus != BookingStatus.Scheduled)
+            {
+                return BadRequest("The booking is not ready to set!");
             }
 
             if (User.IsInRole("Customer"))
@@ -438,7 +433,7 @@ namespace KoiFishCare.Controllers
                 CreateAt = DateTime.Now
             };
 
-            if(booking.Payment.Type.Contains("cash"))
+            if (booking.Payment.Type.Contains("cash"))
             {
                 presRec.RefundMoney = 0;
                 presRec.RefundPercent = 0;

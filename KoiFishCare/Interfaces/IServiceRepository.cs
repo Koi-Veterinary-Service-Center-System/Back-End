@@ -14,5 +14,6 @@ namespace KoiFishCare.Interfaces
         Task<Service> CreateService(Service service);
         Task<Service?> UpdateService(int id, AddUpdateServiceDTO updateDto);
         Task<Service?> DeleteService(int id);
+        Task Update(Service service);
     }
 }

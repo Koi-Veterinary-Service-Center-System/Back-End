@@ -91,11 +91,18 @@ namespace KoiFishCare.Controllers
 
             else if (booking.Customer.UserName != user.UserName)
             {
-                return Unauthorized("You can only feedback on your booking!");
+                return Unauthorized("You can only give feedback on your own booking!");
             }
 
 
-            if (addFeedbackDTO.Rate < 0 || addFeedbackDTO.Rate > 5)
+            var existingFeedback = await _feedbackRepo.GetFeedbackByUserNameAndIdAsync(booking.BookingID, user.UserName);
+            if (existingFeedback != null)
+            {
+                return BadRequest("You have already submitted feedback for this booking.");
+            }
+
+
+            if (addFeedbackDTO.Rate < 1 || addFeedbackDTO.Rate > 5)
             {
                 return BadRequest("Rate must between 1-5!");
             }

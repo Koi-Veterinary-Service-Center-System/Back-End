@@ -93,7 +93,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest("Invalid EndTime format.");
             }
 
-            var result = await _slotRepo.Update(id, dto.ToSlotModel(parsedStartTime, parsedEndTime));
+            var result = await _slotRepo.UpdateSlot(id, dto.ToSlotModel(parsedStartTime, parsedEndTime));
             if (result == null) return NotFound("Slot not found");
 
             return Ok(result.ToSlotDto());
@@ -109,6 +109,21 @@ namespace KoiFishCare.Controllers
             if (result == null) return NotFound("Slot not found");
 
             return NoContent();
+        }
+
+        [HttpPatch("soft-delete/{id}")]
+        [Authorize(Roles = "Staff")]
+        public async Task<IActionResult> SoftDelete([FromRoute] int id)
+        {
+            var existingSlot = await _slotRepo.GetSlotById(id);
+            if (existingSlot == null)
+            {
+                return NotFound("Can not find this service!");
+            }
+
+            existingSlot.isDeleted = true;
+            await _slotRepo.Update(existingSlot);
+            return Ok("Deleted successfully!");
         }
     }
 }

@@ -10,8 +10,6 @@ namespace KoiFishCare.Models.Enum
     {
         [EnumMember(Value = "Pending")]
         Pending,
-        [EnumMember(Value = "Confirmed")]
-        Confirmed,
         [EnumMember(Value = "Scheduled")]
         Scheduled,
         [EnumMember(Value = "Ongoing")]
