@@ -45,7 +45,13 @@ namespace KoiFishCare.Repository
             return await _context.KoiOrPools.Where(k => k.CustomerID == customerId).ToListAsync();
         }
 
-        public async Task<KoiOrPool?> Update(int id, KoiOrPool koiOrPoolModel)
+        public async Task Update(KoiOrPool koiOrPool)
+        {
+            _context.KoiOrPools.Update(koiOrPool);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<KoiOrPool?> UpdateFishOrPool(int id, KoiOrPool koiOrPoolModel)
         {
             var result = await _context.KoiOrPools.FirstOrDefaultAsync(k => k.KoiOrPoolID == id);
             if(result == null) return null;

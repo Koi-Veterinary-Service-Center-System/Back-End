@@ -19,7 +19,9 @@ public partial class Slot
 
     public Enum.DayOfWeek? WeekDate { get; set; }
 
+    public bool isDeleted { get; set; }
+
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-    
+
     public virtual ICollection<VetSlot> VetSlots { get; set; } = new List<VetSlot>();
 }

@@ -63,16 +63,16 @@ namespace KoiFishCare.Controllers
             return Ok(addPaymentDTO);
         }
 
-        [HttpPut("update-payment/{paymentID:int}")]
+        [HttpPut("update-payment/{id:int}")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> UpdatePayment([FromRoute] int paymentID, [FromBody] AddPaymentDTO updatePaymentDTO)
+        public async Task<IActionResult> UpdatePayment([FromRoute] int id, [FromBody] AddPaymentDTO updatePaymentDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var paymentModel = await _paymentRepo.GetPaymentByID(paymentID);
+            var paymentModel = await _paymentRepo.GetPaymentByID(id);
             if (paymentModel == null)
             {
                 return BadRequest("Can not find any payment!");
@@ -87,16 +87,16 @@ namespace KoiFishCare.Controllers
             return Ok(updatePaymentDTO);
         }
 
-        [HttpDelete("delete-payment/{paymentID:int}")]
+        [HttpDelete("delete-payment/{id:int}")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> DeletePayment([FromRoute] int paymentID)
+        public async Task<IActionResult> DeletePayment([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var paymentModel = await _paymentRepo.GetPaymentByID(paymentID);
+            var paymentModel = await _paymentRepo.GetPaymentByID(id);
             if (paymentModel == null)
             {
                 return BadRequest("Can not find any payment!");
@@ -168,6 +168,21 @@ namespace KoiFishCare.Controllers
                     Message = "Invalid booking ID"
                 });
             }
+        }
+
+        [HttpPatch("soft-delete/{id}")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> SoftDeletePayment([FromRoute] int id)
+        {
+            var existingPayment = await _paymentRepo.GetPaymentByID(id);
+            if (existingPayment == null)
+            {
+                return NotFound("Can not find this payment!");
+            }
+
+            existingPayment.isDeleted = true;
+            await _paymentRepo.Update(existingPayment);
+            return Ok("Deleted successfully!");
         }
     }
 }

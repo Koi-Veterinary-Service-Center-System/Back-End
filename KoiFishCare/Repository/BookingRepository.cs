@@ -115,7 +115,6 @@ namespace KoiFishCare.Repository
                 .Include(b => b.Payment)
                 .Where(b => b.CustomerID == cusID &&
                     (b.BookingStatus == BookingStatus.Pending ||
-                        b.BookingStatus == BookingStatus.Confirmed ||
                         b.BookingStatus == BookingStatus.Scheduled ||
                         b.BookingStatus == BookingStatus.Ongoing ||
                         b.BookingStatus == BookingStatus.Completed ||

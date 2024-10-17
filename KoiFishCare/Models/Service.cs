@@ -25,5 +25,7 @@ public partial class Service
 
     public string? NoteQuantity { get; set; }
 
+    public bool isDeleted { get; set; }
+
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

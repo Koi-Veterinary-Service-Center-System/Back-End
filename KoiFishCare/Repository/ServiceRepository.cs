@@ -29,7 +29,7 @@ namespace KoiFishCare.Repository
         {
             var service = await _context.Services.FirstOrDefaultAsync(s => s.ServiceID == id);
 
-            if(service == null) return null;
+            if (service == null) return null;
 
             _context.Services.Remove(service);
             await _context.SaveChangesAsync();
@@ -46,11 +46,17 @@ namespace KoiFishCare.Repository
             return await _context.Services.FirstOrDefaultAsync(s => s.ServiceID == id);
         }
 
+        public async Task Update(Service service)
+        {
+            _context.Services.Update(service);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Service?> UpdateService(int id, AddUpdateServiceDTO updateDto)
         {
             var service = await _context.Services.FirstOrDefaultAsync(s => s.ServiceID == id);
-            
-            if(service == null) return null;
+
+            if (service == null) return null;
 
             service.ServiceName = updateDto.ServiceName;
             service.Description = updateDto.Description;

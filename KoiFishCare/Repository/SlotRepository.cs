@@ -67,7 +67,13 @@ namespace KoiFishCare.Repository
             return await _context.Slots.FirstOrDefaultAsync(s => s.SlotID == id);
         }
 
-        public async Task<Slot?> Update(int id, Slot model)
+        public async Task Update(Slot slot)
+        {
+            _context.Slots.Update(slot);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Slot?> UpdateSlot(int id, Slot model)
         {
             var result = await _context.Slots.FirstOrDefaultAsync(s => s.SlotID == id);
             if(result == null) return null;
