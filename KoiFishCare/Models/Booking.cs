@@ -57,5 +57,11 @@ public partial class Booking
     [ForeignKey("KoiOrPoolID")]
     public int? KoiOrPoolID { get; set; }
     public KoiOrPool? KoiOrPool { get; set; }
+    // ---- Prescription Record -----------------------------------------------------------------------
+    public virtual ICollection<PrescriptionRecord> PrescriptionRecords { get; set; } = new List<PrescriptionRecord>();
+    // ---- Booking Record -----------------------------------------------------------------------
+    public virtual BookingRecord? BookingRecord { get; set; }
+    // ---- Feedback -----------------------------------------------------------------------
+    public virtual Feedback? Feedback { get; set; }
 
 }

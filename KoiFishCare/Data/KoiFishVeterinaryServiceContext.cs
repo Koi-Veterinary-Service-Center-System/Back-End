@@ -42,6 +42,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
     public virtual DbSet<Veterinarian> Veterinarians { get; set; }
 
+    public virtual DbSet<BookingRecord> BookingRecords { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
