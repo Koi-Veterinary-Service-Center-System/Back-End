@@ -58,12 +58,20 @@ namespace KoiFishCare.Controllers
             if (userModel.PhoneNumber == null)
                 return BadRequest("Update your phone number before booking!");
 
-            // Check if the booking date is at least 1 day after today
+            //check if there is any booking in process
+            var booking = await _bookingRepo.GetBookingsByCusIdAsync(userModel.Id);
+            if(!booking.IsNullOrEmpty())
+                return BadRequest("You already have booking that in process!");
+
+            //check date time
             var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
-            if (createBookingDto.BookingDate <= currentDate.AddDays(1))
-            {
-                return BadRequest("Booking date must be at least 1 day after today.");
-            }
+            var currentDateTime = DateTime.UtcNow;
+
+            // Check if booking time is before 12 hours
+            var bookingDateTime = createBookingDto.BookingDate.ToDateTime(TimeOnly.MinValue);
+            if (bookingDateTime < currentDateTime.AddHours(12))
+                return BadRequest("Booking time must be at least 10 hours after today.");
+
             // Check if booking date is within 365 days from today
             if (createBookingDto.BookingDate > currentDate.AddDays(365))
             {
@@ -414,7 +422,20 @@ namespace KoiFishCare.Controllers
             }
 
             var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
+            var currentDateTime = DateTime.UtcNow;
             var daysBeforeBooking = (booking.BookingDate.ToDateTime(TimeOnly.MinValue) - currentDate.ToDateTime(TimeOnly.MinValue)).Days;
+            var timeDifference = (booking.BookingDate.ToDateTime(TimeOnly.MinValue) - currentDateTime).TotalHours;
+
+            if (booking.Payment.Type.Contains("cash"))
+            {
+                if (timeDifference >= 13)
+                    return BadRequest("Can not cancel booking before 13 hours");
+            }
+            else
+            {
+                if (booking.BookingStatus != BookingStatus.Scheduled && booking.BookingStatus != BookingStatus.Pending)
+                    return BadRequest("Can not cancel this booking");
+            }
 
             decimal refundPercent = 0; // default no refund
             if (daysBeforeBooking > 7)

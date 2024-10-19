@@ -27,7 +27,7 @@ namespace KoiFishCare.Repository
         public async Task<Slot?> Delete(int id)
         {
             var result = await _context.Slots.FirstOrDefaultAsync(s => s.SlotID == id);
-            if(result == null) return null;
+            if (result == null) return null;
 
             _context.Slots.Remove(result);
             await _context.SaveChangesAsync();
@@ -42,10 +42,28 @@ namespace KoiFishCare.Repository
         public async Task<VetSlot?> GetAvailableVet(Slot slot)
         {
             // Find VetSlots that match the given slot and have no bookings
-            return await _context.VetSlots
+            // return await _context.VetSlots
+            //     .Include(vs => vs.Veterinarian) // Include Veterinarian details if needed
+            //     .Where(vs => vs.SlotID == slot.SlotID && vs.isBooked == false) // Check if there are no bookings for the slot
+            //     .FirstOrDefaultAsync();
+
+            // Find VetSlots that match the given slot and have no bookings
+            var availableVets = await _context.VetSlots
                 .Include(vs => vs.Veterinarian) // Include Veterinarian details if needed
                 .Where(vs => vs.SlotID == slot.SlotID && vs.isBooked == false) // Check if there are no bookings for the slot
-                .FirstOrDefaultAsync();
+                .ToListAsync(); // Get all available vet slots as a list
+
+            // Check if there are any available vets
+            if (availableVets.Count == 0)
+            {
+                return null; // No available vets found
+            }
+
+            // Select a random available vet slot
+            var random = new Random();
+            var randomIndex = random.Next(availableVets.Count);
+            return availableVets[randomIndex]; // Return a random available vet slot
+
         }
 
         public async Task<List<VetSlot?>> GetListAvailableSlot(string vetId)
@@ -76,7 +94,7 @@ namespace KoiFishCare.Repository
         public async Task<Slot?> UpdateSlot(int id, Slot model)
         {
             var result = await _context.Slots.FirstOrDefaultAsync(s => s.SlotID == id);
-            if(result == null) return null;
+            if (result == null) return null;
 
             result.StartTime = model.StartTime;
             result.EndTime = model.EndTime;
