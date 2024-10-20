@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using KoiFishCare.Dtos.BookingRecord;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
+using KoiFishCare.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,7 +25,7 @@ namespace KoiFishCare.Controllers
             _bookingRepo = bookingRepo;
         }
 
-        // [Authorize(Roles = "Vet, Staff, Manager")]
+        [Authorize]
         [HttpGet("{bookingID}")]
         public async Task<IActionResult> GetBookingRecordByBookingID([FromRoute] int bookingID)
         {
@@ -42,7 +43,7 @@ namespace KoiFishCare.Controllers
             return Ok(bookingRecord.ToDTOFromModel());
         }
 
-        // [Authorize(Roles = "Vet, Staff, Manager")]
+        [Authorize]
         [HttpGet("all-bookingRecord")]
         public async Task<IActionResult> GetAllBookingRecord()
         {
@@ -60,7 +61,7 @@ namespace KoiFishCare.Controllers
             return Ok(bookingRecords.Select(x => x.ToDTOFromModel()));
         }
 
-        // [Authorize(Roles = "Vet, Staff, Manager")]
+        [Authorize]
         [HttpPost("create-bookingRecord")]
         public async Task<IActionResult> CreateBookingRecord([FromBody] FromCreateBookingRecordDTO createBookingRecordDTO)
         {
@@ -74,14 +75,21 @@ namespace KoiFishCare.Controllers
             {
                 return NotFound("Can not found this booking!");
             }
-            var bookingRecord = await _bookingRecordRepo.CreateAsync(createBookingRecordDTO.ToModelFromDTO());
 
-            return Ok(bookingRecord.ToDTOFromModel());
+            BookingRecord bookingRecord = new BookingRecord()
+            {
+                BookingID = createBookingRecordDTO.BookingID,
+                ArisedMoney = createBookingRecordDTO.ArisedMoney,
+                TotalAmount = createBookingRecordDTO.ArisedMoney + existingBooking.InitAmount
+            };
+            var result = await _bookingRecordRepo.CreateAsync(bookingRecord);
+
+            return Ok(result.ToDTOFromModel());
         }
 
-        // [Authorize(Roles = "Vet, Staff, Manager")]
-        [HttpPut("update-bookingRecord/{id}/{bookingID}")]
-        public async Task<IActionResult> UpdateBookingRecord([FromRoute] int id, int bookingID, [FromBody] FromUpdateBookingRecordDTO updateBookingRecordDTO)
+        [Authorize]
+        [HttpPatch("update-bookingRecord/{id}/{bookingID}/{arisedMoney}")]
+        public async Task<IActionResult> UpdateBookingRecord([FromRoute] int id, int bookingID, decimal arisedMoney)
         {
             if (!ModelState.IsValid)
             {
@@ -100,16 +108,16 @@ namespace KoiFishCare.Controllers
                 return NotFound("Can not find this booking's record!");
             }
 
-            existingBookingRecord.TotalAmount = updateBookingRecordDTO.TotalAmount;
-            existingBookingRecord.ArisedMoney = updateBookingRecordDTO.ArisedMoney;
-            existingBookingRecord.BookingID = id;
+            existingBookingRecord.BookingID = bookingID;
+            existingBookingRecord.ArisedMoney = arisedMoney;
+            existingBookingRecord.TotalAmount = existingBooking.InitAmount + arisedMoney;
 
             var updateBookingRecord = await _bookingRecordRepo.UpdateAsync(existingBookingRecord);
 
             return Ok(updateBookingRecord.ToDTOFromModel());
         }
 
-        // [Authorize(Roles = "Vet, Staff, Manager")]
+        [Authorize]
         [HttpDelete("delete-bookingRecord/{id}")]
         public async Task<IActionResult> DeleteBookingRecord([FromRoute] int id)
         {
