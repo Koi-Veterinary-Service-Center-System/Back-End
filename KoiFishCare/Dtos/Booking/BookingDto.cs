@@ -31,7 +31,7 @@ namespace KoiFishCare.Dtos.Booking
         public string? VetName { get; set; }
         public int? KoiOrPoolID { get; set; }
         public string? KoiOrPoolName { get; set; }
-        public string? VetImage { get; set; }
+        public string? ImageURL { get; set; }
     }
 
 }
