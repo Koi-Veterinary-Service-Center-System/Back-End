@@ -34,7 +34,7 @@ namespace KoiFishCare.Mappers
                 BookingDate = booking.BookingDate,
                 Location = booking.Location,
                 Note = booking.Note,
-                TotalAmount = booking.TotalAmount,
+                InitAmount = booking.InitAmount,
                 BookingStatus = booking.BookingStatus.ToString(),
                 MeetURL = booking.MeetURL,
                 PaymentID = booking.PaymentID,

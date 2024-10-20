@@ -121,7 +121,7 @@ namespace KoiFishCare.Controllers
             var model = new PaymentInformationModel()
             {
                 BookingID = booking.BookingID,
-                Amount = booking.TotalAmount,
+                Amount = booking.InitAmount,
                 ServiceName = booking.Service.ServiceName
             };
 

@@ -13,7 +13,7 @@ namespace KoiFishCare.Dtos.Booking
         public DateOnly? BookingDate { get; set; }
         public string? Location { get; set; }
         public string? Note { get; set; }
-        public decimal TotalAmount { get; set; }
+        public decimal InitAmount { get; set; }
         public string? BookingStatus { get; set; }//de string de chuyen tu enum thanh string
         public string? MeetURL { get; set; }
         public int? PaymentID { get; set; }

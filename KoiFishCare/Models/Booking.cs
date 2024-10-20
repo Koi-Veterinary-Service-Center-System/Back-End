@@ -19,7 +19,7 @@ public partial class Booking
     public string? Note { get; set; }
 
     [Column(TypeName = "decimal(18, 2)")]
-    public decimal TotalAmount { get; set; }
+    public decimal InitAmount { get; set; }
 
     public BookingStatus BookingStatus { get; set; }
 

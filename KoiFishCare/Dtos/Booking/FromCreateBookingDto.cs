@@ -9,14 +9,16 @@ namespace KoiFishCare.DTOs
 {
     public class FromCreateBookingDTO
     {
+        public string? CustomerId { get; set; }
+        
         public string? Note { get; set; }
 
         public int? KoiOrPoolId { get; set; }
 
         public string VetName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Total Amount is required.")]
-        public decimal TotalAmount { get; set; }
+        [Required(ErrorMessage = "Init Amount is required.")]
+        public decimal InitAmount { get; set; }
 
         public string? Location { get; set; }
 
