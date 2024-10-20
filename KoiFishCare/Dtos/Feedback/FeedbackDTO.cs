@@ -11,6 +11,8 @@ namespace KoiFishCare.Dtos.Feedback
 
         public int? BookingID { get; set; }
 
+        public string? ServiceName { get; set; }
+
         public string? CustomerName { get; set; }
 
         public int? Rate { get; set; }

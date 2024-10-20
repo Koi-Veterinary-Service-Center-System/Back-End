@@ -49,22 +49,22 @@ namespace KoiFishCare.Repository
 
         public async Task<List<Feedback>?> GetAllFeedbackAsync()
         {
-            return await _context.Feedbacks.ToListAsync();
+            return await _context.Feedbacks.Include(x => x.Booking.Service).ToListAsync();
         }
 
         public async Task<List<Feedback>?> GetAllFeedbackByUserNameAsync(string userName)
         {
-            return await _context.Feedbacks.Where(c => c.Booking.Customer.UserName == userName).ToListAsync();
+            return await _context.Feedbacks.Include(x => x.Booking.Service).Where(c => c.Booking.Customer.UserName == userName).ToListAsync();
         }
 
         public async Task<Feedback?> GetFeedbackByBookingIdAsync(int id)
         {
-            return await _context.Feedbacks.FirstOrDefaultAsync(x => x.Booking.BookingID == id);
+            return await _context.Feedbacks.Include(x => x.Booking.Service).FirstOrDefaultAsync(x => x.Booking.BookingID == id);
         }
 
         public async Task<Feedback?> UpdateFeedbackStatus(int id, bool isVisible)
         {
-            var feedback = await _context.Feedbacks.FirstOrDefaultAsync(x => x.FeedbackID == id);
+            var feedback = await _context.Feedbacks.Include(x => x.Booking.Service).FirstOrDefaultAsync(x => x.FeedbackID == id);
             if (feedback == null)
             {
                 return null;
@@ -78,12 +78,12 @@ namespace KoiFishCare.Repository
 
         public async Task<List<Feedback>?> GetAllFeedbackIsHidden()
         {
-            return await _context.Feedbacks.Where(x => x.IsVisible == false).ToListAsync();
+            return await _context.Feedbacks.Include(x => x.Booking.Service).Where(x => x.IsVisible == true).ToListAsync();
         }
 
         public async Task<Feedback?> GetFeedbackByUserNameAndIdAsync(int bookingID, string userName)
         {
-            return await _context.Feedbacks.Include(x => x.Booking).FirstOrDefaultAsync(x => x.BookingID == bookingID && x.Booking.Customer.UserName == userName);
+            return await _context.Feedbacks.Include(x => x.Booking).Include(x => x.Booking.Service).FirstOrDefaultAsync(x => x.BookingID == bookingID && x.Booking.Customer.UserName == userName);
         }
     }
 }
