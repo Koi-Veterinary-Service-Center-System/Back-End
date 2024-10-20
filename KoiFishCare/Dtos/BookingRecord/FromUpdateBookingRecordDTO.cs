@@ -8,8 +8,5 @@ namespace KoiFishCare.Dtos.BookingRecord
     public class FromUpdateBookingRecordDTO
     {
         public decimal ArisedMoney { get; set; }
-
-        public decimal TotalAmount { get; set; }
-
     }
 }

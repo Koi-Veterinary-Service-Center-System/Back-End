@@ -26,7 +26,6 @@ namespace KoiFishCare.Mappers
             {
                 BookingID = fromCreateBookingRecordDTO.BookingID,
                 ArisedMoney = fromCreateBookingRecordDTO.ArisedMoney,
-                TotalAmount = fromCreateBookingRecordDTO.TotalAmount,
             };
         }
 
