@@ -43,7 +43,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPost("create-booking")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer, Staff")]
         public async Task<IActionResult> CreateBooking([FromBody] FromCreateBookingDTO createBookingDto)
         {
             if (!ModelState.IsValid)
@@ -51,17 +51,42 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Get logged in customer
+            string customerId = "";
+            if (createBookingDto.CustomerId != null)
+            {
+                customerId = createBookingDto.CustomerId;
+            }
+
+            // Get logged in user
             var userModel = await _userManager.GetUserAsync(this.User);
             if (userModel == null)
                 return BadRequest("Login before booking!");
+
+            if (User.IsInRole("Staff"))
+            {
+                if (string.IsNullOrEmpty(customerId))
+                    return BadRequest("CustomerId is required for staff booking!");
+
+                var customerByStaff = await _userManager.FindByIdAsync(customerId);
+                if(customerByStaff == null) return BadRequest("Invalid CustomerId");
+
+                var isCusRole = await _userManager.IsInRoleAsync(customerByStaff, "Customer");
+                if(!isCusRole) return BadRequest("The provided user is not a customer");
+
+                userModel = customerByStaff;
+            }
+
             if (userModel.PhoneNumber == null)
                 return BadRequest("Update your phone number before booking!");
 
-            //check if there is any booking in process
-            var booking = await _bookingRepo.GetBookingsByCusIdAsync(userModel.Id);
-            if(!booking.IsNullOrEmpty())
-                return BadRequest("You already have booking that in process!");
+            // if is customer then can not create if any booking in process
+            if (User.IsInRole("Customer"))
+            {
+                //check if there is any booking in process
+                var booking = await _bookingRepo.GetBookingsByCusIdAsync(userModel.Id);
+                if (!booking.IsNullOrEmpty())
+                    return BadRequest("You already have booking that in process!");
+            }
 
             //check date time
             var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
@@ -121,7 +146,7 @@ namespace KoiFishCare.Controllers
                 bookingModel.ServiceID = service.ServiceID;
                 bookingModel.Slot = slot;
                 bookingModel.Service = service;
-                bookingModel.TotalAmount = createBookingDto.TotalAmount;
+                bookingModel.InitAmount = createBookingDto.InitAmount;
 
                 var result = await _bookingRepo.CreateBooking(bookingModel);
 
@@ -141,7 +166,7 @@ namespace KoiFishCare.Controllers
                 bookingModel.ServiceID = service.ServiceID;
                 bookingModel.Slot = slot;
                 bookingModel.Service = service;
-                bookingModel.TotalAmount = createBookingDto.TotalAmount;
+                bookingModel.InitAmount = createBookingDto.InitAmount;
 
                 var result = await _bookingRepo.CreateBooking(bookingModel);
 
@@ -444,7 +469,7 @@ namespace KoiFishCare.Controllers
                 refundPercent = 50;
 
 
-            var refundMoney = booking.TotalAmount * (refundPercent / 100);
+            var refundMoney = booking.InitAmount * (refundPercent / 100);
 
             var presRec = new PrescriptionRecord
             {
