@@ -51,7 +51,8 @@ namespace KoiFishCare.Mappers
                 VetID = booking.VetID,
                 VetName = booking.Veterinarian?.UserName,
                 KoiOrPoolID = booking.KoiOrPoolID,
-                KoiOrPoolName = booking.KoiOrPool?.Name
+                KoiOrPoolName = booking.KoiOrPool?.Name,
+                VetImage = booking.Veterinarian?.ImageURL
             };
         }
 

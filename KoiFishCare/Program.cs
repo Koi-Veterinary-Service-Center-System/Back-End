@@ -158,6 +158,7 @@ builder.Services.AddScoped<IPrescriptionRecordRepository, PrescriptionRecordRepo
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
+builder.Services.AddScoped<IBookingRecordRepository,BookingRecordRepository>();
 
 builder.Services.AddAuthorization(options =>
 {
