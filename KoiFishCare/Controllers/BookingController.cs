@@ -68,10 +68,10 @@ namespace KoiFishCare.Controllers
                     return BadRequest("CustomerId is required for staff booking!");
 
                 var customerByStaff = await _userManager.FindByIdAsync(customerId);
-                if(customerByStaff == null) return BadRequest("Invalid CustomerId");
+                if (customerByStaff == null) return BadRequest("Invalid CustomerId");
 
                 var isCusRole = await _userManager.IsInRoleAsync(customerByStaff, "Customer");
-                if(!isCusRole) return BadRequest("The provided user is not a customer");
+                if (!isCusRole) return BadRequest("The provided user is not a customer");
 
                 userModel = customerByStaff;
             }
@@ -405,10 +405,10 @@ namespace KoiFishCare.Controllers
             {
                 return BadRequest("The booking is already succeeded!");
             }
-            else if (booking.BookingStatus != BookingStatus.Scheduled)
-            {
-                return BadRequest("The booking is not ready to set!");
-            }
+            // else if (booking.BookingStatus != BookingStatus.Scheduled)
+            // {
+            //     return BadRequest("The booking is not ready to set!");
+            // }
 
             if (User.IsInRole("Customer"))
             {
