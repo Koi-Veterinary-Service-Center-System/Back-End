@@ -17,6 +17,7 @@ namespace KoiFishCare.Mappers
                 BookingID = bookingRecord.Booking.BookingID,
                 ArisedMoney = bookingRecord.ArisedMoney,
                 TotalAmount = bookingRecord.TotalAmount,
+                Note = bookingRecord.Note
             };
         }
 
@@ -26,6 +27,7 @@ namespace KoiFishCare.Mappers
             {
                 BookingID = fromCreateBookingRecordDTO.BookingID,
                 ArisedMoney = fromCreateBookingRecordDTO.ArisedMoney,
+                Note = fromCreateBookingRecordDTO.Note
             };
         }
 

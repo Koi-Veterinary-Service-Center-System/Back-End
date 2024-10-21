@@ -11,5 +11,7 @@ namespace KoiFishCare.Dtos.BookingRecord
 
         public decimal ArisedMoney { get; set; }
 
+        public string? Note { get; set; }
+
     }
 }
