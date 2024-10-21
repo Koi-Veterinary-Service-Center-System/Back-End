@@ -458,7 +458,7 @@ namespace KoiFishCare.Controllers
             {
                 return BadRequest("The booking is already succeeded!");
             }
-            // else if (booking.BookingStatus != BookingStatus.Scheduled)
+            // else if (booking.BookingStatus != BookingStatus.Received_Money)
             // {
             //     return BadRequest("The booking is not ready to set!");
             // }
@@ -478,7 +478,6 @@ namespace KoiFishCare.Controllers
             return Ok("Booking status updated successfully!");
         }
 
-        [Authorize]
         [HttpPatch("cancel-booking/{bookingId:int}")]
         [Authorize(Roles = "Staff, Customer")]
         public async Task<IActionResult> CancelBooking(int bookingId, [FromBody] CancelBookingDto dto)
@@ -545,6 +544,34 @@ namespace KoiFishCare.Controllers
             await _vetSlotRepo.Update(booking.VetID, booking.SlotID, false);
 
             return Ok(presRec.ToPresRecDtoFromModel());
+        }
+
+        [HttpPatch("refund-booking/{bookingID:int}")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> RefundBooking([FromRoute] int bookingID)
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return Unauthorized("User is not available!");
+            }
+
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+            if (booking == null)
+            {
+                return NotFound("Booking not found!");
+            }
+
+            if (booking.BookingStatus == BookingStatus.Refunded)
+            {
+                return BadRequest("The booking is already refunded!");
+            }
+
+            booking.BookingStatus = BookingStatus.Refunded;
+            _bookingRepo.UpdateBooking(booking);
+
+            return Ok("Booking status updated successfully!");
+
         }
 
         [HttpGet("all-booking")]
