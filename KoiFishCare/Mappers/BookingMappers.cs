@@ -52,7 +52,11 @@ namespace KoiFishCare.Mappers
                 VetName = booking.Veterinarian?.UserName,
                 KoiOrPoolID = booking.KoiOrPoolID,
                 KoiOrPoolName = booking.KoiOrPool?.Name,
-                ImageURL = booking.Veterinarian?.ImageURL
+                ImageURL = booking.Veterinarian?.ImageURL,
+                BookingRecordID = booking.BookingRecord?.BookingRecordID,
+                ArisedMoney = booking.BookingRecord?.ArisedMoney,
+                TotalAmount = booking.BookingRecord?.TotalAmount,
+                BookingRecordNote = booking.BookingRecord?.Note
             };
         }
 

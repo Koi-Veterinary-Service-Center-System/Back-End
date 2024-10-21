@@ -19,6 +19,8 @@ namespace KoiFishCare.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal ArisedMoney { get; set; }
 
+        public string? Note { get; set; }
+
         [ForeignKey("BookingID")]
         public int BookingID { get; set; }
         public Booking Booking { get; set; } = null!;

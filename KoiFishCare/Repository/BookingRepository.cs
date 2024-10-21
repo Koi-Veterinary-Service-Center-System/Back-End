@@ -78,6 +78,9 @@ namespace KoiFishCare.Repository
             await _context.Entry(booking)
             .Reference(b => b.Payment).LoadAsync();
 
+            await _context.Entry(booking)
+            .Reference(b => b.BookingRecord).LoadAsync();
+
             return booking;
 
         }
@@ -100,6 +103,7 @@ namespace KoiFishCare.Repository
                 .Include(b => b.Customer)
                 .Include(b => b.Veterinarian)
                 .Include(b => b.KoiOrPool)
+                .Include(b => b.BookingRecord)
                 .Select(b => b.ToDtoFromModel())
                 .ToListAsync();
         }
@@ -113,6 +117,7 @@ namespace KoiFishCare.Repository
                 .Include(b => b.Veterinarian)
                 .Include(b => b.KoiOrPool)
                 .Include(b => b.Payment)
+                .Include(b => b.BookingRecord)
                 .Where(b => b.CustomerID == cusID &&
                     (b.BookingStatus == BookingStatus.Pending ||
                         b.BookingStatus == BookingStatus.Scheduled ||
@@ -139,6 +144,7 @@ namespace KoiFishCare.Repository
                 .Include(b => b.Customer)
                 .Include(b => b.Veterinarian)
                 .Include(b => b.KoiOrPool)
+                .Include(b => b.BookingRecord)
                 .Where(b => b.VetID == vetID &&
                     (b.BookingStatus == BookingStatus.Scheduled ||
                         b.BookingStatus == BookingStatus.Ongoing ||
@@ -163,6 +169,7 @@ namespace KoiFishCare.Repository
                 .Include(b => b.Customer)
                 .Include(b => b.Veterinarian)
                 .Include(b => b.KoiOrPool)
+                .Include(b => b.BookingRecord)
                 .Where(x => x.Customer.Id.Equals(userID) &&
                     (x.BookingStatus == BookingStatus.Succeeded ||
                         x.BookingStatus == BookingStatus.Cancelled

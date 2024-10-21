@@ -32,6 +32,10 @@ namespace KoiFishCare.Dtos.Booking
         public int? KoiOrPoolID { get; set; }
         public string? KoiOrPoolName { get; set; }
         public string? ImageURL { get; set; }
+        public int? BookingRecordID { get; set; }
+        public decimal? ArisedMoney { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public string? BookingRecordNote { get; set; }
     }
 
 }
