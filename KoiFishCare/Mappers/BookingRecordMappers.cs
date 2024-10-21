@@ -17,7 +17,9 @@ namespace KoiFishCare.Mappers
                 BookingID = bookingRecord.Booking.BookingID,
                 ArisedMoney = bookingRecord.ArisedMoney,
                 TotalAmount = bookingRecord.TotalAmount,
-                Note = bookingRecord.Note
+                Note = bookingRecord.Note,
+                RefundMoney = bookingRecord.RefundMoney,
+                RefundPercent = bookingRecord.RefundPercent
             };
         }
 

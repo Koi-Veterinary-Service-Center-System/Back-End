@@ -118,6 +118,9 @@ namespace KoiFishCare.Controllers
             if (booking == null)
                 return NotFound("Invalid bookingId");
 
+            if(booking.Payment.Type.Contains("cash") || booking.Payment.Type.Contains("Cash")) 
+                return BadRequest("Cash payment cannot use this!");
+
             var model = new PaymentInformationModel()
             {
                 BookingID = booking.BookingID,
@@ -143,12 +146,14 @@ namespace KoiFishCare.Controllers
                 });
             }
 
-            if (int.TryParse(response.OrderId, out int bookingId))
+            var txnRefParts = response.OrderId.Split('-');
+            if (txnRefParts.Length > 0 && int.TryParse(txnRefParts[0], out int bookingId))
             {
                 var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
                 if (booking != null)
                 {
                     booking.BookingStatus = Models.Enum.BookingStatus.Scheduled;
+                    booking.isPaid = true;
                     _bookingRepo.UpdateBooking(booking);
 
                     return Redirect($"http://localhost:5173/paymentsuccess/{bookingId}");

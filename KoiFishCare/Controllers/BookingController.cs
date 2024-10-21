@@ -29,10 +29,11 @@ namespace KoiFishCare.Controllers
         private readonly IBookingRepository _bookingRepo;
         private readonly IVetSlotRepository _vetSlotRepo;
         private readonly IPrescriptionRecordRepository _presRecRepo;
+        private readonly IBookingRecordRepository _recordRepo;
 
         public BookingController(UserManager<User> userManager, IFishOrPoolRepository fishOrPoolRepo,
         ISlotRepository slotRepo, IServiceRepository serviceRepo, IBookingRepository bookingRepo,
-        IVetSlotRepository vetSlotRepo, IPrescriptionRecordRepository presRecRepo)
+        IVetSlotRepository vetSlotRepo, IPrescriptionRecordRepository presRecRepo, IBookingRecordRepository recordRepo)
         {
             _userManager = userManager;
             _fishOrPoolRepo = fishOrPoolRepo;
@@ -41,6 +42,7 @@ namespace KoiFishCare.Controllers
             _bookingRepo = bookingRepo;
             _vetSlotRepo = vetSlotRepo;
             _presRecRepo = presRecRepo;
+            _recordRepo = recordRepo;
         }
 
         [HttpPost("create-booking")]
@@ -96,7 +98,7 @@ namespace KoiFishCare.Controllers
             // Check if booking time is before 12 hours
             var bookingDateTime = createBookingDto.BookingDate.ToDateTime(TimeOnly.MinValue);
             if (bookingDateTime < currentDateTime.AddHours(12))
-                return BadRequest("Booking time must be at least 10 hours after today.");
+                return BadRequest("Booking time must be at least 12 hours after today.");
 
             // Check if booking date is within 365 days from today
             if (createBookingDto.BookingDate > currentDate.AddDays(365))
@@ -487,63 +489,74 @@ namespace KoiFishCare.Controllers
 
             var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
             if (booking == null) return NotFound("Booking not found!");
-            if (booking.BookingStatus.Equals(BookingStatus.Cancelled) || booking.BookingStatus.Equals(BookingStatus.Refunded))
+            if (booking.BookingStatus == BookingStatus.Cancelled || booking.BookingStatus == BookingStatus.Refunded)
                 return BadRequest("The booking is already canceled");
 
-            if (User.IsInRole("Customer"))
-            {
-                if (booking.CustomerID != user.Id)
-                    return Unauthorized("You can only cancel your own bookings.");
-                // if(dto.BankName == null || dto.CustomerBankAccountName == null || dto.CustomerBankNumber == null)
-                //     return BadRequest("Fill your banking info for us to refund!");
-            }
+            if (User.IsInRole("Customer") && booking.CustomerID != user.Id)
+                return Unauthorized("You can only cancel your own bookings.");
 
-            var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
+            string noteByCentre = User.IsInRole("Staff") ? "The center will contact you within 2 days to refund you if you have already paid." : "";
+
             var currentDateTime = DateTime.UtcNow;
-            var daysBeforeBooking = (booking.BookingDate.ToDateTime(TimeOnly.MinValue) - currentDate.ToDateTime(TimeOnly.MinValue)).Days;
+            var daysBeforeBooking = (booking.BookingDate.ToDateTime(TimeOnly.MinValue) - currentDateTime).Days;
             var timeDifference = (booking.BookingDate.ToDateTime(TimeOnly.MinValue) - currentDateTime).TotalHours;
 
-            if (booking.Payment.Type.Contains("cash"))
+            bool isCashPayment = booking.Payment.Type.Contains("cash", StringComparison.OrdinalIgnoreCase);
+
+            if (isCashPayment && timeDifference <= 12)
+                return BadRequest("Cannot cancel booking less than 12 hours before the appointment.");
+
+            if (!isCashPayment && (booking.BookingStatus != BookingStatus.Scheduled && booking.BookingStatus != BookingStatus.Pending))
+                return BadRequest("Cannot cancel this booking.");
+
+            decimal refundPercent;
+
+            // Staff gets 100% refund on cancellation
+            if (User.IsInRole("Staff"))
             {
-                if (timeDifference >= 13)
-                    return BadRequest("Can not cancel booking before 13 hours");
+                refundPercent = 100;
             }
             else
             {
-                if (booking.BookingStatus != BookingStatus.Scheduled && booking.BookingStatus != BookingStatus.Pending)
-                    return BadRequest("Can not cancel this booking");
+                // Refund logic for customers
+                refundPercent = daysBeforeBooking switch
+                {
+                    > 7 => 100,
+                    > 3 => 50,
+                    _ => 0
+                };
             }
 
-            decimal refundPercent = 0; // default no refund
-            if (daysBeforeBooking > 7)
-                refundPercent = 100;
-            else if (daysBeforeBooking > 3)
-                refundPercent = 50;
+            string refundInfor = string.IsNullOrWhiteSpace(dto.BankName) || string.IsNullOrWhiteSpace(dto.CustomerBankNumber) || string.IsNullOrWhiteSpace(dto.CustomerBankAccountName)
+                ? ""
+                : $"{dto.BankName}\n{dto.CustomerBankNumber}\n{dto.CustomerBankAccountName}";
 
+            var refundMoney = isCashPayment ? 0 : booking.InitAmount * (refundPercent / 100);
+            string note = refundPercent == 0 ? "Your booking is not refundable because the cancellation time is too close to the appointment date." : "";
 
-            var refundMoney = booking.InitAmount * (refundPercent / 100);
+            if (isCashPayment)
+            {
+                refundPercent = 0;
+                refundMoney = 0;
+                note = "Cash Payment doesn't have refund!";
+            }
 
-            var presRec = new PrescriptionRecord
+            var record = new BookingRecord
             {
                 BookingID = booking.BookingID,
                 RefundPercent = refundPercent,
                 RefundMoney = refundMoney,
-                CreateAt = DateTime.Now
+                CreateAt = DateTime.Now,
+                Note = $"{note} {noteByCentre} {refundInfor}"
             };
 
-            if (booking.Payment.Type.Contains("cash"))
-            {
-                presRec.RefundMoney = 0;
-                presRec.RefundPercent = 0;
-            }
-
-            await _presRecRepo.Create(presRec);
+            await _recordRepo.CreateAsync(record);
 
             booking.BookingStatus = BookingStatus.Cancelled;
             _bookingRepo.UpdateBooking(booking);
             await _vetSlotRepo.Update(booking.VetID, booking.SlotID, false);
 
-            return Ok(presRec.ToPresRecDtoFromModel());
+            return Ok(record.ToDTOFromModel());
         }
 
         [HttpPatch("refund-booking/{bookingID:int}")]

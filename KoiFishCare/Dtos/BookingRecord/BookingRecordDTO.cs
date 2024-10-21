@@ -17,5 +17,8 @@ namespace KoiFishCare.Dtos.BookingRecord
 
         public string? Note { get; set; }
 
+        public decimal? RefundMoney { get; set; }
+
+        public decimal? RefundPercent { get; set; }
     }
 }

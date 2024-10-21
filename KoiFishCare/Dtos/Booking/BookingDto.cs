@@ -10,6 +10,8 @@ namespace KoiFishCare.Dtos.Booking
     public class BookingDTO
     {
         public int? BookingID { get; set; }
+        public bool? isPaid { get; set; }
+        public bool? hasPres { get; set; }
         public DateOnly? BookingDate { get; set; }
         public string? Location { get; set; }
         public string? Note { get; set; }

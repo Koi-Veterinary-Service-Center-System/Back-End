@@ -67,6 +67,8 @@ namespace KoiFishCare.Controllers
             var presRec = await _preRecRepo.Create(createDto.ToModelFromCreate());
             if(presRec == null) return NotFound("Can not find BookingId");
 
+            booking.hasPres = true;
+            _bookingRepo.UpdateBooking(booking);
             return Ok(presRec.ToPresRecDtoFromModel());
         }
 
