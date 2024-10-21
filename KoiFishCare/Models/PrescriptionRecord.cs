@@ -22,12 +22,6 @@ public partial class PrescriptionRecord
     public string? Note { get; set; }
 
     public DateTime CreateAt { get; set; }
-    
-    [Column(TypeName = "decimal(18, 2)")]
-    public decimal? RefundMoney { get; set; }
-    
-    [Column(TypeName = "decimal(18, 2)")]
-    public decimal? RefundPercent { get; set; }
 
     // ---- Booking -----------------------------------------------------------------------
     public int? BookingID { get; set; }

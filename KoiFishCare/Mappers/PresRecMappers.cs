@@ -19,8 +19,6 @@ namespace KoiFishCare.Mappers
                 Medication = model.Medication,
                 Frequency = model.Frequency,
                 Note = model.Note,
-                RefundMoney = model.RefundMoney,
-                RefundPercent = model.RefundPercent,
                 BookingID = model.BookingID,
                 CreateAt = model.CreateAt
             };

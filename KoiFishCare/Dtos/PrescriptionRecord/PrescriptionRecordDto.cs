@@ -20,10 +20,6 @@ namespace KoiFishCare.Dtos.PrescriptionRecord
 
         public string? Note { get; set; }
 
-        public decimal? RefundMoney { get; set; }
-
-        public decimal? RefundPercent { get; set; }
-
         public int? BookingID { get; set; }
 
         public DateTime CreateAt { get; set; }

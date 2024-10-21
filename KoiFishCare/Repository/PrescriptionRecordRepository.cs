@@ -55,8 +55,6 @@ namespace KoiFishCare.Repository
             exist.Symptoms = model.Symptoms;
             exist.Medication = model.Medication;
             exist.Note = model.Note;
-            exist.RefundMoney = model.RefundMoney;
-            exist.RefundPercent = model.RefundPercent;
             await _context.SaveChangesAsync();
             return exist;
         }

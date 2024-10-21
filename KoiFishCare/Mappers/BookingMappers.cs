@@ -31,6 +31,8 @@ namespace KoiFishCare.Mappers
             return new BookingDTO
             {
                 BookingID = booking.BookingID,
+                isPaid = booking.isPaid,
+                hasPres = booking.hasPres,
                 BookingDate = booking.BookingDate,
                 Location = booking.Location,
                 Note = booking.Note,

@@ -21,6 +21,14 @@ namespace KoiFishCare.Models
 
         public string? Note { get; set; }
 
+        public DateTime CreateAt { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? RefundMoney { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? RefundPercent { get; set; }
+
         [ForeignKey("BookingID")]
         public int BookingID { get; set; }
         public Booking Booking { get; set; } = null!;
