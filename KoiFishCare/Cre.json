@@ -1,0 +1,18 @@
+{
+    "web": {
+        "client_id": "425086329216-um155elnc64qh4gct5uvotp1t6jqpifh.apps.googleusercontent.com",
+        "project_id": "koifishcare",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://localhost:5155",
+            "http://127.0.0.1:60015/authorize/",
+            "http://127.0.0.1:60095/authorize/",
+            "http://127.0.0.1:60134/authorize/",
+            "http://localhost/authorize/",
+            "http://127.0.0.1/authorize/"
+        ]
+    }
+}
