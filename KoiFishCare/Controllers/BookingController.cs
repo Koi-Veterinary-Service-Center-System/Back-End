@@ -14,6 +14,7 @@ using KoiFishCare.Models.Enum;
 using Microsoft.AspNetCore.Http.HttpResults;
 using KoiFishCare.Dtos.Booking;
 using Microsoft.IdentityModel.Tokens;
+using KoiFishCare.service;
 
 namespace KoiFishCare.Controllers
 {
@@ -152,7 +153,33 @@ namespace KoiFishCare.Controllers
 
                 await _vetSlotRepo.Update(vetSlot.VetID, vetSlot.SlotID, true);
 
-                return Ok(result.ToDtoFromModel());
+                // FIX: Convert nullable TimeOnly to DateTime
+                var startDateTime = bookingModel.Slot.StartTime.HasValue
+                    ? DateTime.UtcNow.Date.Add(bookingModel.Slot.StartTime.Value.ToTimeSpan())
+                    : throw new Exception("Start time is missing");
+
+                var endDateTime = bookingModel.Slot.EndTime.HasValue
+                    ? DateTime.UtcNow.Date.Add(bookingModel.Slot.EndTime.Value.ToTimeSpan())
+                    : throw new Exception("End time is missing");
+
+                // Create a Google Calendar event and get the Meet link
+                var googleCalendarRequest = new GoogleCalendar
+                {
+                    Summary = "Booking: " + service.ServiceName,
+                    Description = "Booking with vet " + vet.UserName,
+                    Location = "Vet clinic or address",
+                    Start = startDateTime, // Using the DateTime after conversion
+                    End = endDateTime      // Using the DateTime after conversion
+                };
+
+                var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest);
+                var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
+
+                return Ok(new
+                {
+                    BookingDetails = result.ToDtoFromModel(),
+                    GoogleMeetLink = googleMeetLink ?? "No Google Meet link created"
+                });
             }
             else
             {
@@ -172,7 +199,33 @@ namespace KoiFishCare.Controllers
 
                 await _vetSlotRepo.Update(availableVet.VetID, availableVet.SlotID, true);
 
-                return Ok(result.ToDtoFromModel());
+                // FIX: Convert nullable TimeOnly to DateTime
+                var startDateTime = bookingModel.Slot.StartTime.HasValue
+                    ? DateTime.UtcNow.Date.Add(bookingModel.Slot.StartTime.Value.ToTimeSpan())
+                    : throw new Exception("Start time is missing");
+
+                var endDateTime = bookingModel.Slot.EndTime.HasValue
+                    ? DateTime.UtcNow.Date.Add(bookingModel.Slot.EndTime.Value.ToTimeSpan())
+                    : throw new Exception("End time is missing");
+
+                // Create a Google Calendar event and get the Meet link
+                var googleCalendarRequest = new GoogleCalendar
+                {
+                    Summary = "Booking: " + service.ServiceName,
+                    Description = "Booking with vet " + availableVet.Veterinarian,
+                    Location = "Vet clinic or address",
+                    Start = startDateTime, // Using the DateTime after conversion
+                    End = endDateTime      // Using the DateTime after conversion
+                };
+
+                var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest);
+                var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
+
+                return Ok(new
+                {
+                    BookingDetails = result.ToDtoFromModel(),
+                    GoogleMeetLink = googleMeetLink ?? "No Google Meet link created"
+                });
             }
         }
 
