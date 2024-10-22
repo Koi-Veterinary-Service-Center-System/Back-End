@@ -140,10 +140,7 @@ namespace KoiFishCare.Controllers
 
             if (response == null || response.VnPayResponseCode != "00")
             {
-                return BadRequest(new
-                {
-                    Message = $"VN Pay payment failed, response code: {response?.VnPayResponseCode ?? "No response"}"
-                });
+                return Redirect("http://localhost:5173/paymentfailed");
             }
 
             var txnRefParts = response.OrderId.Split('-');
@@ -160,18 +157,12 @@ namespace KoiFishCare.Controllers
                 }
                 else
                 {
-                    return NotFound(new
-                    {
-                        Message = "Booking not found"
-                    });
+                    return Redirect("http://localhost:5173/paymentfailed");
                 }
             }
             else
             {
-                return BadRequest(new
-                {
-                    Message = "Invalid booking ID"
-                });
+                return Redirect("http://localhost:5173/paymentfailed");
             }
         }
 
