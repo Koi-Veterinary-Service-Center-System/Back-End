@@ -30,6 +30,5 @@ namespace KoiFishCare.Mappers
                 Role = role.FirstOrDefault()
             };
         }
-
     }
 }

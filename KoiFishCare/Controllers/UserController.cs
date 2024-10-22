@@ -14,6 +14,8 @@ using KoiFishCare.Dtos.User;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 
 namespace KoiFishCare.Controllers
 {
@@ -146,6 +148,21 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (model.UserName.Length < 3)
+            {
+                return BadRequest("User name length must be more than 3!");
+            }
+
+            if (!IsValidEmail(model.Email))
+            {
+                return BadRequest("Invalid email!");
+            }
+
+            if (await IsEmailExistedNoId(model.Email))
+            {
+                return BadRequest("This email is already existed!");
+            }
+
             var customer = new Customer
             {
                 FirstName = model.FirstName,
@@ -208,9 +225,19 @@ namespace KoiFishCare.Controllers
                 return BadRequest("User name length must be more than 3!");
             }
 
+            if (await IsUserNameExisted(id, updateDTO.UserName))
+            {
+                return BadRequest("This user name is already existed!");
+            }
+
             if (!IsValidEmail(updateDTO.Email))
             {
                 return BadRequest("Invalid email!");
+            }
+
+            if (await IsEmailExisted(id, updateDTO.Email))
+            {
+                return BadRequest("This email is already existed!");
             }
 
             if (!IsValidPhoneNumber(updateDTO.PhoneNumber))
@@ -218,51 +245,28 @@ namespace KoiFishCare.Controllers
                 return BadRequest("Phone number must not contain characters!");
             }
 
-            var userDTO = updateDTO;
-            if (updateDTO.UserName.IsNullOrEmpty())
+            if (await IsPhoneNumberExisted(id, updateDTO.PhoneNumber))
             {
-                userDTO.UserName = user.UserName;
-            }
-            if (updateDTO.FirstName.IsNullOrEmpty())
-            {
-                userDTO.FirstName = user.FirstName;
+                return BadRequest("This phone number is already existed!");
             }
 
-            if (updateDTO.LastName.IsNullOrEmpty())
-            {
-                userDTO.LastName = user.LastName;
-            }
-            if (updateDTO.Gender == null)
-            {
-                userDTO.Gender = user.Gender;
-            }
-            if (updateDTO.Email.IsNullOrEmpty())
-            {
-                userDTO.Email = user.Email;
-            }
-            if (updateDTO.Address.IsNullOrEmpty())
-            {
-                userDTO.Address = user.Address;
-            }
-            if (updateDTO.ImageURL.IsNullOrEmpty())
-            {
-                userDTO.ImageURL = user.ImageURL;
-            }
-            if (updateDTO.PhoneNumber.IsNullOrEmpty())
-            {
-                userDTO.PhoneNumber = user.PhoneNumber;
-            }
-            if (updateDTO.ExperienceYears == null)
-            {
-                userDTO.ExperienceYears = user.ExperienceYears;
-            }
+            user.UserName = string.IsNullOrEmpty(updateDTO.UserName) ? user.UserName : updateDTO.UserName;
+            user.FirstName = string.IsNullOrEmpty(updateDTO.FirstName) ? user.FirstName : updateDTO.FirstName;
+            user.LastName = string.IsNullOrEmpty(updateDTO.LastName) ? user.LastName : updateDTO.LastName;
+            user.Gender = updateDTO.Gender ?? user.Gender;
+            user.Email = string.IsNullOrEmpty(updateDTO.Email) ? user.Email : updateDTO.Email;
+            user.Address = string.IsNullOrEmpty(updateDTO.Address) ? user.Address : updateDTO.Address;
+            user.ImageURL = string.IsNullOrEmpty(updateDTO.ImageURL) ? user.ImageURL : updateDTO.ImageURL;
+            user.PhoneNumber = string.IsNullOrEmpty(updateDTO.PhoneNumber) ? user.PhoneNumber : updateDTO.PhoneNumber;
+            user.ExperienceYears = updateDTO.ExperienceYears ?? updateDTO.ExperienceYears;
 
-            var userUpdate = await _userRepo.UpdateAsync(id, userDTO);
-            var dto = await userUpdate.ToUserProfileFromUser(_userManager);
-            return Ok(dto);
+            var userUpdate = await _userManager.UpdateAsync(user);
+            if (userUpdate.Succeeded)
+            {
+                return Ok(await user.ToUserProfileFromUser(_userManager));
+            }
+            return BadRequest("User update failed");
         }
-
-
 
         [HttpPost("create-user")]
         [Authorize(Roles = "Manager")]
@@ -281,6 +285,11 @@ namespace KoiFishCare.Controllers
             if (!IsValidEmail(userDTO.Email))
             {
                 return BadRequest("Invalid email!");
+            }
+
+            if (await IsEmailExistedNoId(userDTO.Email))
+            {
+                return BadRequest("This email is already existed!");
             }
 
             if (!userDTO.Role.Equals("Vet") && !userDTO.Role.Equals("Staff") && !userDTO.Role.Equals("Manager"))
@@ -453,18 +462,6 @@ namespace KoiFishCare.Controllers
 
         }
 
-        private bool IsValidPhoneNumber(string phoneNumber)
-        {
-            string pattern = @"^[0-9\-]+$";
-            return Regex.IsMatch(phoneNumber, pattern);
-        }
-
-        private bool IsValidEmail(string email)
-        {
-            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-            return Regex.IsMatch(email, pattern);
-        }
-
         [HttpPatch("ban-user/{id}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> BanUser([FromRoute] string id)
@@ -479,5 +476,39 @@ namespace KoiFishCare.Controllers
             await _userRepo.UpdateAsync(existingUser);
             return Ok("Banned successfully!");
         }
+
+
+        private bool IsValidPhoneNumber(string phoneNumber)
+        {
+            string pattern = @"^[0-9\-]+$";
+            return Regex.IsMatch(phoneNumber, pattern);
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            return Regex.IsMatch(email, pattern);
+        }
+
+        private async Task<bool> IsPhoneNumberExisted(string id, string phoneNumber)
+        {
+            return await _userManager.Users.AnyAsync(x => x.Id != id && x.PhoneNumber == phoneNumber);
+        }
+
+        private async Task<bool> IsEmailExisted(string? id, string email)
+        {
+            return await _userManager.Users.AnyAsync(x => x.Id != id && x.Email == email);
+        }
+
+        private async Task<bool> IsEmailExistedNoId(string email)
+        {
+            return await _userManager.Users.AnyAsync(x => x.Email == email);
+        }
+
+        private async Task<bool> IsUserNameExisted(string id, string userName)
+        {
+            return await _userManager.Users.AnyAsync(x => x.Id != id && x.UserName == userName);
+        }
+
     }
 }
