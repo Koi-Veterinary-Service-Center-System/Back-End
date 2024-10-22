@@ -341,6 +341,42 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Price = 250.00m,
                 EstimatedDuration = 2.0,
                 ImageURL = "https://example.com/service2.jpg"
+            },
+            new Service
+            {
+                ServiceID = 3,
+                ServiceName = "Water Quality Testing",
+                Description = "Testing the water quality to ensure it is optimal for Koi health.",
+                Price = 100,
+                EstimatedDuration = 1.0,
+                ImageURL = "https://example.com/service3.jpg"
+            },
+            new Service
+            {
+                ServiceID = 4,
+                ServiceName = "Disease Treatment",
+                Description = "Diagnosing and treating diseases in Koi fish.",
+                Price = 250,
+                EstimatedDuration = 2.5,
+                ImageURL = "https://example.com/service4.jpg"
+            },
+            new Service
+            {
+                ServiceID = 5,
+                ServiceName = "Koi Pond Inspection",
+                Description = "A detailed inspection of your Koi pond to identify any issues or potential improvements.",
+                Price = 180,
+                EstimatedDuration = 1.75,
+                ImageURL = "https://example.com/service5.jpg"
+            },
+            new Service
+            {
+                ServiceID = 6,
+                ServiceName = "Koi Breeding Consultation",
+                Description = "Expert advice and consultation on breeding healthy Koi fish.",
+                Price = 300,
+                EstimatedDuration = 3.0,
+                ImageURL = "https://example.com/service6.jpg"
             }
         );
 
