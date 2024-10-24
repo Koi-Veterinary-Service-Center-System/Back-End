@@ -13,8 +13,6 @@ namespace KoiFishCare.DTOs
         
         public string? Note { get; set; }
 
-        public int? KoiOrPoolId { get; set; }
-
         public string VetName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Init Amount is required.")]

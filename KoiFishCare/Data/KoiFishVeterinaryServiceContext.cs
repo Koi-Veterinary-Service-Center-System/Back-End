@@ -325,7 +325,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceID = 1,
                 ServiceName = "Koi Health Check",
                 Description = "A general health check for Koi fish.",
-                Price = 150.00m,
+                Price = 15000M,
+                QuantityPrice = 25000M,
                 EstimatedDuration = 1.5,
                 ImageURL = "https://example.com/service1.jpg"
             },
@@ -335,6 +336,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceName = "Pool Maintenance",
                 Description = "Comprehensive pool maintenance service.",
                 Price = 250.00m,
+                QuantityPrice = 30000M,
                 EstimatedDuration = 2.0,
                 ImageURL = "https://example.com/service2.jpg"
             },
@@ -343,7 +345,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceID = 3,
                 ServiceName = "Water Quality Testing",
                 Description = "Testing the water quality to ensure it is optimal for Koi health.",
-                Price = 100,
+                Price = 100M,
+                QuantityPrice = 20000M,
                 EstimatedDuration = 1.0,
                 ImageURL = "https://example.com/service3.jpg"
             },
