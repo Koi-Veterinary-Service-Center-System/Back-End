@@ -20,6 +20,7 @@ namespace KoiFishCare.Dtos.Booking
         public string? MeetURL { get; set; }
         public int? PaymentID { get; set; }
         public string? PaymentTypeAtBooking { get; set; }
+        public int Quantity { get; set; }
         public int? ServiceID { get; set; }
         public string? ServiceNameAtBooking { get; set; }
         public decimal ServicePriceAtBooking { get; set; }

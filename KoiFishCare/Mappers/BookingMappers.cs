@@ -54,6 +54,7 @@ namespace KoiFishCare.Mappers
                 MeetURL = booking.MeetURL,
                 PaymentID = booking.PaymentID,
                 PaymentTypeAtBooking = booking.PaymentTypeAtBooking,
+                Quantity = booking.Quantity,
                 ServiceID = booking.ServiceID,
                 ServiceNameAtBooking = booking.ServiceNameAtBooking,
                 ServicePriceAtBooking = booking.ServicePriceAtBooking,
