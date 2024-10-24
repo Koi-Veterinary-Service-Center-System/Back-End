@@ -14,5 +14,6 @@ namespace KoiFishCare.DTOs.Vet
         public bool? Gender { get; set; }
         public int? ExperienceYears { get; set; }
         public string? ImageURL { get; set; }
+        public string? VetEmail {get; set; }
     }
 }

@@ -36,7 +36,8 @@ namespace KoiFishCare.Mappers
                 LastName = vs.Veterinarian?.LastName,
                 Gender = vs.Veterinarian?.Gender,
                 ExperienceYears = vs.Veterinarian?.ExperienceYears,
-                ImageURL = vs.Veterinarian?.ImageURL
+                ImageURL = vs.Veterinarian?.ImageURL,
+                VetEmail = vs.Veterinarian?.Email
             };
         }
     }
