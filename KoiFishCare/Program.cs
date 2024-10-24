@@ -145,7 +145,6 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 
 // Add other services (repositories, etc.)
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddScoped<IFishOrPoolRepository, FishOrPoolRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<ISlotRepository, SlotRepository>();
 builder.Services.AddScoped<ItokenService, TokenService>();

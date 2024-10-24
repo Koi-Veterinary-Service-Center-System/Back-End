@@ -40,9 +40,6 @@ namespace KoiFishCare.Repository
             .Reference(b => b.Service).LoadAsync();
 
             await _context.Entry(bookingModel)
-            .Reference(b => b.KoiOrPool).LoadAsync();
-
-            await _context.Entry(bookingModel)
             .Reference(b => b.Payment).LoadAsync();
 
             return bookingModel;
@@ -73,9 +70,6 @@ namespace KoiFishCare.Repository
             .Reference(b => b.Service).LoadAsync();
 
             await _context.Entry(booking)
-            .Reference(b => b.KoiOrPool).LoadAsync();
-
-            await _context.Entry(booking)
             .Reference(b => b.Payment).LoadAsync();
 
             await _context.Entry(booking)
@@ -102,7 +96,6 @@ namespace KoiFishCare.Repository
                 .Include(b => b.Slot)
                 .Include(b => b.Customer)
                 .Include(b => b.Veterinarian)
-                .Include(b => b.KoiOrPool)
                 .Include(b => b.BookingRecord)
                 .Select(b => b.ToDtoFromModel())
                 .ToListAsync();
@@ -115,7 +108,6 @@ namespace KoiFishCare.Repository
                 .Include(b => b.Slot)
                 .Include(b => b.Customer)
                 .Include(b => b.Veterinarian)
-                .Include(b => b.KoiOrPool)
                 .Include(b => b.Payment)
                 .Include(b => b.BookingRecord)
                 .Where(b => b.CustomerID == cusID &&
@@ -143,7 +135,6 @@ namespace KoiFishCare.Repository
                 .Include(b => b.Slot)
                 .Include(b => b.Customer)
                 .Include(b => b.Veterinarian)
-                .Include(b => b.KoiOrPool)
                 .Include(b => b.BookingRecord)
                 .Where(b => b.VetID == vetID &&
                     (b.BookingStatus == BookingStatus.Scheduled ||
@@ -168,7 +159,6 @@ namespace KoiFishCare.Repository
                 .Include(b => b.Slot)
                 .Include(b => b.Customer)
                 .Include(b => b.Veterinarian)
-                .Include(b => b.KoiOrPool)
                 .Include(b => b.BookingRecord)
                 .Where(x => x.Customer.Id.Equals(userID) &&
                     (x.BookingStatus == BookingStatus.Succeeded ||

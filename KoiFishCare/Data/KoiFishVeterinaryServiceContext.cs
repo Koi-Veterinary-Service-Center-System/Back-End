@@ -24,8 +24,6 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
     public virtual DbSet<Feedback> Feedbacks { get; set; }
 
-    public virtual DbSet<KoiOrPool> KoiOrPools { get; set; }
-
     public virtual DbSet<Payment> Payments { get; set; }
 
     public virtual DbSet<PrescriptionRecord> PrescriptionRecords { get; set; }
@@ -83,14 +81,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             .HasForeignKey(b => b.VetID)
             .OnDelete(DeleteBehavior.Restrict);  // No cascading delete
 
-        // ---- KoiOrPool Relationship -----------------------------------------------------------------------
-        modelBuilder.Entity<Booking>()
-            .HasOne(b => b.KoiOrPool)
-            .WithMany(k => k.Bookings)  // Assuming KoiOrPool has a Bookings collection
-            .HasForeignKey(b => b.KoiOrPoolID)
-            .OnDelete(DeleteBehavior.Restrict);  // Set KoiOrPoolID to null on delete
-
-        //add role
+        //---------- Add Role
         List<IdentityRole> roles = new List<IdentityRole>
         {
             new IdentityRole
@@ -163,7 +154,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 10,
                 Address = "123 Vet St.",
                 ImageURL = "https://example.com/vet1.jpg",
-                ImagePublicId = "vet1_image_id"
+                ImagePublicId = "vet1_image_id",
+                Email = "v1email@gmail.com"
             },
             new Veterinarian
             {
@@ -176,7 +168,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 8,
                 Address = "456 Vet St.",
                 ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id"
+                ImagePublicId = "vet2_image_id",
+                Email = "v2@gmail.com"
             },
             new Veterinarian
             {
@@ -189,7 +182,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 8,
                 Address = "456 Vet St.",
                 ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id"
+                ImagePublicId = "vet2_image_id",
+                Email = "v3@gmail.com"
             },
             new Veterinarian
             {
@@ -202,7 +196,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 8,
                 Address = "456 Vet St.",
                 ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id"
+                ImagePublicId = "vet2_image_id",
+                Email = "v4@gmail.com"
             },
             new Veterinarian
             {
@@ -215,7 +210,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 8,
                 Address = "456 Vet St.",
                 ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id"
+                ImagePublicId = "vet2_image_id",
+                Email = "v5@gmail.com"
             }
         );
 
@@ -392,26 +388,6 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PaymentID = 2,
                 Qrcode = "qrcode2",
                 Type = "VNPay"
-            }
-        );
-
-        // Seed data for KoiOrPool
-        modelBuilder.Entity<KoiOrPool>().HasData(
-            new KoiOrPool
-            {
-                KoiOrPoolID = 1,
-                Name = "John's Koi Pond",
-                IsPool = false,
-                Description = "A beautiful koi pond owned by John.",
-                CustomerID = "c1" // Assuming customer with ID 'c1' exists
-            },
-            new KoiOrPool
-            {
-                KoiOrPoolID = 2,
-                Name = "Smith's Pool",
-                IsPool = true,
-                Description = "A large swimming pool owned by the Smith family.",
-                CustomerID = "c2" // Assuming customer with ID 'c2' exists
             }
         );
 

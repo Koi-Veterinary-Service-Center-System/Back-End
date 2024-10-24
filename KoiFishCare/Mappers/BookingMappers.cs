@@ -15,10 +15,11 @@ namespace KoiFishCare.Mappers
         {
             return new Booking()
             {
+                InitAmount = createBookingDto.InitAmount,
+                Quantity = createBookingDto.Quantity,
                 ServiceID = createBookingDto.ServiceId,
                 PaymentID = createBookingDto.PaymentId,
                 SlotID = createBookingDto.SlotId,
-                KoiOrPoolID = createBookingDto.KoiOrPoolId,
                 BookingDate = createBookingDto.BookingDate,
                 Location = createBookingDto.Location,
                 Note = createBookingDto.Note,
@@ -52,8 +53,6 @@ namespace KoiFishCare.Mappers
                 PhoneNumber = booking.Customer?.PhoneNumber,
                 VetID = booking.VetID,
                 VetName = booking.Veterinarian?.UserName,
-                KoiOrPoolID = booking.KoiOrPoolID,
-                KoiOrPoolName = booking.KoiOrPool?.Name,
                 ImageURL = booking.Veterinarian?.ImageURL,
                 BookingRecordID = booking.BookingRecord?.BookingRecordID,
                 ArisedMoney = booking.BookingRecord?.ArisedMoney,

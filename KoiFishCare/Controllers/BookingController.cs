@@ -23,7 +23,6 @@ namespace KoiFishCare.Controllers
     public class BookingController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly IFishOrPoolRepository _fishOrPoolRepo;
         private readonly ISlotRepository _slotRepo;
         private readonly IServiceRepository _serviceRepo;
         private readonly IBookingRepository _bookingRepo;
@@ -31,12 +30,11 @@ namespace KoiFishCare.Controllers
         private readonly IPrescriptionRecordRepository _presRecRepo;
         private readonly IBookingRecordRepository _recordRepo;
 
-        public BookingController(UserManager<User> userManager, IFishOrPoolRepository fishOrPoolRepo,
-        ISlotRepository slotRepo, IServiceRepository serviceRepo, IBookingRepository bookingRepo,
+        public BookingController(UserManager<User> userManager, ISlotRepository slotRepo, 
+        IServiceRepository serviceRepo, IBookingRepository bookingRepo,
         IVetSlotRepository vetSlotRepo, IPrescriptionRecordRepository presRecRepo, IBookingRecordRepository recordRepo)
         {
             _userManager = userManager;
-            _fishOrPoolRepo = fishOrPoolRepo;
             _slotRepo = slotRepo;
             _serviceRepo = serviceRepo;
             _bookingRepo = bookingRepo;
@@ -106,14 +104,6 @@ namespace KoiFishCare.Controllers
                 return BadRequest("Booking date cannot be more than 365 days from today.");
             }
 
-            // Get customer fishorpool if cus want to examinate
-            if (createBookingDto.KoiOrPoolId.HasValue)
-            {
-                var fishorpool = await _fishOrPoolRepo.GetKoiOrPoolById(createBookingDto.KoiOrPoolId.Value);
-                if (fishorpool == null) return BadRequest("Fish or Pool does not exist");
-                if (fishorpool.CustomerID != userModel.Id) return BadRequest("Not your koi or pool");
-            }
-
             // Get Slot
             var slot = await _slotRepo.GetSlotById(createBookingDto.SlotId);
             if (slot == null) return BadRequest("Slot does not exist");
@@ -149,7 +139,6 @@ namespace KoiFishCare.Controllers
                 bookingModel.ServiceID = service.ServiceID;
                 bookingModel.Slot = slot;
                 bookingModel.Service = service;
-                bookingModel.InitAmount = createBookingDto.InitAmount;
 
                 // FIX: Convert nullable TimeOnly to DateTime
                 var startDateTime = bookingModel.Slot.StartTime.HasValue
@@ -193,7 +182,6 @@ namespace KoiFishCare.Controllers
                 bookingModel.ServiceID = service.ServiceID;
                 bookingModel.Slot = slot;
                 bookingModel.Service = service;
-                bookingModel.InitAmount = createBookingDto.InitAmount;
 
                 // FIX: Convert nullable TimeOnly to DateTime
                 var startDateTime = bookingModel.Slot.StartTime.HasValue

@@ -21,6 +21,8 @@ public partial class Booking
     [Column(TypeName = "decimal(18, 2)")]
     public decimal InitAmount { get; set; }
 
+    public int Quantity { get; set; }
+
     public BookingStatus BookingStatus { get; set; }
 
     public bool isPaid { get; set; } = false;
@@ -57,10 +59,6 @@ public partial class Booking
     public string VetID { get; set; } = null!;
 
     public Veterinarian Veterinarian { get; set; } = null!;
-    // ---- KoiOrPool -----------------------------------------------------------------------
-    [ForeignKey("KoiOrPoolID")]
-    public int? KoiOrPoolID { get; set; }
-    public KoiOrPool? KoiOrPool { get; set; }
     // ---- Prescription Record -----------------------------------------------------------------------
     public virtual ICollection<PrescriptionRecord> PrescriptionRecords { get; set; } = new List<PrescriptionRecord>();
     // ---- Booking Record -----------------------------------------------------------------------

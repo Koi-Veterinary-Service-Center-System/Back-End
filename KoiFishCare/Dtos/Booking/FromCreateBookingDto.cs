@@ -20,6 +20,10 @@ namespace KoiFishCare.DTOs
         [Required(ErrorMessage = "Init Amount is required.")]
         public decimal InitAmount { get; set; }
 
+        [Required(ErrorMessage = "Quantity is required.")]
+        [Range(1,15, ErrorMessage = "Quantity should in range 1 to 15")]
+        public int Quantity { get; set; }
+
         public string? Location { get; set; }
 
         [Required(ErrorMessage = "Slot is required.")]
