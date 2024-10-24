@@ -11,6 +11,7 @@ namespace KoiFishCare.DTOs.Service
         public string? ServiceName { get; set; }
         public string? Description { get; set; }
         public decimal? Price { get; set; }
+        public decimal? QuantityPrice {get; set;}
         public double? EstimatedDuration { get; set; }
         public string? ImageURL { get; set; }
     }

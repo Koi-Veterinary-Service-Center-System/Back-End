@@ -45,7 +45,7 @@ namespace KoiFishCare.Controllers
             var service = await _serviceRepo.GetServiceById(id);
             if (service == null) return NotFound("Can not find any service");
 
-            return Ok((service.ToServiceDto()));
+            return Ok(service.ToServiceDto());
         }
 
         [HttpPost("add-service")]
