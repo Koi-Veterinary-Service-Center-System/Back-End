@@ -21,6 +21,9 @@ public partial class Service
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }
 
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal QuantityPrice { get; set; }
+
     public double EstimatedDuration { get; set; }
 
     public string? NoteQuantity { get; set; }

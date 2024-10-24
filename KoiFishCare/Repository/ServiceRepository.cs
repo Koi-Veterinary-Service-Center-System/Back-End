@@ -62,6 +62,7 @@ namespace KoiFishCare.Repository
             service.Description = updateDto.Description;
             service.Price = updateDto.Price;
             service.EstimatedDuration = updateDto.EstimatedDuration;
+            service.QuantityPrice = updateDto.QuantityPrice;
 
             await _context.SaveChangesAsync();
             return service;
