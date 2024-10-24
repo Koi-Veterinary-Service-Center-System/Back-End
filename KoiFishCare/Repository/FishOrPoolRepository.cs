@@ -37,12 +37,12 @@ namespace KoiFishCare.Repository
 
         public async Task<KoiOrPool?> GetKoiOrPoolById(int id)
         {
-            return await _context.KoiOrPools.FirstOrDefaultAsync(k => k.KoiOrPoolID == id);
+            return await _context.KoiOrPools.FirstOrDefaultAsync(k => k.KoiOrPoolID == id && k.isDeleted == false);
         }
 
         public async Task<List<KoiOrPool>> GetKoiOrPoolsOfCustomer(string customerId)
         {
-            return await _context.KoiOrPools.Where(k => k.CustomerID == customerId).ToListAsync();
+            return await _context.KoiOrPools.Where(k => k.CustomerID == customerId && k.isDeleted == false).ToListAsync();
         }
 
         public async Task Update(KoiOrPool koiOrPool)

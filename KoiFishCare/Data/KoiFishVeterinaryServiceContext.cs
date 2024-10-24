@@ -163,7 +163,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 10,
                 Address = "123 Vet St.",
                 ImageURL = "https://example.com/vet1.jpg",
-                ImagePublicId = "vet1_image_id"
+                ImagePublicId = "vet1_image_id",
+                Email = "v1email@gmail.com"
             },
             new Veterinarian
             {
@@ -176,7 +177,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 8,
                 Address = "456 Vet St.",
                 ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id"
+                ImagePublicId = "vet2_image_id",
+                Email = "v2@gmail.com"
             },
             new Veterinarian
             {
@@ -189,7 +191,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 8,
                 Address = "456 Vet St.",
                 ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id"
+                ImagePublicId = "vet2_image_id",
+                Email = "v3@gmail.com"
             },
             new Veterinarian
             {
@@ -202,7 +205,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 8,
                 Address = "456 Vet St.",
                 ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id"
+                ImagePublicId = "vet2_image_id",
+                Email = "v4@gmail.com"
             },
             new Veterinarian
             {
@@ -215,7 +219,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 8,
                 Address = "456 Vet St.",
                 ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id"
+                ImagePublicId = "vet2_image_id",
+                Email = "v5@gmail.com"
             }
         );
 
