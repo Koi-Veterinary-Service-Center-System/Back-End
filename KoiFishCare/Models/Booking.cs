@@ -36,17 +36,27 @@ public partial class Booking
     public int PaymentID { get; set; }
     public Payment Payment { get; set; } = null!;
 
+    public string? PaymentTypeAtBooking { get; set; }
+
     // ---- Service -----------------------------------------------------------------------
     [ForeignKey("ServiceID")]
     public int ServiceID { get; set; }
 
     public Service Service { get; set; } = null!;
 
+    public string? ServiceNameAtBooking { get; set; }
+    public decimal ServicePriceAtBooking { get; set; }
+    public decimal ServiceQuantityPriceAtBooking { get; set; }
+
     // ---- Slot -----------------------------------------------------------------------
     [ForeignKey("SlotID")]
     public int SlotID { get; set; }
 
     public Slot Slot { get; set; } = null!;
+
+    public TimeOnly? SlotStartTimeAtBooking { get; set; }
+    public TimeOnly? SlotEndTimeAtBooking { get; set; }
+    public string? SlotWeekDateAtBooking { get; set; } = null!;
 
     // ---- Customer -----------------------------------------------------------------------
     [ForeignKey("CustomerID")]
@@ -59,10 +69,13 @@ public partial class Booking
     public string VetID { get; set; } = null!;
 
     public Veterinarian Veterinarian { get; set; } = null!;
+
     // ---- Prescription Record -----------------------------------------------------------------------
     public virtual ICollection<PrescriptionRecord> PrescriptionRecords { get; set; } = new List<PrescriptionRecord>();
+
     // ---- Booking Record -----------------------------------------------------------------------
     public virtual BookingRecord? BookingRecord { get; set; }
+
     // ---- Feedback -----------------------------------------------------------------------
     public virtual Feedback? Feedback { get; set; }
 

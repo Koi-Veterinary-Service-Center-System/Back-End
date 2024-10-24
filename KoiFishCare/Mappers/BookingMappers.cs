@@ -11,19 +11,30 @@ namespace KoiFishCare.Mappers
 {
     public static class BookingMappers
     {
-        public static Booking ToBookingFromCreate(this FromCreateBookingDTO createBookingDto)
+        public static Booking ToBookingFromCreate(this FromCreateBookingDTO createBookingDto, Slot slot, Service service, Payment payment, string customerId, string vetId)
         {
             return new Booking()
             {
                 InitAmount = createBookingDto.InitAmount,
                 Quantity = createBookingDto.Quantity,
-                ServiceID = createBookingDto.ServiceId,
+                ServiceID = service.ServiceID,
                 PaymentID = createBookingDto.PaymentId,
-                SlotID = createBookingDto.SlotId,
+                SlotID = slot.SlotID,
                 BookingDate = createBookingDto.BookingDate,
                 Location = createBookingDto.Location,
                 Note = createBookingDto.Note,
-                BookingStatus = createBookingDto.PaymentId == 1 ? BookingStatus.Scheduled : BookingStatus.Pending
+                BookingStatus = createBookingDto.PaymentId == 1 ? BookingStatus.Scheduled : BookingStatus.Pending,
+                CustomerID = customerId,
+                VetID = vetId,
+                Slot = slot,
+                Service = service,
+                PaymentTypeAtBooking = payment.Type,
+                ServiceNameAtBooking = service.ServiceName,
+                ServicePriceAtBooking = service.Price,
+                ServiceQuantityPriceAtBooking = service.QuantityPrice,
+                SlotStartTimeAtBooking = slot.StartTime,
+                SlotEndTimeAtBooking = slot.EndTime,
+                SlotWeekDateAtBooking = slot.WeekDate.ToString()
             };
         }
 
@@ -41,18 +52,19 @@ namespace KoiFishCare.Mappers
                 BookingStatus = booking.BookingStatus.ToString(),
                 MeetURL = booking.MeetURL,
                 PaymentID = booking.PaymentID,
-                PaymentType = booking.Payment?.Type,
+                PaymentTypeAtBooking = booking.PaymentTypeAtBooking,
                 ServiceID = booking.ServiceID,
-                ServiceName = booking.Service?.ServiceName,
+                ServiceNameAtBooking = booking.ServiceNameAtBooking,
                 SlotID = booking.SlotID,
-                SlotStartTime = booking.Slot?.StartTime,
-                SlotEndTime = booking.Slot?.EndTime,
-                SlotWeekDate = booking.Slot?.WeekDate.ToString(),
+                SlotStartTimeAtBooking = booking.SlotStartTimeAtBooking,
+                SlotEndTimeAtBooking = booking.SlotEndTimeAtBooking,
+                SlotWeekDateAtBooking = booking.SlotWeekDateAtBooking,
                 CustomerID = booking.CustomerID,
                 CustomerName = booking.Customer?.UserName,
                 PhoneNumber = booking.Customer?.PhoneNumber,
                 VetID = booking.VetID,
                 VetName = booking.Veterinarian?.UserName,
+                VetEmail = booking.Veterinarian?.Email,
                 ImageURL = booking.Veterinarian?.ImageURL,
                 BookingRecordID = booking.BookingRecord?.BookingRecordID,
                 ArisedMoney = booking.BookingRecord?.ArisedMoney,

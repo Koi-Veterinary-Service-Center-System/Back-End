@@ -17,7 +17,6 @@ public partial class Service
 
     public string Description { get; set; } = null!;
 
-
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }
 
@@ -25,8 +24,6 @@ public partial class Service
     public decimal QuantityPrice { get; set; }
 
     public double EstimatedDuration { get; set; }
-
-    public string? NoteQuantity { get; set; }
 
     public bool isDeleted { get; set; }
 

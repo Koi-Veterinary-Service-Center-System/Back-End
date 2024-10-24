@@ -42,7 +42,7 @@ namespace KoiFishCare.Repository
 
         public async Task<List<PrescriptionRecord>> GetListByCusUsername(string cusName)
         {
-            var list = await _context.PrescriptionRecords.Where(p => p.Booking.Customer.UserName.ToLower().Trim() == cusName.ToLower().Trim()).ToListAsync();
+            var list = await _context.PrescriptionRecords.Where(p => p.Booking!.Customer.UserName!.ToLower().Trim() == cusName.ToLower().Trim()).ToListAsync();
             return list;
         }
 

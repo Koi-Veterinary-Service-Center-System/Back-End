@@ -76,8 +76,8 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
 
-            var id = _userManager.GetUserId(this.User);
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.GetUserAsync(this.User);
+            if(user == null) return NotFound("Not found user");
             if (string.IsNullOrEmpty(user.UserName))
             {
                 return BadRequest("Could not determine the logged-in user's username.");

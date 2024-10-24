@@ -29,10 +29,12 @@ namespace KoiFishCare.Controllers
         private readonly IVetSlotRepository _vetSlotRepo;
         private readonly IPrescriptionRecordRepository _presRecRepo;
         private readonly IBookingRecordRepository _recordRepo;
+        private readonly IPaymentRepository _paymentRepo;
 
         public BookingController(UserManager<User> userManager, ISlotRepository slotRepo, 
         IServiceRepository serviceRepo, IBookingRepository bookingRepo,
-        IVetSlotRepository vetSlotRepo, IPrescriptionRecordRepository presRecRepo, IBookingRecordRepository recordRepo)
+        IVetSlotRepository vetSlotRepo, IPrescriptionRecordRepository presRecRepo, 
+        IBookingRecordRepository recordRepo, IPaymentRepository paymentRepo)
         {
             _userManager = userManager;
             _slotRepo = slotRepo;
@@ -41,6 +43,7 @@ namespace KoiFishCare.Controllers
             _vetSlotRepo = vetSlotRepo;
             _presRecRepo = presRecRepo;
             _recordRepo = recordRepo;
+            _paymentRepo = paymentRepo;
         }
 
         [HttpPost("create-booking")]
@@ -112,6 +115,10 @@ namespace KoiFishCare.Controllers
             var service = await _serviceRepo.GetServiceById(createBookingDto.ServiceId);
             if (service == null) return BadRequest("Service does not exist");
 
+            // Get Payment
+            var payment = await _paymentRepo.GetPaymentByID(createBookingDto.PaymentId);
+            if(payment == null) return BadRequest("Payment does not exist");
+
             // Get vet
             var vetUsername = createBookingDto.VetName;
             if (vetUsername != null && !vetUsername.IsNullOrEmpty())
@@ -133,12 +140,7 @@ namespace KoiFishCare.Controllers
                     return BadRequest("The selected vet is already booked");
                 }
 
-                var bookingModel = createBookingDto.ToBookingFromCreate();
-                bookingModel.CustomerID = userModel.Id;
-                bookingModel.VetID = vet.Id;
-                bookingModel.ServiceID = service.ServiceID;
-                bookingModel.Slot = slot;
-                bookingModel.Service = service;
+                var bookingModel = createBookingDto.ToBookingFromCreate(slot, service, payment, userModel.Id, vet.Id);
 
                 // FIX: Convert nullable TimeOnly to DateTime
                 var startDateTime = bookingModel.Slot.StartTime.HasValue
@@ -166,6 +168,7 @@ namespace KoiFishCare.Controllers
                 
                 var result = await _bookingRepo.CreateBooking(bookingModel);
 
+                if(vetSlot.VetID == null) return NotFound("Can not find VetId");
                 await _vetSlotRepo.Update(vetSlot.VetID, vetSlot.SlotID, true);
 
                 return Ok(result.ToDtoFromModel());
@@ -176,12 +179,8 @@ namespace KoiFishCare.Controllers
                 if (availableVet == null)
                     return BadRequest("No available vet for the chosen slot");
 
-                var bookingModel = createBookingDto.ToBookingFromCreate();
-                bookingModel.CustomerID = userModel.Id;
-                bookingModel.VetID = availableVet.VetID;
-                bookingModel.ServiceID = service.ServiceID;
-                bookingModel.Slot = slot;
-                bookingModel.Service = service;
+                if(availableVet.VetID == null) return NotFound("Can not find VetId");
+                var bookingModel = createBookingDto.ToBookingFromCreate(slot, service, payment, userModel.Id, availableVet.VetID);
 
                 // FIX: Convert nullable TimeOnly to DateTime
                 var startDateTime = bookingModel.Slot.StartTime.HasValue
