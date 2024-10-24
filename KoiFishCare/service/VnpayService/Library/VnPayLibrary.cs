@@ -24,7 +24,7 @@ namespace KoiFishCare.service.VnpayService.Library
             {
                 if (!string.IsNullOrEmpty(key) && key.StartsWith("vnp_"))
                 {
-                    vnPay.AddResponseData(key, value);
+                    vnPay.AddResponseData(key, value!);
                 }
             }
 
@@ -36,7 +36,7 @@ namespace KoiFishCare.service.VnpayService.Library
             var orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
 
             var checkSignature =
-                vnPay.ValidateSignature(vnpSecureHash, hashSecret); //check Signature
+                vnPay.ValidateSignature(vnpSecureHash!, hashSecret); //check Signature
 
             if (!checkSignature)
                 return new PaymentResponseModel()

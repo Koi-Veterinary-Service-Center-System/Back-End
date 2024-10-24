@@ -143,6 +143,7 @@ namespace KoiFishCare.Controllers
                 return Redirect("http://localhost:5173/paymentfailed");
             }
 
+            if(response.OrderId == null) return NotFound("Not found bookingId");
             var txnRefParts = response.OrderId.Split('-');
             if (txnRefParts.Length > 0 && int.TryParse(txnRefParts[0], out int bookingId))
             {

@@ -53,6 +53,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
 
+            if(model.UserName == null) return NotFound("Not found user name");
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
@@ -61,9 +62,10 @@ namespace KoiFishCare.Controllers
 
             if (user.isBanned)
             {
-                return Unauthorized("Mày bị cấm cửa r con");
+                return Unauthorized("You are banned!");
             }
 
+            if(model.Password == null) return NotFound("Not found password");
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
             if (!result.Succeeded)
             {
@@ -114,6 +116,7 @@ namespace KoiFishCare.Controllers
             {
                 // Extract user info from the claims
                 var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
+                if(email == null) return NotFound("Not found email");
 
                 // Check if the user exists
                 var user = await _userManager.FindByEmailAsync(email);
@@ -126,7 +129,9 @@ namespace KoiFishCare.Controllers
                 // Generate JWT token for the authenticated user
                 var userRoles = await _userManager.GetRolesAsync(user);
                 var userRole = userRoles.FirstOrDefault();
+                if(userRole == null) return NotFound("Not found user role");
                 var role = await _roleManager.FindByNameAsync(userRole);
+                if(role == null) return NotFound("Not found role");
                 var token = _tokenService.CreateToken(user, role);
 
                 // Redirect to the frontend with token and username as query params
@@ -148,30 +153,30 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (model.UserName.Length < 3)
+            if (model.UserName!.Length < 3)
             {
                 return BadRequest("User name length must be more than 3!");
             }
 
-            if (!IsValidEmail(model.Email))
+            if (!IsValidEmail(model.Email!))
             {
                 return BadRequest("Invalid email!");
             }
 
-            if (await IsEmailExistedNoId(model.Email))
+            if (await IsEmailExistedNoId(model.Email!))
             {
                 return BadRequest("This email is already existed!");
             }
 
             var customer = new Customer
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
+                FirstName = model.FirstName!,
+                LastName = model.LastName!,
                 UserName = model.UserName,
                 Email = model.Email
             };
 
-            var result = await _userManager.CreateAsync(customer, model.Password);
+            var result = await _userManager.CreateAsync(customer, model.Password!);
             if (result.Succeeded)
             {
                 var roleResult = await _userManager.AddToRoleAsync(customer, "Customer");
@@ -184,7 +189,7 @@ namespace KoiFishCare.Controllers
                         Email = customer.Email,
                         FirstName = customer.FirstName,
                         LastName = customer.LastName,
-                        Token = _tokenService.CreateToken(customer, role)
+                        Token = _tokenService.CreateToken(customer, role!)
                     };
                     return Ok(userDto);
                 }
@@ -197,7 +202,7 @@ namespace KoiFishCare.Controllers
         public async Task<IActionResult> ViewProfile()
         {
             var id = _userManager.GetUserId(this.User);
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id!);
             if (user == null)
                 return NotFound("User not found.");
 
@@ -230,12 +235,12 @@ namespace KoiFishCare.Controllers
                 return BadRequest("This user name is already existed!");
             }
 
-            if (!IsValidEmail(updateDTO.Email))
+            if (!IsValidEmail(updateDTO.Email!))
             {
                 return BadRequest("Invalid email!");
             }
 
-            if (await IsEmailExisted(id, updateDTO.Email))
+            if (await IsEmailExisted(id, updateDTO.Email!))
             {
                 return BadRequest("This email is already existed!");
             }
@@ -282,12 +287,12 @@ namespace KoiFishCare.Controllers
                 return BadRequest("User name length must be more than 3!");
             }
 
-            if (!IsValidEmail(userDTO.Email))
+            if (!IsValidEmail(userDTO.Email!))
             {
                 return BadRequest("Invalid email!");
             }
 
-            if (await IsEmailExistedNoId(userDTO.Email))
+            if (await IsEmailExistedNoId(userDTO.Email!))
             {
                 return BadRequest("This email is already existed!");
             }

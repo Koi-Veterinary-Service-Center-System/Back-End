@@ -45,7 +45,7 @@ namespace KoiFishCare.Controllers
             if (vets == null || !vets.Any())
                 return BadRequest("There is no available vet with this slot");
 
-            var vetDtos = vets.Select(vs => vs.ToVetDtoFromVetSlot()).ToList();
+            var vetDtos = vets.Select(vs => vs!.ToVetDtoFromVetSlot()).ToList();
 
             return Ok(vetDtos);
         }
