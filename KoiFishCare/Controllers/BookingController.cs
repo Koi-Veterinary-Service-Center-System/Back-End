@@ -151,10 +151,6 @@ namespace KoiFishCare.Controllers
                 bookingModel.Service = service;
                 bookingModel.InitAmount = createBookingDto.InitAmount;
 
-                var result = await _bookingRepo.CreateBooking(bookingModel);
-
-                await _vetSlotRepo.Update(vetSlot.VetID, vetSlot.SlotID, true);
-
                 // FIX: Convert nullable TimeOnly to DateTime
                 var startDateTime = bookingModel.Slot.StartTime.HasValue
                     ? DateTime.UtcNow.Date.Add(bookingModel.Slot.StartTime.Value.ToTimeSpan())
@@ -177,11 +173,13 @@ namespace KoiFishCare.Controllers
                 var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest);
                 var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
 
-                return Ok(new
-                {
-                    BookingDetails = result.ToDtoFromModel(),
-                    GoogleMeetLink = googleMeetLink ?? "No Google Meet link created"
-                });
+                bookingModel.MeetURL = googleMeetLink;
+                
+                var result = await _bookingRepo.CreateBooking(bookingModel);
+
+                await _vetSlotRepo.Update(vetSlot.VetID, vetSlot.SlotID, true);
+
+                return Ok(result.ToDtoFromModel());
             }
             else
             {
@@ -196,10 +194,6 @@ namespace KoiFishCare.Controllers
                 bookingModel.Slot = slot;
                 bookingModel.Service = service;
                 bookingModel.InitAmount = createBookingDto.InitAmount;
-
-                var result = await _bookingRepo.CreateBooking(bookingModel);
-
-                await _vetSlotRepo.Update(availableVet.VetID, availableVet.SlotID, true);
 
                 // FIX: Convert nullable TimeOnly to DateTime
                 var startDateTime = bookingModel.Slot.StartTime.HasValue
@@ -223,11 +217,13 @@ namespace KoiFishCare.Controllers
                 var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest);
                 var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
 
-                return Ok(new
-                {
-                    BookingDetails = result.ToDtoFromModel(),
-                    GoogleMeetLink = googleMeetLink ?? "No Google Meet link created"
-                });
+                bookingModel.MeetURL = googleMeetLink;
+                
+                var result = await _bookingRepo.CreateBooking(bookingModel);
+
+                await _vetSlotRepo.Update(availableVet.VetID, availableVet.SlotID, true);
+
+                return Ok(result.ToDtoFromModel());
             }
         }
 
