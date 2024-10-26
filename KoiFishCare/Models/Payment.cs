@@ -11,8 +11,6 @@ public partial class Payment
     [Key]
     public int PaymentID { get; set; }
 
-    public string? Qrcode { get; set; }
-
     public string Type { get; set; } = null!;
 
     public bool isDeleted { get; set; }

@@ -8,7 +8,6 @@ namespace KoiFishCare.Dtos.Payment
 {
     public class AddPaymentDTO
     {
-        public string? Qrcode { get; set; }
 
         [Required(ErrorMessage = "Type of payment is required.")]
         public string Type { get; set; } = null!;
