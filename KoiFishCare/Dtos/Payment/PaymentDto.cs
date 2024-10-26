@@ -8,7 +8,6 @@ namespace KoiFishCare.DTOs.Payment
     public class PaymentDTO
     {
         public int? PaymentID { get; set; }
-        public string? Qrcode { get; set; }
         public string? Type { get; set; }
     }
 }

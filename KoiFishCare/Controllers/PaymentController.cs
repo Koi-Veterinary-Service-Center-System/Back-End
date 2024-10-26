@@ -38,7 +38,6 @@ namespace KoiFishCare.Controllers
             var paymentsDto = payments.Select(p => new PaymentDTO
             {
                 PaymentID = p.PaymentID,
-                Qrcode = p.Qrcode,
                 Type = p.Type
             }).ToList();
 

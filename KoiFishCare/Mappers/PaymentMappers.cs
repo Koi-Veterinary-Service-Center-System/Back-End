@@ -13,7 +13,6 @@ namespace KoiFishCare.Mappers
         {
             return new Payment
             {
-                Qrcode = addPaymentDTO.Qrcode,
                 Type = addPaymentDTO.Type,
             };
         }

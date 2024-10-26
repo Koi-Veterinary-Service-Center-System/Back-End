@@ -389,7 +389,6 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new Payment
             {
                 PaymentID = 2,
-                Qrcode = "qrcode2",
                 Type = "VNPay"
             }
         );
