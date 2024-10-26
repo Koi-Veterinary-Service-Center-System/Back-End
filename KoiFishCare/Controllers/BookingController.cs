@@ -31,9 +31,9 @@ namespace KoiFishCare.Controllers
         private readonly IBookingRecordRepository _recordRepo;
         private readonly IPaymentRepository _paymentRepo;
 
-        public BookingController(UserManager<User> userManager, ISlotRepository slotRepo, 
+        public BookingController(UserManager<User> userManager, ISlotRepository slotRepo,
         IServiceRepository serviceRepo, IBookingRepository bookingRepo,
-        IVetSlotRepository vetSlotRepo, IPrescriptionRecordRepository presRecRepo, 
+        IVetSlotRepository vetSlotRepo, IPrescriptionRecordRepository presRecRepo,
         IBookingRecordRepository recordRepo, IPaymentRepository paymentRepo)
         {
             _userManager = userManager;
@@ -117,7 +117,7 @@ namespace KoiFishCare.Controllers
 
             // Get Payment
             var payment = await _paymentRepo.GetPaymentByID(createBookingDto.PaymentId);
-            if(payment == null) return BadRequest("Payment does not exist");
+            if (payment == null) return BadRequest("Payment does not exist");
 
             // Get vet
             var vetUsername = createBookingDto.VetName;
@@ -165,10 +165,10 @@ namespace KoiFishCare.Controllers
                 var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
 
                 bookingModel.MeetURL = googleMeetLink;
-                
+
                 var result = await _bookingRepo.CreateBooking(bookingModel);
 
-                if(vetSlot.VetID == null) return NotFound("Can not find VetId");
+                if (vetSlot.VetID == null) return NotFound("Can not find VetId");
                 await _vetSlotRepo.Update(vetSlot.VetID, vetSlot.SlotID, true);
 
                 return Ok(result.ToDtoFromModel());
@@ -179,7 +179,7 @@ namespace KoiFishCare.Controllers
                 if (availableVet == null)
                     return BadRequest("No available vet for the chosen slot");
 
-                if(availableVet.VetID == null) return NotFound("Can not find VetId");
+                if (availableVet.VetID == null) return NotFound("Can not find VetId");
                 var bookingModel = createBookingDto.ToBookingFromCreate(slot, service, payment, userModel.Id, availableVet.VetID);
 
                 // FIX: Convert nullable TimeOnly to DateTime
@@ -205,7 +205,7 @@ namespace KoiFishCare.Controllers
                 var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
 
                 bookingModel.MeetURL = googleMeetLink;
-                
+
                 var result = await _bookingRepo.CreateBooking(bookingModel);
 
                 await _vetSlotRepo.Update(availableVet.VetID, availableVet.SlotID, true);
@@ -512,7 +512,7 @@ namespace KoiFishCare.Controllers
 
             string refundInfor = string.IsNullOrWhiteSpace(dto.BankName) || string.IsNullOrWhiteSpace(dto.CustomerBankNumber) || string.IsNullOrWhiteSpace(dto.CustomerBankAccountName)
                 ? ""
-                : $"{dto.BankName}\n{dto.CustomerBankNumber}\n{dto.CustomerBankAccountName}";
+                : dto.BankName + " " + dto.CustomerBankNumber + " " + dto.CustomerBankAccountName;
 
             var refundMoney = isCashPayment ? 0 : booking.InitAmount * (refundPercent / 100);
             string note = refundPercent == 0 ? "Your booking is not refundable because the cancellation time is too close to the appointment date." : "";
@@ -530,7 +530,7 @@ namespace KoiFishCare.Controllers
                 RefundPercent = refundPercent,
                 RefundMoney = refundMoney,
                 CreateAt = DateTime.Now,
-                Note = $"{note} {noteByCentre} {refundInfor}"
+                Note = note + " | " + noteByCentre + " | " + refundInfor
             };
 
             await _recordRepo.CreateAsync(record);
