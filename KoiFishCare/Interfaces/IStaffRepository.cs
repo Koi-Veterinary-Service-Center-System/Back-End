@@ -8,6 +8,6 @@ namespace KoiFishCare.Interfaces
 {
     public interface IStaffRepository
     {
-        Task SaveStaffAsync(Staff staff);
+        Task SaveStaffAsync(User staff);
     }
 }

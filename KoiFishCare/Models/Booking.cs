@@ -62,13 +62,13 @@ public partial class Booking
     [ForeignKey("CustomerID")]
     public string CustomerID { get; set; } = null!;
 
-    public Customer Customer { get; set; } = null!;
+    public User Customer { get; set; } = null!;
 
     // ---- Vet -----------------------------------------------------------------------
     [ForeignKey("VetID")]
     public string VetID { get; set; } = null!;
 
-    public Veterinarian Veterinarian { get; set; } = null!;
+    public User Veterinarian { get; set; } = null!;
 
     // ---- Prescription Record -----------------------------------------------------------------------
     public virtual ICollection<PrescriptionRecord> PrescriptionRecords { get; set; } = new List<PrescriptionRecord>();

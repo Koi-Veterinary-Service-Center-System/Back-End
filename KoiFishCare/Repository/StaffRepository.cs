@@ -17,9 +17,9 @@ namespace KoiFishCare.Repository
             _context = context;
         }
 
-        public async Task SaveStaffAsync(Staff staff)
+        public async Task SaveStaffAsync(User staff)
         {
-            await _context.Staffs.AddAsync(staff);
+            await _context.Users.AddAsync(staff);
             await _context.SaveChangesAsync();
         }
     }

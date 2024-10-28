@@ -18,8 +18,6 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
     public virtual DbSet<Booking> Bookings { get; set; }
 
-    public virtual DbSet<Customer> Customers { get; set; }
-
     public virtual DbSet<Distance> Distances { get; set; }
 
     public virtual DbSet<Feedback> Feedbacks { get; set; }
@@ -32,13 +30,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
     public virtual DbSet<Slot> Slots { get; set; }
 
-    public virtual DbSet<Veterinarian> Vets { get; set; }
-
-    public virtual DbSet<Staff> Staffs { get; set; }
-
     public virtual DbSet<VetSlot> VetSlots { get; set; }
-
-    public virtual DbSet<Veterinarian> Veterinarians { get; set; }
 
     public virtual DbSet<BookingRecord> BookingRecords { get; set; }
 
@@ -70,14 +62,14 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
         // ---- Customer Relationship -----------------------------------------------------------------------
         modelBuilder.Entity<Booking>()
             .HasOne(b => b.Customer)
-            .WithMany(c => c.Bookings)  // Assuming Customer has a Bookings collection
+            .WithMany(c => c.CustomerBookings)  // Assuming Customer has a Bookings collection
             .HasForeignKey(b => b.CustomerID)
             .OnDelete(DeleteBehavior.Restrict);  // Cascade delete when Customer is deleted
 
         // ---- Veterinarian Relationship -----------------------------------------------------------------------
         modelBuilder.Entity<Booking>()
             .HasOne(b => b.Veterinarian)
-            .WithMany(v => v.Bookings)  // Assuming Veterinarian has a Bookings collection
+            .WithMany(v => v.VetBookings)  // Assuming Veterinarian has a Bookings collection
             .HasForeignKey(b => b.VetID)
             .OnDelete(DeleteBehavior.Restrict);  // No cascading delete
 
@@ -108,21 +100,21 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
         modelBuilder.Entity<IdentityRole>().HasData(roles);
 
         //Define keys
-        modelBuilder.Entity<Veterinarian>()
-                .ToTable("Veterinarians")
-                .HasBaseType<User>();
+        // modelBuilder.Entity<User>()
+        //         .ToTable("Veterinarians");
 
-        modelBuilder.Entity<Customer>()
-            .ToTable("Customers")
-            .HasBaseType<User>();
 
-        modelBuilder.Entity<Staff>()
-            .ToTable("Staffs")
-            .HasBaseType<User>();
+        // modelBuilder.Entity<User>()
+        //     .ToTable("Customers");
+
+
+        // modelBuilder.Entity<User>()
+        //     .ToTable("Staffs");
+
 
         modelBuilder.Entity<Booking>()
             .HasOne(b => b.Veterinarian)
-            .WithMany(v => v.Bookings)
+            .WithMany(v => v.VetBookings)
             .HasForeignKey(b => b.VetID)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -142,8 +134,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
         //SEED DATA=================
 
         // Seed data for Veterinarian
-        modelBuilder.Entity<Veterinarian>().HasData(
-            new Veterinarian
+        modelBuilder.Entity<User>().HasData(
+            new User
             {
                 Id = "v1", // Primary key inherited from IdentityUser (User)
                 FirstName = "John",
@@ -157,7 +149,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = "vet1_image_id",
                 Email = "v1email@gmail.com"
             },
-            new Veterinarian
+            new User
             {
                 Id = "v2",
                 FirstName = "Jane",
@@ -171,7 +163,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = "vet2_image_id",
                 Email = "v2@gmail.com"
             },
-            new Veterinarian
+            new User
             {
                 Id = "v3",
                 FirstName = "vet3",
@@ -185,7 +177,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = "vet2_image_id",
                 Email = "v3@gmail.com"
             },
-            new Veterinarian
+            new User
             {
                 Id = "v4",
                 FirstName = "Vet 4",
@@ -199,7 +191,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = "vet2_image_id",
                 Email = "v4@gmail.com"
             },
-            new Veterinarian
+            new User
             {
                 Id = "v5",
                 FirstName = "Vet 5",
@@ -2995,8 +2987,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
         );
 
         // Seed data for Customers
-        modelBuilder.Entity<Customer>().HasData(
-            new Customer
+        modelBuilder.Entity<User>().HasData(
+            new User
             {
                 Id = "c1",
                 FirstName = "Alice",
@@ -3008,7 +3000,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImageURL = "https://example.com/customer1.jpg",
                 ImagePublicId = "customer1_image_id"
             },
-            new Customer
+            new User
             {
                 Id = "c2",
                 FirstName = "Bob",

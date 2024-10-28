@@ -170,7 +170,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest("This email is already existed!");
             }
 
-            var customer = new Customer
+            var customer = new User
             {
                 FirstName = model.FirstName!,
                 LastName = model.LastName!,
@@ -366,7 +366,7 @@ namespace KoiFishCare.Controllers
 
             if (userDTO.Role.Equals("Staff"))
             {
-                var user = new Staff
+                var user = new User
                 {
                     UserName = userDTO.UserName,
                     FirstName = userDTO.FirstName,
@@ -392,7 +392,7 @@ namespace KoiFishCare.Controllers
 
             else if (userDTO.Role.Equals("Manager"))
             {
-                var user = new Staff
+                var user = new User
                 {
                     UserName = userDTO.UserName,
                     FirstName = userDTO.FirstName,
@@ -417,7 +417,7 @@ namespace KoiFishCare.Controllers
 
             else
             {
-                var user = new Veterinarian
+                var user = new User
                 {
                     UserName = userDTO.UserName,
                     FirstName = userDTO.FirstName,

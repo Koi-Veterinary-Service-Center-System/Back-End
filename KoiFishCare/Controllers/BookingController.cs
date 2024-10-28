@@ -123,7 +123,7 @@ namespace KoiFishCare.Controllers
             var vetUsername = createBookingDto.VetName;
             if (vetUsername != null && !vetUsername.IsNullOrEmpty())
             {
-                var vet = await _userManager.FindByNameAsync(vetUsername) as Veterinarian;
+                var vet = await _userManager.FindByNameAsync(vetUsername) as User;
                 if (vet == null)
                 {
                     return BadRequest("Vet does not exist");
