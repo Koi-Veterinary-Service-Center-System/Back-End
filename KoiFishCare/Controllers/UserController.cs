@@ -32,9 +32,10 @@ namespace KoiFishCare.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IStaffRepository _staffRepo;
         private readonly IVetRepository _vetRepo;
+        private readonly IEmailService _emailService;
 
         public UserController(SignInManager<User> signInManager, UserManager<User> userManager,
-        ItokenService tokenService, IUserRepository userRepo, RoleManager<IdentityRole> roleManager, IStaffRepository staffRepo, IVetRepository vetRepo)
+        ItokenService tokenService, IUserRepository userRepo, RoleManager<IdentityRole> roleManager, IStaffRepository staffRepo, IVetRepository vetRepo, IEmailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -43,6 +44,7 @@ namespace KoiFishCare.Controllers
             _roleManager = roleManager;
             _staffRepo = staffRepo;
             _vetRepo = vetRepo;
+            _emailService = emailService;
         }
 
         [HttpPost("login")]
@@ -53,7 +55,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(model.UserName == null) return NotFound("Not found user name");
+            if (model.UserName == null) return NotFound("Not found user name");
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
@@ -65,7 +67,7 @@ namespace KoiFishCare.Controllers
                 return Unauthorized("You are banned!");
             }
 
-            if(model.Password == null) return NotFound("Not found password");
+            if (model.Password == null) return NotFound("Not found password");
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
             if (!result.Succeeded)
             {
@@ -116,7 +118,7 @@ namespace KoiFishCare.Controllers
             {
                 // Extract user info from the claims
                 var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
-                if(email == null) return NotFound("Not found email");
+                if (email == null) return NotFound("Not found email");
 
                 // Check if the user exists
                 var user = await _userManager.FindByEmailAsync(email);
@@ -129,9 +131,9 @@ namespace KoiFishCare.Controllers
                 // Generate JWT token for the authenticated user
                 var userRoles = await _userManager.GetRolesAsync(user);
                 var userRole = userRoles.FirstOrDefault();
-                if(userRole == null) return NotFound("Not found user role");
+                if (userRole == null) return NotFound("Not found user role");
                 var role = await _roleManager.FindByNameAsync(userRole);
-                if(role == null) return NotFound("Not found role");
+                if (role == null) return NotFound("Not found role");
                 var token = _tokenService.CreateToken(user, role);
 
                 // Redirect to the frontend with token and username as query params
@@ -196,6 +198,66 @@ namespace KoiFishCare.Controllers
             }
             return BadRequest(result.Errors);
         }
+
+
+        [HttpPost("request-password-reset")]
+        public async Task<IActionResult> RequestPasswordReset([FromBody] ResetPasswordRequestDTO model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound("User with this email does not exist.");
+            }
+
+            // Generate password reset token
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            // Create reset link (adjust the URL based on your frontend route)
+            var resetLink = Url.Action("ResetPassword", "User", new { token, email = model.Email }, Request.Scheme);
+
+            // Send email with the reset link
+            // This assumes you have a service for sending emails
+            await _emailService.SendEmailAsync(model.Email, "Password Reset",
+                $"Please reset your password by clicking this link: <a href='{resetLink}'>Reset Password</a>");
+
+            return Ok("Password reset link has been sent to your email.");
+        }
+
+
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound("User with this email does not exist.");
+            }
+
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                return BadRequest("Passwords do not match.");
+            }
+
+            var result = await _userManager.RemovePasswordAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Failed to remove old password.");
+            }
+
+            result = await _userManager.AddPasswordAsync(user, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Failed to set new password.");
+            }
+
+            return Ok("Password reset successfully.");
+        }
+
+
+
+
+
 
         [Authorize]
         [HttpGet("profile")]
