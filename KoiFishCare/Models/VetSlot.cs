@@ -15,7 +15,7 @@ public class VetSlot
     // ---- Veterinarian -----------------------------------------------------------------------
     [ForeignKey("VetID")]
     public string? VetID { get; set; }
-    public Veterinarian? Veterinarian { get; set; }
+    public User? Veterinarian { get; set; }
 
     // ---- Slot -----------------------------------------------------------------------
     [ForeignKey("SlotID")]

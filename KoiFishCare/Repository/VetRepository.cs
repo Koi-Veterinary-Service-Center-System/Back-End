@@ -17,19 +17,29 @@ namespace KoiFishCare.Repository
         {
             _context = context;
         }
-        public async Task<List<Veterinarian>> GetAllVet()
+        public async Task<List<User>?> GetAllVet()
         {
-            return await _context.Veterinarians.ToListAsync();
+            var vetRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Vet");
+            if (vetRole == null)
+            {
+                return null;
+            }
+            return await _context.Users.Where(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == vetRole.Id)).ToListAsync();
         }
 
-        public async Task<Veterinarian?> GetVetById(string id)
+        public async Task<User?> GetVetById(string id)
         {
-            return await _context.Veterinarians.FirstOrDefaultAsync(v => v.Id == id);
+            var vetRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Vet");
+            if (vetRole == null)
+            {
+                return null;
+            }
+            return await _context.Users.Where(u => _context.UserRoles.Any(ur => ur.UserId == id && ur.RoleId == vetRole.Id)).FirstOrDefaultAsync();
         }
 
-        public async Task SaveVetAsync(Veterinarian veterinarian)
+        public async Task SaveVetAsync(User veterinarian)
         {
-            await _context.Veterinarians.AddAsync(veterinarian);
+            await _context.Users.AddAsync(veterinarian);
             await _context.SaveChangesAsync();
         }
     }

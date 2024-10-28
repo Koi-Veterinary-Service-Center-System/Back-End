@@ -9,7 +9,7 @@ namespace KoiFishCare.Mappers
 {
     public static class VetMappers
     {
-        public static VetDTO ToVetDto(this Veterinarian vet)
+        public static VetDTO ToVetDto(this User vet)
         {
             return new VetDTO
             {
