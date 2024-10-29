@@ -15,21 +15,13 @@ namespace KoiFishCare.Mappers
             {
                 BookingRecordID = bookingRecord.BookingRecordID,
                 BookingID = bookingRecord.Booking.BookingID,
-                ArisedMoney = bookingRecord.ArisedMoney,
+                ArisedQuantity = bookingRecord.ArisedQuantity,
+                QuantityMoney = bookingRecord.QuantityMoney,
+                ReceivableAmount = bookingRecord.Booking.isPaid == true ? bookingRecord.QuantityMoney : bookingRecord.TotalAmount,
                 TotalAmount = bookingRecord.TotalAmount,
                 Note = bookingRecord.Note,
                 RefundMoney = bookingRecord.RefundMoney,
                 RefundPercent = bookingRecord.RefundPercent
-            };
-        }
-
-        public static BookingRecord ToModelFromDTO(this FromCreateBookingRecordDTO fromCreateBookingRecordDTO)
-        {
-            return new BookingRecord()
-            {
-                BookingID = fromCreateBookingRecordDTO.BookingID,
-                ArisedMoney = fromCreateBookingRecordDTO.ArisedMoney,
-                Note = fromCreateBookingRecordDTO.Note
             };
         }
 

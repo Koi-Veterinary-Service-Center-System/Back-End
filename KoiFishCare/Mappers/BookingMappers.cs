@@ -54,7 +54,7 @@ namespace KoiFishCare.Mappers
                 MeetURL = booking.MeetURL,
                 PaymentID = booking.PaymentID,
                 PaymentTypeAtBooking = booking.PaymentTypeAtBooking,
-                Quantity = booking.Quantity,
+                Quantity = booking.Quantity + (booking.BookingRecord?.ArisedQuantity ?? 0),
                 ServiceID = booking.ServiceID,
                 ServiceNameAtBooking = booking.ServiceNameAtBooking,
                 ServicePriceAtBooking = booking.ServicePriceAtBooking,
@@ -71,7 +71,6 @@ namespace KoiFishCare.Mappers
                 VetEmail = booking.Veterinarian?.Email,
                 ImageURL = booking.Veterinarian?.ImageURL,
                 BookingRecordID = booking.BookingRecord?.BookingRecordID,
-                ArisedMoney = booking.BookingRecord?.ArisedMoney,
                 TotalAmount = booking.BookingRecord?.TotalAmount,
                 BookingRecordNote = booking.BookingRecord?.Note
             };
