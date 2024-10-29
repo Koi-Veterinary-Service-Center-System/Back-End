@@ -66,7 +66,7 @@ namespace KoiFishCare.Repository
 
         public async Task<List<VetSlot>?> GetVetSlotByVetID(string vetID)
         {
-            return await _context.VetSlots.Include(x => x.Veterinarian).Include(x => x.Slot).Where(x => x.VetID == vetID).ToListAsync();
+            return await _context.VetSlots.Include(x => x.Veterinarian).ThenInclude(x => x.VetBookings).Include(x => x.Slot).Where(x => x.VetID == vetID).ToListAsync();
         }
 
         public async Task<VetSlot?> Update(string vetId, int slotId, bool isBooked)
