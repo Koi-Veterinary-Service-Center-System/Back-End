@@ -22,7 +22,8 @@ namespace KoiFishCare.Mappers
                 VetId = vetSlot.Veterinarian?.Id,
                 VetName = vetSlot.Veterinarian?.UserName,
                 VetFirstName = vetSlot.Veterinarian?.FirstName,
-                VetLastName = vetSlot.Veterinarian?.LastName
+                VetLastName = vetSlot.Veterinarian?.LastName,
+                MeetURL = vetSlot.Veterinarian?.VetBookings.FirstOrDefault(b => b.SlotID == vetSlot.SlotID)?.MeetURL ?? ""
             };
         }
 
