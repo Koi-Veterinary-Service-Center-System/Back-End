@@ -9,7 +9,7 @@ namespace KoiFishCare.Dtos.BookingRecord
     {
         public int BookingID { get; set; }
 
-        public decimal ArisedMoney { get; set; }
+        public int ArisedQuantity { get; set; }
 
         public string? Note { get; set; }
 

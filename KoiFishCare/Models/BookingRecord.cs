@@ -16,8 +16,10 @@ namespace KoiFishCare.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal TotalAmount { get; set; }
 
+        public int ArisedQuantity { get; set; } 
+
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal ArisedMoney { get; set; }
+        public decimal QuantityMoney { get; set; }
 
         public string? Note { get; set; }
 

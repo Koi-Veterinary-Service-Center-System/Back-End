@@ -11,7 +11,11 @@ namespace KoiFishCare.Dtos.BookingRecord
 
         public int BookingID { get; set; }
 
-        public decimal ArisedMoney { get; set; }
+        public int ArisedQuantity { get; set; }
+
+        public decimal QuantityMoney { get; set; }
+
+        public decimal ReceivableAmount { get; set; }
 
         public decimal TotalAmount { get; set; }
 

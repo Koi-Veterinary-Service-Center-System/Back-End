@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Google.Apis.Calendar.v3.Data;
 using KoiFishCare.Dtos.BookingRecord;
 using KoiFishCare.Interfaces;
 using KoiFishCare.Mappers;
@@ -92,13 +93,15 @@ namespace KoiFishCare.Controllers
             BookingRecord bookingRecord = new BookingRecord()
             {
                 BookingID = createBookingRecordDTO.BookingID,
-                ArisedMoney = createBookingRecordDTO.ArisedMoney,
-                TotalAmount = createBookingRecordDTO.ArisedMoney + existingBooking.InitAmount
+                ArisedQuantity = createBookingRecordDTO.ArisedQuantity,
+                QuantityMoney = (createBookingRecordDTO.ArisedQuantity + existingBooking.Quantity) * existingBooking.Service.QuantityPrice,
+                TotalAmount = ((createBookingRecordDTO.ArisedQuantity + existingBooking.Quantity) * existingBooking.Service.QuantityPrice) + existingBooking.InitAmount,
+                Note = createBookingRecordDTO.Note,
             };
+
             var result = await _bookingRecordRepo.CreateAsync(bookingRecord);
             existingBooking.BookingStatus = BookingStatus.Completed;
             _bookingRepo.UpdateBooking(existingBooking);
-
             return Ok(result.ToDTOFromModel());
         }
 
@@ -124,8 +127,9 @@ namespace KoiFishCare.Controllers
             }
 
             existingBookingRecord.BookingID = bookingID;
-            existingBookingRecord.ArisedMoney = updateBookingRecordDTO.ArisedMoney;
-            existingBookingRecord.TotalAmount = existingBooking.InitAmount + updateBookingRecordDTO.ArisedMoney;
+            existingBookingRecord.ArisedQuantity = updateBookingRecordDTO.ArisedQuantity;
+            existingBookingRecord.QuantityMoney = (updateBookingRecordDTO.ArisedQuantity + existingBooking.Quantity) * existingBooking.Service.QuantityPrice;
+            existingBookingRecord.TotalAmount = existingBooking.InitAmount + ((updateBookingRecordDTO.ArisedQuantity + existingBooking.Quantity) * existingBooking.Service.QuantityPrice);
             existingBookingRecord.Note = existingBooking.Note;
 
             var updateBookingRecord = await _bookingRecordRepo.UpdateAsync(existingBookingRecord);
