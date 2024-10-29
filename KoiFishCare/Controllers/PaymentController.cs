@@ -117,7 +117,7 @@ namespace KoiFishCare.Controllers
             if (booking == null)
                 return NotFound("Invalid bookingId");
 
-            if(booking.Payment.Type.Contains("cash") || booking.Payment.Type.Contains("Cash")) 
+            if (booking.Payment.Type.Contains("cash") || booking.Payment.Type.Contains("Cash"))
                 return BadRequest("Cash payment cannot use this!");
 
             var model = new PaymentInformationModel()
@@ -137,34 +137,38 @@ namespace KoiFishCare.Controllers
         {
             var response = _vnPayService.PaymentExecute(Request.Query);
 
-            if (response == null || response.VnPayResponseCode != "00")
+            if (response == null || response.OrderId == null)
+                return Redirect("http://localhost:5173/paymentfailed");
+
+            if (!TryParseBookingId(response.OrderId, out int bookingId))
+                return Redirect("http://localhost:5173/paymentfailed");
+
+            var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
+            if (booking == null)
             {
                 return Redirect("http://localhost:5173/paymentfailed");
             }
 
-            if(response.OrderId == null) return NotFound("Not found bookingId");
-            var txnRefParts = response.OrderId.Split('-');
-            if (txnRefParts.Length > 0 && int.TryParse(txnRefParts[0], out int bookingId))
+            if (response.VnPayResponseCode != "00")
             {
-                var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
-                if (booking != null)
-                {
-                    booking.BookingStatus = Models.Enum.BookingStatus.Scheduled;
-                    booking.isPaid = true;
-                    _bookingRepo.UpdateBooking(booking);
-
-                    return Redirect($"http://localhost:5173/paymentsuccess/{bookingId}");
-                }
-                else
-                {
-                    return Redirect("http://localhost:5173/paymentfailed");
-                }
-            }
-            else
-            {
+                _bookingRepo.DeleteBooking(booking);
                 return Redirect("http://localhost:5173/paymentfailed");
             }
+
+            booking.BookingStatus = Models.Enum.BookingStatus.Scheduled;
+            booking.isPaid = true;
+            _bookingRepo.UpdateBooking(booking);
+
+            return Redirect($"http://localhost:5173/paymentsuccess/{bookingId}");
         }
+        
+        private bool TryParseBookingId(string orderId, out int bookingId)
+        {
+            bookingId = 0; // Assign a default value to bookingId
+            var txnRefParts = orderId.Split('-');
+            return txnRefParts.Length > 0 && int.TryParse(txnRefParts[0], out bookingId);
+        }
+
 
         [HttpPatch("soft-delete/{id}")]
         [Authorize(Roles = "Manager")]

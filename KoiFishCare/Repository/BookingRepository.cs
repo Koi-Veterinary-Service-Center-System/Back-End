@@ -173,5 +173,10 @@ namespace KoiFishCare.Repository
             return bookings.ToList();
         }
 
+        public void DeleteBooking(Booking bookingModel)
+        {
+            _context.Bookings.Remove(bookingModel);
+            _context.SaveChanges();
+        }
     }
 }
