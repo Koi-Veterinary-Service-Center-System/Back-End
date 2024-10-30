@@ -85,5 +85,10 @@ namespace KoiFishCare.Repository
         {
             return await _context.Feedbacks.Include(x => x.Booking).Include(x => x.Booking.Service).FirstOrDefaultAsync(x => x.BookingID == bookingID && x.Booking.Customer.UserName == userName);
         }
+
+        public async Task<List<Feedback>?> GetFeedbackByServiceID(int serviceID)
+        {
+            return await _context.Feedbacks.Include(b => b.Booking).ThenInclude(s => s.Service).Where(x => x.Booking.ServiceID == serviceID).ToListAsync();
+        }
     }
 }
