@@ -419,6 +419,7 @@ namespace KoiFishCare.Controllers
             }
 
             booking.BookingStatus = BookingStatus.Received_Money;
+            booking.isPaid = true;
             _bookingRepo.UpdateBooking(booking);
 
             return Ok("Booking status updated successfully!");
