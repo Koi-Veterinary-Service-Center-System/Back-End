@@ -203,19 +203,41 @@ namespace KoiFishCare.Controllers
         [HttpPost("request-password-reset")]
         public async Task<IActionResult> RequestPasswordReset([FromBody] ResetPasswordRequestDTO model)
         {
+            // Tìm kiếm người dùng dựa trên email
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 return NotFound("User with this email does not exist.");
             }
 
-            // Direct link to reset-password page
-            var resetLink = "http://localhost:5173/reset-password";
+            // Tạo link reset mật khẩu (có thể truyền thêm token hoặc email nếu cần)
+            var resetLink = $"http://localhost:5173/reset-password?email={model.Email}";
 
-            // Send email with the reset link
-            // This assumes you have a service for sending emails
-            await _emailService.SendEmailAsync(model.Email, "Password Reset",
-                $"Please reset your password by clicking this link: <a href='{resetLink}'>Reset Password</a>");
+            // Nội dung HTML cho email (có logo và nút reset password)
+            var htmlContent = $@"
+        <html>
+        <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+            <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+                <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiFishCare Logo' 
+                     style='display: block; margin: 0 auto; width: 150px;' />
+                <h2 style='text-align: center;'>Password Reset Request</h2>
+                <p>Hello,</p>
+                <p>You requested a password reset. Please click the button below to reset your password:</p>
+                <div style='text-align: center; margin: 20px 0;'>
+                    <a href='{resetLink}' 
+                       style='padding: 10px 20px; background-color: #00BFFF; color: black; 
+                              text-decoration: none; border-radius: 5px;'>Reset Password</a>
+                </div>
+                <p>If you did not request this, please ignore this email.</p>
+                <p>Best regards,<br>KoiFishCare Team</p>
+                <hr style='margin-top: 20px;' />
+                <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
+            </div>
+        </body>
+        </html>";
+
+            // Gửi email qua service EmailService
+            await _emailService.SendEmailAsync(model.Email, "Password Reset", htmlContent);
 
             return Ok("Password reset link has been sent to your email.");
         }
