@@ -209,11 +209,8 @@ namespace KoiFishCare.Controllers
                 return NotFound("User with this email does not exist.");
             }
 
-            // Generate password reset token
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            // Create reset link (adjust the URL based on your frontend route)
-            var resetLink = Url.Action("ResetPassword", "User", new { token, email = model.Email }, Request.Scheme);
+            // Direct link to reset-password page
+            var resetLink = "http://localhost:5173/reset-password";
 
             // Send email with the reset link
             // This assumes you have a service for sending emails
