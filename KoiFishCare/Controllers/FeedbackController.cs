@@ -172,7 +172,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest(ModelState);
             }
 
-            var feedbacks = await _feedbackRepo.GetFeedbackByServiceID(serviceID);
+            var feedbacks = await _feedbackRepo.GetFeedbackByServiceIDAsync(serviceID);
             if (feedbacks == null || !feedbacks.Any())
             {
                 return NotFound("There is no feedback of this service!");
