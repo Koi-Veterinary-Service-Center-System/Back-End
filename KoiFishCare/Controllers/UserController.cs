@@ -229,7 +229,7 @@ namespace KoiFishCare.Controllers
                               text-decoration: none; border-radius: 5px;'>Reset Password</a>
                 </div>
                 <p>If you did not request this, please ignore this email.</p>
-                <p>Best regards,<br>KoiFishCare Team</p>
+                <p>Best regards,<br>KoiNe Team</p>
                 <hr style='margin-top: 20px;' />
                 <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
             </div>
