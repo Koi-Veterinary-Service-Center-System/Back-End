@@ -28,7 +28,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet("all-feedback")]
-        [Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff, Manager")]
         public async Task<IActionResult> GetAllFeedback()
         {
             var feedbacks = await _feedbackRepo.GetAllFeedbackAsync();
@@ -55,6 +55,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet("view-feedback-username/{userName}")]
+        [Authorize]
         public async Task<IActionResult> GetFeedbackByUserName([FromRoute] string userName)
         {
             var feedbacks = await _feedbackRepo.GetAllFeedbackByUserNameAsync(userName);
@@ -77,7 +78,7 @@ namespace KoiFishCare.Controllers
             }
 
             var user = await _userManager.GetUserAsync(this.User);
-            if(user == null) return NotFound("Not found user");
+            if (user == null) return NotFound("Not found user");
             if (string.IsNullOrEmpty(user.UserName))
             {
                 return BadRequest("Could not determine the logged-in user's username.");
@@ -160,6 +161,24 @@ namespace KoiFishCare.Controllers
 
             var result = feedbacks.Select(x => x.ToViewFeedback()).ToList();
             return Ok(result);
+        }
+
+        [HttpGet("view-feedback-by/{serviceID}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFeedbackByServiceID([FromRoute] int serviceID)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var feedbacks = await _feedbackRepo.GetFeedbackByServiceID(serviceID);
+            if (feedbacks == null || !feedbacks.Any())
+            {
+                return NotFound("There is no feedback of this service!");
+            }
+
+            return Ok(feedbacks.Select(x => x.ToViewFeedback()));
         }
     }
 }
