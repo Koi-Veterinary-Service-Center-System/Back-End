@@ -468,6 +468,8 @@ namespace KoiFishCare.Controllers
         [Authorize(Roles = "Staff, Customer")]
         public async Task<IActionResult> CancelBooking(int bookingId, [FromBody] CancelBookingDto dto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            
             var user = await _userManager.GetUserAsync(this.User);
             if (user == null) return Unauthorized("User is not available!");
 
