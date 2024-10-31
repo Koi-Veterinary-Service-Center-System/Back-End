@@ -560,6 +560,15 @@ namespace KoiFishCare.Controllers
 
             existingUser.isBanned = true;
             await _userRepo.UpdateAsync(existingUser);
+
+            // Compose and send an email notification to the banned user
+            var subject = "Account Banned Notification";
+            var htmlContent = $@"
+    
+            <p>Dear {existingUser.UserName},</p>
+            ";
+
+            await _emailService.SendEmailAsync(existingUser.Email, subject, htmlContent);
             return Ok("Banned successfully!");
         }
 
