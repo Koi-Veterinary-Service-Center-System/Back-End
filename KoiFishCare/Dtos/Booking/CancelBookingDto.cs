@@ -10,5 +10,6 @@ namespace KoiFishCare.Dtos.Booking
         public string? BankName { get; set; }
         public string? CustomerBankNumber { get; set; }
         public string? CustomerBankAccountName { get; set; }
+        public int? RefundPercent { get; set; }
     }
 }
