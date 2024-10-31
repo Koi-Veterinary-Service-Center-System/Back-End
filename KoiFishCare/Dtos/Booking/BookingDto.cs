@@ -40,6 +40,7 @@ namespace KoiFishCare.Dtos.Booking
         public decimal? ArisedMoney { get; set; }
         public decimal? TotalAmount { get; set; }
         public string? BookingRecordNote { get; set; }
+        public bool hasFeedback { get; set; }
     }
 
 }

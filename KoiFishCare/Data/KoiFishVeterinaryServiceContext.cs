@@ -73,139 +73,281 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             .HasForeignKey(b => b.VetID)
             .OnDelete(DeleteBehavior.Restrict);  // No cascading delete
 
-        //---------- Add Role
-        List<IdentityRole> roles = new List<IdentityRole>
-        {
-            new IdentityRole
-            {
-                Name = "Customer",
-                NormalizedName = "CUSTOMER"
-            },
-            new IdentityRole
-            {
-                Name = "Vet",
-                NormalizedName = "VET"
-            },
-            new IdentityRole
-            {
-                Name = "Staff",
-                NormalizedName = "STAFF"
-            },
-            new IdentityRole
-            {
-                Name = "Manager",
-                NormalizedName = "MANAGER"
-            },
-        };
-        modelBuilder.Entity<IdentityRole>().HasData(roles);
-
-        //Define keys
-        // modelBuilder.Entity<User>()
-        //         .ToTable("Veterinarians");
-
-
-        // modelBuilder.Entity<User>()
-        //     .ToTable("Customers");
-
-
-        // modelBuilder.Entity<User>()
-        //     .ToTable("Staffs");
-
-
-        modelBuilder.Entity<Booking>()
-            .HasOne(b => b.Veterinarian)
-            .WithMany(v => v.VetBookings)
-            .HasForeignKey(b => b.VetID)
-            .OnDelete(DeleteBehavior.Restrict);
-
+        // ---- VetSlot Relationship -----------------------------------------------------------------------
         modelBuilder.Entity<VetSlot>()
         .HasKey(vs => new { vs.VetID, vs.SlotID });
 
+        // ---- Veterinarian Relationship -----------------------------------------------------------------------
         modelBuilder.Entity<VetSlot>()
           .HasOne(vs => vs.Veterinarian)
           .WithMany(v => v.VetSlots)
           .HasForeignKey(vs => vs.VetID);
 
+        // ---- Slot Relationship -----------------------------------------------------------------------
         modelBuilder.Entity<VetSlot>()
           .HasOne(vs => vs.Slot)
           .WithMany(s => s.VetSlots)
           .HasForeignKey(vs => vs.SlotID);
 
+        //---------- Add Role -----------------------------------------------------------------
+        // List<IdentityRole> roles = new List<IdentityRole>
+        // {
+        //     new IdentityRole
+        //     {
+        //         Name = "Customer",
+        //         NormalizedName = "CUSTOMER"
+        //     },
+        //     new IdentityRole
+        //     {
+        //         Name = "Vet",
+        //         NormalizedName = "VET"
+        //     },
+        //     new IdentityRole
+        //     {
+        //         Name = "Staff",
+        //         NormalizedName = "STAFF"
+        //     },
+        //     new IdentityRole
+        //     {
+        //         Name = "Manager",
+        //         NormalizedName = "MANAGER"
+        //     },
+        // };
+        // modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+        var managerRole = new IdentityRole
+        {
+            Id = "4b73e212-5d38-4711-8336-f299801120b7",
+            Name = "Manager",
+            NormalizedName = "MANAGER"
+        };
+
+        var staffRole = new IdentityRole
+        {
+            Id = "40ff3214-4004-4c03-ac3f-806b99feb7dd",
+            Name = "Staff",
+            NormalizedName = "STAFF"
+        };
+
+        var vetRole = new IdentityRole
+        {
+            Id = "b2c5b5c7-5578-4ca8-8fd4-a8ca10b81a4f",
+            Name = "Vet",
+            NormalizedName = "VET"
+        };
+
+        var customerRole = new IdentityRole
+        {
+            Id = "1e0930e3-64c0-4691-be42-3d4030eaac7c",
+            Name = "Customer",
+            NormalizedName = "CUSTOMER"
+        };
+
+        modelBuilder.Entity<IdentityRole>().HasData(managerRole, staffRole, vetRole, customerRole);
+
         //SEED DATA=================
 
-        // Seed data for Veterinarian
-        modelBuilder.Entity<User>().HasData(
-            new User
-            {
-                Id = "v1", // Primary key inherited from IdentityUser (User)
-                FirstName = "John",
-                LastName = "Doe",
-                UserName = "johndoe",
-                NormalizedUserName = "JOHNDOE",
+        var hasher = new PasswordHasher<User>();
+        var users = new List<User>()
+        {
+            new User {
+                Id = "m1",
+                IsManager = true,
+                UserName = "Tphung_2004",
+                NormalizedUserName = "TPHUNG_2004",
+                FirstName = "Anh",
+                LastName = "Phung",
+                Gender = false,
+                Email = "tphung1435@gmail.com",
+                NormalizedEmail = "TPHUNG1435@GMAIL.COM",
+                Address = "Hem Nho",
+                ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2F6d2fcfc3-eb91-47ae-8324-9864beda4ff3.jpeg?alt=media&token=77e68195-a40b-44ea-af8f-87bb077b0a89",
+                ImagePublicId = null,
+                PhoneNumber = "0786542387",
+                ExperienceYears = null,
+            },
+
+            new User {
+                Id = "c1",
+                IsManager = false,
+                UserName = "Dkhoa_Happy",
+                NormalizedUserName = "DKHOA_HAPPY",
+                FirstName = "Dang",
+                LastName = "Khoa",
                 Gender = true,
+                Email = "dangkhoa13978@gmail.com",
+                NormalizedEmail = "DANGKHOA13978@GMAIL.COM",
+                Address = "Bui Minh Truc",
+                ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2F7720cf1b-bf61-466a-b82a-7a553a9da5cc.jpeg?alt=media&token=ce545418-5224-4b57-81bb-f431d4752d67",
+                ImagePublicId = null,
+                PhoneNumber = "0972513978",
+                ExperienceYears = null,
+            },
+
+            new User {
+                Id = "v1",
+                IsManager = false,
+                UserName = "NhatNguyen_1229",
+                NormalizedUserName = "NHATNGUYEN_1229",
+                FirstName = "Nhat",
+                LastName = "Nguyen",
+                Gender = true,
+                Email = "nhatnguyense186475@fpt.edu.vn",
+                NormalizedEmail = "NHATNGUYENSE186475@FPT.EDU.VN",
+                Address = "Phu My Hung",
+                ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2FnhatNguyen.png?alt=media&token=dd5ce883-e50a-49e8-9393-7739f188389e",
+                ImagePublicId = null,
+                PhoneNumber = "0873457689",
                 ExperienceYears = 10,
-                Address = "123 Vet St.",
-                ImageURL = "https://example.com/vet1.jpg",
-                ImagePublicId = "vet1_image_id",
-                Email = "v1email@gmail.com"
             },
-            new User
-            {
+
+            new User {
+                Id = "s1",
+                IsManager = false,
+                ManagerID = "m1",
+                UserName = "Thanhdc_1229",
+                NormalizedUserName = "THANHDC_1229",
+                FirstName = "Cong",
+                LastName = "Thanh",
+                Gender = true,
+                Email = "thanhdc1229@gmail.com",
+                NormalizedEmail = "THANHDC1229@GMAIL.COM",
+                Address = "VinCom Le Van Viet",
+                ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2Fz5986693920790_205b874ed5326f1810ec835d7b3cb2b8.jpg?alt=media&token=8ec317f5-d8b0-4d2b-a599-bc16aaca03ff",
+                ImagePublicId = null,
+                PhoneNumber = "0799981696",
+                ExperienceYears = null,
+            },
+
+            new User {
                 Id = "v2",
-                FirstName = "Jane",
-                LastName = "Smith",
-                UserName = "janesmith",
-                NormalizedUserName = "JANESMITH",
-                Gender = false,
-                ExperienceYears = 8,
-                Address = "456 Vet St.",
-                ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id",
-                Email = "v2@gmail.com"
-            },
-            new User
+                IsManager = false,
+                UserName = "MinhLu_2004",
+                NormalizedUserName = "MINHLU_2004",
+                FirstName = "Minh",
+                LastName = "E",
+                Gender = true,
+                Email = "minhlu1476@gmail.com",
+                NormalizedEmail = "MINHLU1476@GMAIL.COM",
+                Address = "Le Van Viet",
+                ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2F346077162_980458369794854_6154481088254840308_n.jpg?alt=media&token=11e2d80f-b7f0-463c-8531-246172cc214f",
+                ImagePublicId = null,
+                PhoneNumber = "0762431687",
+                ExperienceYears = 5,
+            }
+        };
+
+        foreach (var user in users)
+        {
+            user.PasswordHash = hasher.HashPassword(user, "String123@");
+        }
+
+        modelBuilder.Entity<User>().HasData(users);
+
+        modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            new IdentityUserRole<string>
             {
-                Id = "v3",
-                FirstName = "vet3",
-                LastName = "Smith",
-                UserName = "vet3",
-                NormalizedUserName = "VET3",
-                Gender = false,
-                ExperienceYears = 8,
-                Address = "456 Vet St.",
-                ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id",
-                Email = "v3@gmail.com"
+                UserId = "m1",
+                RoleId = "4b73e212-5d38-4711-8336-f299801120b7",
             },
-            new User
+
+            new IdentityUserRole<string>
             {
-                Id = "v4",
-                FirstName = "Vet 4",
-                LastName = "Smith",
-                UserName = "veterianary",
-                NormalizedUserName = "VETERIANARY",
-                Gender = false,
-                ExperienceYears = 8,
-                Address = "456 Vet St.",
-                ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id",
-                Email = "v4@gmail.com"
+                UserId = "c1",
+                RoleId = "1e0930e3-64c0-4691-be42-3d4030eaac7c",
             },
-            new User
+
+            new IdentityUserRole<string>
             {
-                Id = "v5",
-                FirstName = "Vet 5",
-                LastName = "Smith",
-                UserName = "vet1000000",
-                NormalizedUserName = "VET1000000",
-                Gender = false,
-                ExperienceYears = 8,
-                Address = "456 Vet St.",
-                ImageURL = "https://example.com/vet2.jpg",
-                ImagePublicId = "vet2_image_id",
-                Email = "v5@gmail.com"
+                UserId = "v1",
+                RoleId = "b2c5b5c7-5578-4ca8-8fd4-a8ca10b81a4f",
+            },
+
+            new IdentityUserRole<string>
+            {
+                UserId = "v2",
+                RoleId = "b2c5b5c7-5578-4ca8-8fd4-a8ca10b81a4f",
+            },
+
+            new IdentityUserRole<string>
+            {
+                UserId = "s1",
+                RoleId = "40ff3214-4004-4c03-ac3f-806b99feb7dd",
             }
         );
+        // Seed data for Veterinarian
+        // modelBuilder.Entity<User>().HasData(
+        //     new User
+        //     {
+        //         Id = "v1", // Primary key inherited from IdentityUser (User)
+        //         FirstName = "John",
+        //         LastName = "Doe",
+        //         UserName = "johndoe",
+        //         NormalizedUserName = "JOHNDOE",
+        //         Gender = true,
+        //         ExperienceYears = 10,
+        //         Address = "123 Vet St.",
+        //         ImageURL = "https://example.com/vet1.jpg",
+        //         ImagePublicId = "vet1_image_id",
+        //         Email = "v1email@gmail.com"
+        //     },
+        //     new User
+        //     {
+        //         Id = "v2",
+        //         FirstName = "Jane",
+        //         LastName = "Smith",
+        //         UserName = "janesmith",
+        //         NormalizedUserName = "JANESMITH",
+        //         Gender = false,
+        //         ExperienceYears = 8,
+        //         Address = "456 Vet St.",
+        //         ImageURL = "https://example.com/vet2.jpg",
+        //         ImagePublicId = "vet2_image_id",
+        //         Email = "v2@gmail.com"
+        //     },
+        //     new User
+        //     {
+        //         Id = "v3",
+        //         FirstName = "vet3",
+        //         LastName = "Smith",
+        //         UserName = "vet3",
+        //         NormalizedUserName = "VET3",
+        //         Gender = false,
+        //         ExperienceYears = 8,
+        //         Address = "456 Vet St.",
+        //         ImageURL = "https://example.com/vet2.jpg",
+        //         ImagePublicId = "vet2_image_id",
+        //         Email = "v3@gmail.com"
+        //     },
+        //     new User
+        //     {
+        //         Id = "v4",
+        //         FirstName = "Vet 4",
+        //         LastName = "Smith",
+        //         UserName = "veterianary",
+        //         NormalizedUserName = "VETERIANARY",
+        //         Gender = false,
+        //         ExperienceYears = 8,
+        //         Address = "456 Vet St.",
+        //         ImageURL = "https://example.com/vet2.jpg",
+        //         ImagePublicId = "vet2_image_id",
+        //         Email = "v4@gmail.com"
+        //     },
+        //     new User
+        //     {
+        //         Id = "v5",
+        //         FirstName = "Vet 5",
+        //         LastName = "Smith",
+        //         UserName = "vet1000000",
+        //         NormalizedUserName = "VET1000000",
+        //         Gender = false,
+        //         ExperienceYears = 8,
+        //         Address = "456 Vet St.",
+        //         ImageURL = "https://example.com/vet2.jpg",
+        //         ImagePublicId = "vet2_image_id",
+        //         Email = "v5@gmail.com"
+        //     }
+        // );
 
         // Seed data for Slots
         modelBuilder.Entity<Slot>().HasData(
@@ -2987,32 +3129,55 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
         );
 
         // Seed data for Customers
-        modelBuilder.Entity<User>().HasData(
-            new User
-            {
-                Id = "c1",
-                FirstName = "Alice",
-                LastName = "Johnson",
-                UserName = "alice",
-                NormalizedUserName = "ALICE",
-                Gender = false,
-                Address = "789 Customer Lane",
-                ImageURL = "https://example.com/customer1.jpg",
-                ImagePublicId = "customer1_image_id"
-            },
-            new User
-            {
-                Id = "c2",
-                FirstName = "Bob",
-                LastName = "Williams",
-                UserName = "boooob",
-                NormalizedUserName = "BOOOOOB",
-                Gender = true,
-                Address = "123 Customer Ave",
-                ImageURL = "https://example.com/customer2.jpg",
-                ImagePublicId = "customer2_image_id"
-            }
-        );
+        // modelBuilder.Entity<User>().HasData(
+        //     new User
+        //     {
+        //         Id = "c1",
+        //         FirstName = "Alice",
+        //         LastName = "Johnson",
+        //         UserName = "alice",
+        //         NormalizedUserName = "ALICE",
+        //         Gender = false,
+        //         Address = "789 Customer Lane",
+        //         ImageURL = "https://example.com/customer1.jpg",
+        //         ImagePublicId = "customer1_image_id"
+        //     },
+        //     new User
+        //     {
+        //         Id = "c2",
+        //         FirstName = "Bob",
+        //         LastName = "Williams",
+        //         UserName = "boooob",
+        //         NormalizedUserName = "BOOOOOB",
+        //         Gender = true,
+        //         Address = "123 Customer Ave",
+        //         ImageURL = "https://example.com/customer2.jpg",
+        //         ImagePublicId = "customer2_image_id"
+        //     },
+        //     new User
+        //     {
+        //         Id = "m1",
+        //         IsManager = true,
+        //         UserName = "Tphung_2004",
+        //         FirstName = "Anh",
+        //         LastName = "Phung",
+        //         Gender = false,
+        //         Email = "tphung1435@gmail.com",
+        //         Address = "Hẻm Nhỏ",
+        //         ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2F6d2fcfc3-eb91-47ae-8324-9864beda4ff3.jpeg?alt=media&token=77e68195-a40b-44ea-af8f-87bb077b0a89",
+        //         ImagePublicId = null,
+        //         PhoneNumber = "0786542387",
+        //         ExperienceYears = null,
+        //     }
+        // );
+
+        // modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+        //     new IdentityUserRole<string>
+        //     {
+        //         UserId = "c1",
+        //         RoleId = "Customer",
+        //     }
+        // );
 
         // Seed data for staff
         // modelBuilder.Entity<Staff>().HasData(
