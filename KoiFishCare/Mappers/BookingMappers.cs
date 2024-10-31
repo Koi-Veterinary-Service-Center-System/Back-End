@@ -72,7 +72,8 @@ namespace KoiFishCare.Mappers
                 ImageURL = booking.Veterinarian?.ImageURL,
                 BookingRecordID = booking.BookingRecord?.BookingRecordID,
                 TotalAmount = booking.BookingRecord?.TotalAmount,
-                BookingRecordNote = booking.BookingRecord?.Note
+                BookingRecordNote = booking.BookingRecord?.Note,
+                hasFeedback = booking.hasFeedback,
             };
         }
 

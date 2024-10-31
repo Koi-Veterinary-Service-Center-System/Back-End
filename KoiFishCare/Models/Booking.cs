@@ -29,6 +29,8 @@ public partial class Booking
 
     public bool hasPres { get; set; } = false;
 
+    public bool hasFeedback { get; set; } = false;
+
     public string? MeetURL { get; set; }
 
     // ---- Payment -----------------------------------------------------------------------

@@ -117,6 +117,8 @@ namespace KoiFishCare.Controllers
                 return NotFound("Can not find bookingID");
             }
 
+            booking.hasFeedback = true;
+            _bookingRepo.UpdateBooking(booking);
             return Ok(feedback.ToViewFeedback());
         }
 
