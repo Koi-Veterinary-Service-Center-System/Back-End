@@ -495,10 +495,10 @@ namespace KoiFishCare.Controllers
 
             decimal refundPercent;
 
-            // Staff gets 100% refund on cancellation
+            // Allow staff to set custom refund percent
             if (User.IsInRole("Staff"))
             {
-                refundPercent = 100;
+                refundPercent = dto.RefundPercent ?? 100; // Use the provided RefundPercent or default to 100%
             }
             else
             {
@@ -542,6 +542,7 @@ namespace KoiFishCare.Controllers
 
             return Ok(record.ToDTOFromModel());
         }
+
 
         [HttpPatch("refund-booking/{bookingID:int}")]
         [Authorize(Roles = "Manager")]
