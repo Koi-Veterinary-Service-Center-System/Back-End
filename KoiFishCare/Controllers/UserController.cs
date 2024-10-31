@@ -564,9 +564,21 @@ namespace KoiFishCare.Controllers
             // Compose and send an email notification to the banned user
             var subject = "Account Banned Notification";
             var htmlContent = $@"
-    
+    <html>
+    <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+        <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+            <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' 
+                 alt='KoiFishCare Logo' style='display: block; margin: 0 auto; width: 150px;' />
+            <h2 style='text-align: center;'>Account Banned</h2>
             <p>Dear {existingUser.UserName},</p>
-            ";
+            <p>We regret to inform you that your account has been banned due to a violation of our terms of service.</p>
+            <p>If you have any questions or believe this was a mistake, please contact us.</p>
+            <p>Best regards,<br>KoiNe Team</p>
+            <hr style='margin-top: 20px;' />
+            <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
+        </div>
+    </body>
+    </html>";
 
             await _emailService.SendEmailAsync(existingUser.Email, subject, htmlContent);
             return Ok("Banned successfully!");
