@@ -195,9 +195,19 @@ namespace KoiFishCare.Controllers
                     };
                     var htmlContent = $@"
             <html>
-            
+            <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+                <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+                    <h2 style='text-align: center;'>Welcome to KoiFishCare!</h2>
+                    <p>Hello {customer.FirstName},</p>
+                    <p>Thank you for registering with us. We are excited to have you on board!</p>
+                    <p>If you have any questions, feel free to reach out to our support team.</p>
+                    <p>Best regards,<br>KoiNe Team</p>
+                    <hr style='margin-top: 20px;' />
+                    <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
+                </div>
+            </body>
             </html>";
-
+            
                     await _emailService.SendEmailAsync(customer.Email, "Welcome to KoiFishCare", htmlContent);
                     return Ok(userDto);
                 }
