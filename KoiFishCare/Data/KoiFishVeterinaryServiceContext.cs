@@ -90,31 +90,6 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
           .HasForeignKey(vs => vs.SlotID);
 
         //---------- Add Role -----------------------------------------------------------------
-        // List<IdentityRole> roles = new List<IdentityRole>
-        // {
-        //     new IdentityRole
-        //     {
-        //         Name = "Customer",
-        //         NormalizedName = "CUSTOMER"
-        //     },
-        //     new IdentityRole
-        //     {
-        //         Name = "Vet",
-        //         NormalizedName = "VET"
-        //     },
-        //     new IdentityRole
-        //     {
-        //         Name = "Staff",
-        //         NormalizedName = "STAFF"
-        //     },
-        //     new IdentityRole
-        //     {
-        //         Name = "Manager",
-        //         NormalizedName = "MANAGER"
-        //     },
-        // };
-        // modelBuilder.Entity<IdentityRole>().HasData(roles);
-
         var managerRole = new IdentityRole
         {
             Id = "4b73e212-5d38-4711-8336-f299801120b7",
@@ -187,6 +162,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new User {
                 Id = "v1",
                 IsManager = false,
+                ManagerID = "m1",
                 UserName = "NhatNguyen_1229",
                 NormalizedUserName = "NHATNGUYEN_1229",
                 FirstName = "Nhat",
@@ -222,6 +198,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new User {
                 Id = "v2",
                 IsManager = false,
+                ManagerID = "m1",
                 UserName = "MinhLu_2004",
                 NormalizedUserName = "MINHLU_2004",
                 FirstName = "Minh",
@@ -234,7 +211,62 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = null,
                 PhoneNumber = "0762431687",
                 ExperienceYears = 5,
+            },
+
+            new User {
+                Id = "v3",
+                IsManager = false,
+                ManagerID = "m1",
+                UserName = "Chau_2004",
+                NormalizedUserName = "CHAU_2004",
+                FirstName = "Chau",
+                LastName = "Lee",
+                Gender = true,
+                Email = "ChauLee123@gmail.com",
+                NormalizedEmail = "CHAULEE123@GMAIL.COM",
+                Address = "Lam Van Ben",
+                ImageURL = null,
+                ImagePublicId = null,
+                PhoneNumber = "0123456789",
+                ExperienceYears = 8,
+            },
+
+            new User {
+                Id = "v4",
+                IsManager = false,
+                ManagerID = "m1",
+                UserName = "AnNTP_1904",
+                NormalizedUserName = "ANNTP_1904",
+                FirstName = "An",
+                LastName = "Nguyen",
+                Gender = false,
+                Email = "AnNTP1904@gmail.com",
+                NormalizedEmail = "AnNTP1904@GMAIL.COM",
+                Address = "Dong Nai",
+                ImageURL = null,
+                ImagePublicId = null,
+                PhoneNumber = "0967812345",
+                ExperienceYears = 7,
+            },
+
+            new User {
+                Id = "v5",
+                IsManager = false,
+                ManagerID = "m1",
+                UserName = "AnhPham_2909",
+                NormalizedUserName = "ANHPHAM_2909",
+                FirstName = "Anh",
+                LastName = "Pham",
+                Gender = true,
+                Email = "AnhPham2909@gmail.com",
+                NormalizedEmail = "ANHPHAM2909@GMAIL.COM",
+                Address = "Thao Dien",
+                ImageURL = null,
+                ImagePublicId = null,
+                PhoneNumber = "0987654321",
+                ExperienceYears = 9,
             }
+
         };
 
         foreach (var user in users)
@@ -275,79 +307,6 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 RoleId = "40ff3214-4004-4c03-ac3f-806b99feb7dd",
             }
         );
-        // Seed data for Veterinarian
-        // modelBuilder.Entity<User>().HasData(
-        //     new User
-        //     {
-        //         Id = "v1", // Primary key inherited from IdentityUser (User)
-        //         FirstName = "John",
-        //         LastName = "Doe",
-        //         UserName = "johndoe",
-        //         NormalizedUserName = "JOHNDOE",
-        //         Gender = true,
-        //         ExperienceYears = 10,
-        //         Address = "123 Vet St.",
-        //         ImageURL = "https://example.com/vet1.jpg",
-        //         ImagePublicId = "vet1_image_id",
-        //         Email = "v1email@gmail.com"
-        //     },
-        //     new User
-        //     {
-        //         Id = "v2",
-        //         FirstName = "Jane",
-        //         LastName = "Smith",
-        //         UserName = "janesmith",
-        //         NormalizedUserName = "JANESMITH",
-        //         Gender = false,
-        //         ExperienceYears = 8,
-        //         Address = "456 Vet St.",
-        //         ImageURL = "https://example.com/vet2.jpg",
-        //         ImagePublicId = "vet2_image_id",
-        //         Email = "v2@gmail.com"
-        //     },
-        //     new User
-        //     {
-        //         Id = "v3",
-        //         FirstName = "vet3",
-        //         LastName = "Smith",
-        //         UserName = "vet3",
-        //         NormalizedUserName = "VET3",
-        //         Gender = false,
-        //         ExperienceYears = 8,
-        //         Address = "456 Vet St.",
-        //         ImageURL = "https://example.com/vet2.jpg",
-        //         ImagePublicId = "vet2_image_id",
-        //         Email = "v3@gmail.com"
-        //     },
-        //     new User
-        //     {
-        //         Id = "v4",
-        //         FirstName = "Vet 4",
-        //         LastName = "Smith",
-        //         UserName = "veterianary",
-        //         NormalizedUserName = "VETERIANARY",
-        //         Gender = false,
-        //         ExperienceYears = 8,
-        //         Address = "456 Vet St.",
-        //         ImageURL = "https://example.com/vet2.jpg",
-        //         ImagePublicId = "vet2_image_id",
-        //         Email = "v4@gmail.com"
-        //     },
-        //     new User
-        //     {
-        //         Id = "v5",
-        //         FirstName = "Vet 5",
-        //         LastName = "Smith",
-        //         UserName = "vet1000000",
-        //         NormalizedUserName = "VET1000000",
-        //         Gender = false,
-        //         ExperienceYears = 8,
-        //         Address = "456 Vet St.",
-        //         ImageURL = "https://example.com/vet2.jpg",
-        //         ImagePublicId = "vet2_image_id",
-        //         Email = "v5@gmail.com"
-        //     }
-        // );
 
         // Seed data for Slots
         modelBuilder.Entity<Slot>().HasData(
@@ -3128,87 +3087,6 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             }
         );
 
-        // Seed data for Customers
-        // modelBuilder.Entity<User>().HasData(
-        //     new User
-        //     {
-        //         Id = "c1",
-        //         FirstName = "Alice",
-        //         LastName = "Johnson",
-        //         UserName = "alice",
-        //         NormalizedUserName = "ALICE",
-        //         Gender = false,
-        //         Address = "789 Customer Lane",
-        //         ImageURL = "https://example.com/customer1.jpg",
-        //         ImagePublicId = "customer1_image_id"
-        //     },
-        //     new User
-        //     {
-        //         Id = "c2",
-        //         FirstName = "Bob",
-        //         LastName = "Williams",
-        //         UserName = "boooob",
-        //         NormalizedUserName = "BOOOOOB",
-        //         Gender = true,
-        //         Address = "123 Customer Ave",
-        //         ImageURL = "https://example.com/customer2.jpg",
-        //         ImagePublicId = "customer2_image_id"
-        //     },
-        //     new User
-        //     {
-        //         Id = "m1",
-        //         IsManager = true,
-        //         UserName = "Tphung_2004",
-        //         FirstName = "Anh",
-        //         LastName = "Phung",
-        //         Gender = false,
-        //         Email = "tphung1435@gmail.com",
-        //         Address = "Hẻm Nhỏ",
-        //         ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2F6d2fcfc3-eb91-47ae-8324-9864beda4ff3.jpeg?alt=media&token=77e68195-a40b-44ea-af8f-87bb077b0a89",
-        //         ImagePublicId = null,
-        //         PhoneNumber = "0786542387",
-        //         ExperienceYears = null,
-        //     }
-        // );
-
-        // modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-        //     new IdentityUserRole<string>
-        //     {
-        //         UserId = "c1",
-        //         RoleId = "Customer",
-        //     }
-        // );
-
-        // Seed data for staff
-        // modelBuilder.Entity<Staff>().HasData(
-        // new Staff
-        // {
-        //     Id = "s1",
-        //     FirstName = "staff1",
-        //     LastName = "Johnson",
-        //     UserName = "sitap",
-        //     NormalizedUserName = "SITAP",
-        //     Gender = false,
-        //     Address = "789 Staff Lane",
-        //     ImageURL = "https://example.com/staff1.jpg",
-        //     ImagePublicId = "staff_image_id",
-        //     IsManager = false
-        // },
-        // new Staff
-        // {
-        //     Id = "m2",
-        //     FirstName = "manager",
-        //     LastName = "Williams",
-        //     UserName = "manager",
-        //     NormalizedUserName = "MANAGER",
-        //     Gender = true,
-        //     Address = "123 Staff Ave",
-        //     ImageURL = "https://example.com/staff2.jpg",
-        //     ImagePublicId = "staff2_image_id",
-        //     IsManager = true
-
-        // }
-        // );
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
