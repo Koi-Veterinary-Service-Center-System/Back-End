@@ -193,6 +193,12 @@ namespace KoiFishCare.Controllers
                         LastName = customer.LastName,
                         Token = _tokenService.CreateToken(customer, role!)
                     };
+                    var htmlContent = $@"
+            <html>
+            
+            </html>";
+
+                    await _emailService.SendEmailAsync(customer.Email, "Welcome to KoiFishCare", htmlContent);
                     return Ok(userDto);
                 }
             }
