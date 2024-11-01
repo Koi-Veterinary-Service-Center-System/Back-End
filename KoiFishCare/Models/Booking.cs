@@ -47,7 +47,11 @@ public partial class Booking
     public Service Service { get; set; } = null!;
 
     public string? ServiceNameAtBooking { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
     public decimal ServicePriceAtBooking { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
     public decimal ServiceQuantityPriceAtBooking { get; set; }
 
     // ---- Slot -----------------------------------------------------------------------

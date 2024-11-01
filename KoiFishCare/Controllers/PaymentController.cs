@@ -22,11 +22,14 @@ namespace KoiFishCare.Controllers
         private readonly IPaymentRepository _paymentRepo;
         private readonly IVnPayService _vnPayService;
         private readonly IBookingRepository _bookingRepo;
-        public PaymentController(IPaymentRepository paymentRepo, IVnPayService vnPayService, IBookingRepository bookingRepo)
+        private readonly IEmailService _emailService;
+        public PaymentController(IPaymentRepository paymentRepo, IVnPayService vnPayService,
+        IBookingRepository bookingRepo, IEmailService emailService)
         {
             _paymentRepo = paymentRepo;
             _vnPayService = vnPayService;
             _bookingRepo = bookingRepo;
+            _emailService = emailService;
         }
 
         [HttpGet("all-payment")]
@@ -159,9 +162,36 @@ namespace KoiFishCare.Controllers
             booking.isPaid = true;
             _bookingRepo.UpdateBooking(booking);
 
+            // Compose and send an email notification with payment information
+            var subject = "Booking Payment Notification";
+            var htmlContent = $@"
+<html>
+<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+    <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' 
+             alt='KoiFishCare Logo' style='display: block; margin: 0 auto; width: 150px;' />
+        <h2 style='text-align: center;'>Booking Payment Notification</h2>
+        <p>Dear {booking.Customer.UserName},</p>
+        <p>Your recent booking payment was processed successfully. Below are the payment details:</p>
+        <table style='width: 100%; border-collapse: collapse; margin-top: 20px;'>
+            <tr><td><strong>Order Description:</strong></td><td>{response.OrderDescription}</td></tr>
+            <tr><td><strong>Order ID:</strong></td><td>{response.OrderId}</td></tr>
+            <tr><td><strong>Payment ID:</strong></td><td>{response.PaymentId}</td></tr>
+            <tr><td><strong>Transaction ID:</strong></td><td>{response.TransactionId}</td></tr>
+        </table>
+        <p>If you have any questions, please contact us.</p>
+        <p>Best regards,<br>KoiNe Team</p>
+        <hr style='margin-top: 20px;' />
+        <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
+    </div>
+</body>
+</html>";
+
+            await _emailService.SendEmailAsync(booking.Customer.Email!, subject, htmlContent);
+
             return Redirect($"http://localhost:5173/paymentsuccess/{bookingId}");
         }
-        
+
         private bool TryParseBookingId(string orderId, out int bookingId)
         {
             bookingId = 0; // Assign a default value to bookingId
