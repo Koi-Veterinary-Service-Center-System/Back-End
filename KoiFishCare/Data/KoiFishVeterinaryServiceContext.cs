@@ -122,9 +122,11 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
         //SEED DATA=================
 
+        // Seed data for User
         var hasher = new PasswordHasher<User>();
         var users = new List<User>()
         {
+        //---------- Manager -----------------------------------------------------------------
             new User {
                 Id = "m1",
                 IsManager = true,
@@ -142,6 +144,26 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = null,
             },
 
+        //---------- Staff -----------------------------------------------------------------
+                new User {
+                Id = "s1",
+                IsManager = false,
+                ManagerID = "m1",
+                UserName = "Thanhdc_1229",
+                NormalizedUserName = "THANHDC_1229",
+                FirstName = "Cong",
+                LastName = "Thanh",
+                Gender = true,
+                Email = "thanhdc1229@gmail.com",
+                NormalizedEmail = "THANHDC1229@GMAIL.COM",
+                Address = "VinCom Le Van Viet",
+                ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2Fz5986693920790_205b874ed5326f1810ec835d7b3cb2b8.jpg?alt=media&token=8ec317f5-d8b0-4d2b-a599-bc16aaca03ff",
+                ImagePublicId = null,
+                PhoneNumber = "0799981696",
+                ExperienceYears = null,
+            },
+
+        //---------- Customer -----------------------------------------------------------------
             new User {
                 Id = "c1",
                 IsManager = false,
@@ -159,6 +181,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = null,
             },
 
+        //---------- Veterinarian -----------------------------------------------------------------
             new User {
                 Id = "v1",
                 IsManager = false,
@@ -175,24 +198,6 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = null,
                 PhoneNumber = "0873457689",
                 ExperienceYears = 10,
-            },
-
-            new User {
-                Id = "s1",
-                IsManager = false,
-                ManagerID = "m1",
-                UserName = "Thanhdc_1229",
-                NormalizedUserName = "THANHDC_1229",
-                FirstName = "Cong",
-                LastName = "Thanh",
-                Gender = true,
-                Email = "thanhdc1229@gmail.com",
-                NormalizedEmail = "THANHDC1229@GMAIL.COM",
-                Address = "VinCom Le Van Viet",
-                ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2Fz5986693920790_205b874ed5326f1810ec835d7b3cb2b8.jpg?alt=media&token=8ec317f5-d8b0-4d2b-a599-bc16aaca03ff",
-                ImagePublicId = null,
-                PhoneNumber = "0799981696",
-                ExperienceYears = null,
             },
 
             new User {
@@ -266,7 +271,6 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PhoneNumber = "0987654321",
                 ExperienceYears = 9,
             }
-
         };
 
         foreach (var user in users)
@@ -281,6 +285,12 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             {
                 UserId = "m1",
                 RoleId = "4b73e212-5d38-4711-8336-f299801120b7",
+            },
+
+            new IdentityUserRole<string>
+            {
+                UserId = "s1",
+                RoleId = "40ff3214-4004-4c03-ac3f-806b99feb7dd",
             },
 
             new IdentityUserRole<string>
@@ -303,8 +313,20 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
             new IdentityUserRole<string>
             {
-                UserId = "s1",
-                RoleId = "40ff3214-4004-4c03-ac3f-806b99feb7dd",
+                UserId = "v3",
+                RoleId = "b2c5b5c7-5578-4ca8-8fd4-a8ca10b81a4f",
+            },
+
+            new IdentityUserRole<string>
+            {
+                UserId = "v4",
+                RoleId = "b2c5b5c7-5578-4ca8-8fd4-a8ca10b81a4f",
+            },
+
+            new IdentityUserRole<string>
+            {
+                UserId = "v5",
+                RoleId = "b2c5b5c7-5578-4ca8-8fd4-a8ca10b81a4f",
             }
         );
 
@@ -363,6 +385,12 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             },
             new VetSlot
             {
+                VetID = "v4",
+                SlotID = 1,
+                isBooked = false
+            },
+            new VetSlot
+            {
                 VetID = "v1",
                 SlotID = 2,
                 isBooked = false
@@ -370,6 +398,12 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new VetSlot
             {
                 VetID = "v1",
+                SlotID = 3,
+                isBooked = false
+            },
+            new VetSlot
+            {
+                VetID = "v4",
                 SlotID = 3,
                 isBooked = false
             },
@@ -391,22 +425,11 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 SlotID = 5,
                 isBooked = false
             },
-            new VetSlot
-            {
-                VetID = "v4",
-                SlotID = 1,
-                isBooked = false
-            },
+
             new VetSlot
             {
                 VetID = "v5",
                 SlotID = 5,
-                isBooked = false
-            },
-            new VetSlot
-            {
-                VetID = "v4",
-                SlotID = 3,
                 isBooked = false
             }
         );
