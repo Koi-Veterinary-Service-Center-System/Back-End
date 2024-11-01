@@ -580,7 +580,7 @@ namespace KoiFishCare.Controllers
     </body>
     </html>";
 
-            await _emailService.SendEmailAsync(existingUser.Email, subject, htmlContent);
+            await _emailService.SendEmailAsync(existingUser.Email!, subject, htmlContent);
             return Ok("Banned successfully!");
         }
 
