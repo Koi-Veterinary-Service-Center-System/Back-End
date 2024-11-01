@@ -550,7 +550,7 @@ namespace KoiFishCare.Controllers
 
         [HttpPatch("ban-user/{id}")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> BanUser([FromRoute] string id)
+        public async Task<IActionResult> BanUser([FromRoute] string id, [FromBody] ReasonDTO model)
         {
             var existingUser = await _userRepo.GetUserByIdAsync(id);
             if (existingUser == null)
@@ -571,7 +571,8 @@ namespace KoiFishCare.Controllers
                  alt='KoiFishCare Logo' style='display: block; margin: 0 auto; width: 150px;' />
             <h2 style='text-align: center;'>Account Banned</h2>
             <p>Dear {existingUser.UserName},</p>
-            <p>We regret to inform you that your account has been banned due to a violation of our terms of service.</p>
+            <p>Your account has been banned for the following reason:</p>
+            <p><strong>{model.Reason}</strong></p>
             <p>If you have any questions or believe this was a mistake, please contact us.</p>
             <p>Best regards,<br>KoiNe Team</p>
             <hr style='margin-top: 20px;' />
