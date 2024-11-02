@@ -30,11 +30,13 @@ namespace KoiFishCare.Controllers
         private readonly IPrescriptionRecordRepository _presRecRepo;
         private readonly IBookingRecordRepository _recordRepo;
         private readonly IPaymentRepository _paymentRepo;
+        private readonly IEmailService _emailService;
 
         public BookingController(UserManager<User> userManager, ISlotRepository slotRepo,
         IServiceRepository serviceRepo, IBookingRepository bookingRepo,
         IVetSlotRepository vetSlotRepo, IPrescriptionRecordRepository presRecRepo,
-        IBookingRecordRepository recordRepo, IPaymentRepository paymentRepo)
+        IBookingRecordRepository recordRepo, IPaymentRepository paymentRepo,
+        IEmailService emailService)
         {
             _userManager = userManager;
             _slotRepo = slotRepo;
@@ -44,6 +46,7 @@ namespace KoiFishCare.Controllers
             _presRecRepo = presRecRepo;
             _recordRepo = recordRepo;
             _paymentRepo = paymentRepo;
+            _emailService = emailService;
         }
 
         [HttpPost("create-booking")]
