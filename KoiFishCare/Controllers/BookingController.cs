@@ -476,7 +476,7 @@ namespace KoiFishCare.Controllers
         public async Task<IActionResult> CancelBooking(int bookingId, [FromBody] CancelBookingDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            
+
             var user = await _userManager.GetUserAsync(this.User);
             if (user == null) return Unauthorized("User is not available!");
 
@@ -548,6 +548,25 @@ namespace KoiFishCare.Controllers
             booking.BookingStatus = BookingStatus.Cancelled;
             _bookingRepo.UpdateBooking(booking);
             await _vetSlotRepo.Update(booking.VetID, booking.SlotID, false);
+
+            var emailContent = $@"
+    <html>
+    <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+        <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+            <h2 style='text-align: center;'>Booking Cancellation Confirmation</h2>
+            <p>Hello {user.FirstName},</p>
+            <p>Your booking with ID #{booking.BookingID} scheduled for {booking.BookingDate.ToString("dd MMMM yyyy")} has been successfully canceled.</p>
+            <p>{note} {noteByCentre}</p>
+            <p>Refund amount: <strong>{refundMoney:C}</strong> (Refund Percentage: {refundPercent}%)</p>
+            <p>If you have any questions, please feel free to contact us.</p>
+            <p>Thank you,<br>KoiFishCare Team</p>
+            <hr style='margin-top: 20px;' />
+            <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
+        </div>
+    </body>
+    </html>";
+
+            await _emailService.SendEmailAsync(user.Email, "Booking Cancellation Confirmation", emailContent);
 
             return Ok(record.ToDTOFromModel());
         }
