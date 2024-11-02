@@ -186,7 +186,6 @@ namespace KoiFishCare.Controllers
     </div>
 </body>
 </html>";
-
             await _emailService.SendEmailAsync(booking.Customer.Email!, subject, htmlContent);
 
             return Redirect($"http://localhost:5173/paymentsuccess/{bookingId}");

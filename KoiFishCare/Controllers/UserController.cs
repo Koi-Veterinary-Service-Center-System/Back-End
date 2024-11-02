@@ -208,7 +208,7 @@ namespace KoiFishCare.Controllers
             </body>
             </html>";
             
-                    await _emailService.SendEmailAsync(customer.Email, "Welcome to KoiFishCare", htmlContent);
+                    await _emailService.SendEmailAsync(customer.Email!, "Welcome to KoiFishCare", htmlContent);
                     return Ok(userDto);
                 }
             }
