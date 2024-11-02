@@ -441,7 +441,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceID = 1,
                 ServiceName = "Koi Health Check",
                 Description = "A general health check for Koi fish.",
-                Price = 15000M,
+                Price = 150000M,
                 QuantityPrice = 25000M,
                 EstimatedDuration = 1.5,
                 ImageURL = "https://cafishvet.com/wp-content/uploads/2024/09/Water-Treatment-Jessie-Sanders-Fish-Vetranarian-1024x683.jpg"
@@ -451,8 +451,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceID = 2,
                 ServiceName = "Pool Maintenance",
                 Description = "Comprehensive pool maintenance service.",
-                Price = 250.00m,
-                QuantityPrice = 30000M,
+                Price = 99000M,
+                QuantityPrice = 20000M,
                 EstimatedDuration = 2.0,
                 ImageURL = "https://i.pinimg.com/564x/7b/cc/71/7bcc716d63ec9bc682c019d2aa5090b8.jpg"
             },
@@ -461,7 +461,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceID = 3,
                 ServiceName = "Water Quality Testing",
                 Description = "Testing the water quality to ensure it is optimal for Koi health.",
-                Price = 100M,
+                Price = 79000M,
                 QuantityPrice = 20000M,
                 EstimatedDuration = 1.0,
                 ImageURL = "https://cafishvet.com/wp-content/uploads/2020/10/good-water-quality-in-fish-tank-1024x536.jpg"
@@ -471,7 +471,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceID = 4,
                 ServiceName = "Disease Treatment",
                 Description = "Diagnosing and treating diseases in Koi fish.",
-                Price = 250,
+                Price = 199000M,
+                QuantityPrice = 25000M,
                 EstimatedDuration = 2.5,
                 ImageURL = "https://wonkywheels.com/wp-content/uploads/2021/08/koidiseasemat.jpeg"
             },
@@ -480,7 +481,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceID = 5,
                 ServiceName = "Koi Pond Inspection",
                 Description = "A detailed inspection of your Koi pond to identify any issues or potential improvements.",
-                Price = 180,
+                Price = 69000M,
+                QuantityPrice = 15000M,
                 EstimatedDuration = 1.75,
                 ImageURL = "https://youraquariumguide.com/wp-content/uploads/2022/05/Maintenance-Considerations-For-Koi-Pond.jpg"
             },
@@ -489,7 +491,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ServiceID = 6,
                 ServiceName = "Koi Breeding Consultation",
                 Description = "Expert advice and consultation on breeding healthy Koi fish.",
-                Price = 300,
+                Price = 100000M,
                 QuantityPrice = 0,
                 EstimatedDuration = 3.0,
                 ImageURL = "https://i.pinimg.com/564x/10/50/09/105009e291593ad674bc60faed37a5e8.jpg"
