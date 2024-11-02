@@ -166,6 +166,8 @@ namespace KoiFishCare.Controllers
 
                 bookingModel.MeetURL = googleMeetLink;
 
+                bookingModel.Customer = userModel;
+
                 var result = await _bookingRepo.CreateBooking(bookingModel);
 
                 if (vetSlot.VetID == null) return NotFound("Can not find VetId");
@@ -205,6 +207,8 @@ namespace KoiFishCare.Controllers
                 var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
 
                 bookingModel.MeetURL = googleMeetLink;
+
+                bookingModel.Customer = userModel;
 
                 var result = await _bookingRepo.CreateBooking(bookingModel);
 
