@@ -444,7 +444,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Price = 15000M,
                 QuantityPrice = 25000M,
                 EstimatedDuration = 1.5,
-                ImageURL = "https://example.com/service1.jpg"
+                ImageURL = "https://cafishvet.com/wp-content/uploads/2024/09/Water-Treatment-Jessie-Sanders-Fish-Vetranarian-1024x683.jpg"
             },
             new Service
             {
@@ -454,7 +454,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Price = 250.00m,
                 QuantityPrice = 30000M,
                 EstimatedDuration = 2.0,
-                ImageURL = "https://example.com/service2.jpg"
+                ImageURL = "https://i.pinimg.com/564x/7b/cc/71/7bcc716d63ec9bc682c019d2aa5090b8.jpg"
             },
             new Service
             {
@@ -464,7 +464,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Price = 100M,
                 QuantityPrice = 20000M,
                 EstimatedDuration = 1.0,
-                ImageURL = "https://example.com/service3.jpg"
+                ImageURL = "https://cafishvet.com/wp-content/uploads/2020/10/good-water-quality-in-fish-tank-1024x536.jpg"
             },
             new Service
             {
@@ -473,7 +473,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Description = "Diagnosing and treating diseases in Koi fish.",
                 Price = 250,
                 EstimatedDuration = 2.5,
-                ImageURL = "https://example.com/service4.jpg"
+                ImageURL = "https://wonkywheels.com/wp-content/uploads/2021/08/koidiseasemat.jpeg"
             },
             new Service
             {
@@ -482,7 +482,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Description = "A detailed inspection of your Koi pond to identify any issues or potential improvements.",
                 Price = 180,
                 EstimatedDuration = 1.75,
-                ImageURL = "https://example.com/service5.jpg"
+                ImageURL = "https://youraquariumguide.com/wp-content/uploads/2022/05/Maintenance-Considerations-For-Koi-Pond.jpg"
             },
             new Service
             {
@@ -492,7 +492,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Price = 300,
                 QuantityPrice = 0,
                 EstimatedDuration = 3.0,
-                ImageURL = "https://example.com/service6.jpg"
+                ImageURL = "https://i.pinimg.com/564x/10/50/09/105009e291593ad674bc60faed37a5e8.jpg"
             }
         );
 
