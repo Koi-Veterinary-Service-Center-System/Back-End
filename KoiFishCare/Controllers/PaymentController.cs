@@ -11,6 +11,10 @@ using KoiFishCare.service.VnpayService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Text.RegularExpressions;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 
 namespace KoiFishCare.Controllers
 {
