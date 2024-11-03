@@ -586,6 +586,7 @@ namespace KoiFishCare.Controllers
                     Gender = user.Gender,
                     UserName = user.UserName,
                     Email = user.Email,
+                    IsActive = user.isBanned,
                 });
             }
 
