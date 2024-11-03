@@ -206,7 +206,51 @@ namespace KoiFishCare.Controllers
         }
 
 
+        [HttpGet("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromQuery] string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return BadRequest("Invalid verification link.");
+            }
 
+            user.EmailConfirmed = true;
+            await _userManager.UpdateAsync(user);
+
+            // Assign "Customer" role and generate JWT token upon verification
+            var roleResult = await _userManager.AddToRoleAsync(user, "Customer");
+            if (roleResult.Succeeded)
+            {
+                var role = await _roleManager.FindByNameAsync("Customer");
+                var userDto = new UserDTO
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Token = _tokenService.CreateToken(user, role!)
+                };
+
+                // Send final welcome email
+                var welcomeContent = $@"
+        <html>
+        <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+            <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+                <h2 style='text-align: center;'>Welcome to KoiNe!</h2>
+                <p>Hello {user.FirstName},</p>
+                <p>Your email has been verified successfully. Thank you for joining us!</p>
+                <p>Best regards,<br>KoiNe Team</p>
+            </div>
+        </body>
+        </html>";
+
+                await _emailService.SendEmailAsync(user.Email!, "Welcome to KoiFishCare!", welcomeContent);
+
+                return Ok(userDto);
+            }
+            return BadRequest("An error occurred while assigning the role.");
+        }
 
 
 
