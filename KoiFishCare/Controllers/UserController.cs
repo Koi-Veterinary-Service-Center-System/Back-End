@@ -59,7 +59,7 @@ namespace KoiFishCare.Controllers
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
-                return Unauthorized("Invalid login");
+                return Unauthorized("Invalid username or password. Please try again!");
             }
 
             if (user.IsBanned)
@@ -71,7 +71,7 @@ namespace KoiFishCare.Controllers
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
             if (!result.Succeeded)
             {
-                return Unauthorized("Invalid login");
+                return Unauthorized("Invalid username or password. Please try again!");
             }
 
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -470,7 +470,7 @@ namespace KoiFishCare.Controllers
                 return BadRequest("This role is not available!");
             }
 
-            if (userDTO.Role.Equals("Staff"))
+            if (userDTO.Role.Equals("Staff") || userDTO.Role.Equals("Vet"))
             {
                 var user = new User
                 {
@@ -506,30 +506,6 @@ namespace KoiFishCare.Controllers
                     Email = userDTO.Email,
                     Gender = userDTO.Gender,
                     IsManager = userDTO.Role.Equals("Manager"),
-                };
-
-                var result = await _userManager.CreateAsync(user, userDTO.Password);
-                if (!result.Succeeded)
-                {
-                    return BadRequest(result.Errors);
-                }
-
-                var role = await _userManager.AddToRoleAsync(user, userDTO.Role);
-                if (!role.Succeeded)
-                {
-                    return BadRequest(role.Errors);
-                }
-            }
-
-            else
-            {
-                var user = new User
-                {
-                    UserName = userDTO.UserName,
-                    FirstName = userDTO.FirstName,
-                    LastName = userDTO.LastName,
-                    Email = userDTO.Email,
-                    Gender = userDTO.Gender,
                 };
 
                 var result = await _userManager.CreateAsync(user, userDTO.Password);
@@ -647,6 +623,7 @@ namespace KoiFishCare.Controllers
             }
 
             existingUser.IsDeleted = true;
+            existingUser.IsActive = false;
             await _userRepo.UpdateAsync(existingUser);
             return Ok("Deleted successfully!");
         }
@@ -662,6 +639,7 @@ namespace KoiFishCare.Controllers
             }
 
             existingUser.IsBanned = true;
+            existingUser.IsActive = false;
             await _userRepo.UpdateAsync(existingUser);
 
             // Compose and send an email notification to the banned user
