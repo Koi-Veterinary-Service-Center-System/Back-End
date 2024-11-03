@@ -17,7 +17,8 @@ namespace KoiFishCare.Mappers
                 SlotID = slot.SlotID,
                 StartTime = slot.StartTime,
                 EndTime = slot.EndTime,
-                WeekDate = slot.WeekDate.ToString()
+                WeekDate = slot.WeekDate.ToString(),
+                IsDeleted = slot.IsDeleted
             };
         }
 

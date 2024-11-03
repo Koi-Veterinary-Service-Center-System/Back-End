@@ -36,7 +36,7 @@ namespace KoiFishCare.Repository
 
         public async Task<List<Slot>> GetAllSlot()
         {
-            return await _context.Slots.Where(s => s.isDeleted == false).ToListAsync();
+            return await _context.Slots.Where(s => s.IsDeleted == false).ToListAsync();
         }
 
         public async Task<VetSlot?> GetAvailableVet(Slot slot)
@@ -82,7 +82,7 @@ namespace KoiFishCare.Repository
 
         public async Task<Slot?> GetSlotById(int id)
         {
-            return await _context.Slots.FirstOrDefaultAsync(s => s.SlotID == id && s.isDeleted == false);
+            return await _context.Slots.FirstOrDefaultAsync(s => s.SlotID == id && s.IsDeleted == false);
         }
 
         public async Task Update(Slot slot)
