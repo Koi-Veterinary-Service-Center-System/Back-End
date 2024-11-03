@@ -25,7 +25,9 @@ public partial class Service
 
     public double EstimatedDuration { get; set; }
 
-    public bool isDeleted { get; set; }
+    public bool IsAtHome { get; set; }
+
+    public bool IsDeleted { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

@@ -100,7 +100,7 @@ namespace KoiFishCare.Controllers
                 return NotFound("Can not find this service");
             }
 
-            existingService.isDeleted = true;
+            existingService.IsDeleted = true;
             await _serviceRepo.Update(existingService);
             return Ok("Deleted successfully!");
         }

@@ -19,7 +19,9 @@ namespace KoiFishCare.Mappers
                 Price = s.Price,
                 QuantityPrice = s.QuantityPrice,
                 EstimatedDuration = s.EstimatedDuration,
-                ImageURL = s.ImageURL
+                ImageURL = s.ImageURL,
+                IsAtHome = s.IsAtHome,
+                IsDeleted = s.IsDeleted,
             };
         }
 
@@ -32,7 +34,8 @@ namespace KoiFishCare.Mappers
                 Price = s.Price,
                 QuantityPrice = s.QuantityPrice,
                 EstimatedDuration = s.EstimatedDuration,
-                ImageURL = s.ImageURL
+                ImageURL = s.ImageURL,
+                IsAtHome = s.IsAtHome,
             };
         }
     }
