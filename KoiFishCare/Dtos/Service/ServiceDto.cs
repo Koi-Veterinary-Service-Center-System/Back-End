@@ -15,6 +15,7 @@ namespace KoiFishCare.DTOs.Service
         public double? EstimatedDuration { get; set; }
         public string? ImageURL { get; set; }
         public bool IsAtHome { get; set; }
+        public bool IsOnline { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

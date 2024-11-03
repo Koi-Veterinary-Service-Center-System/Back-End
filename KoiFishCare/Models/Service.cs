@@ -27,6 +27,8 @@ public partial class Service
 
     public bool IsAtHome { get; set; }
 
+    public bool IsOnline { get; set; }
+
     public bool IsDeleted { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();

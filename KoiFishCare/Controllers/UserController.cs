@@ -636,6 +636,21 @@ namespace KoiFishCare.Controllers
 
         }
 
+        [HttpPatch("soft-delete/{id}")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> SoftDeleteUser([FromRoute] string id)
+        {
+            var existingUser = await _userRepo.GetUserByIdAsync(id);
+            if (existingUser == null)
+            {
+                return NotFound("Can not find user!");
+            }
+
+            existingUser.IsDeleted = true;
+            await _userRepo.UpdateAsync(existingUser);
+            return Ok("Deleted successfully!");
+        }
+
         [HttpPatch("ban-user/{id}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> BanUser([FromRoute] string id, [FromBody] ReasonDTO model)
