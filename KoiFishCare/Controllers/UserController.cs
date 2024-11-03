@@ -101,48 +101,48 @@ namespace KoiFishCare.Controllers
             return Ok(new { Token = userDto.Token, Message = welcomeMessage });
         }
 
-        [HttpGet("google-login")]
-        public IActionResult GoogleLogin()
-        {
-            var redirectUrl = Url.Action("GoogleResponse", "User"); // No page required, this is an API endpoint
-            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-            return Challenge(properties, GoogleDefaults.AuthenticationScheme); // Redirects to Google for login
-        }
+        // [HttpGet("google-login")]
+        // public IActionResult GoogleLogin()
+        // {
+        //     var redirectUrl = Url.Action("GoogleResponse", "User"); // No page required, this is an API endpoint
+        //     var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+        //     return Challenge(properties, GoogleDefaults.AuthenticationScheme); // Redirects to Google for login
+        // }
 
-        [HttpGet("google-response")]
-        public async Task<IActionResult> GoogleResponse()
-        {
-            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+        // [HttpGet("google-response")]
+        // public async Task<IActionResult> GoogleResponse()
+        // {
+        //     var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-            if (result.Succeeded && result.Principal != null)
-            {
-                // Extract user info from the claims
-                var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
-                if (email == null) return NotFound("Not found email");
+        //     if (result.Succeeded && result.Principal != null)
+        //     {
+        //         // Extract user info from the claims
+        //         var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
+        //         if (email == null) return NotFound("Not found email");
 
-                // Check if the user exists
-                var user = await _userManager.FindByEmailAsync(email);
-                if (user == null)
-                {
-                    // User does not exist; redirect with an error message
-                    return Redirect($"http://localhost:5173/?error=UserNotFound");
-                }
+        //         // Check if the user exists
+        //         var user = await _userManager.FindByEmailAsync(email);
+        //         if (user == null)
+        //         {
+        //             // User does not exist; redirect with an error message
+        //             return Redirect($"http://localhost:5173/?error=UserNotFound");
+        //         }
 
-                // Generate JWT token for the authenticated user
-                var userRoles = await _userManager.GetRolesAsync(user);
-                var userRole = userRoles.FirstOrDefault();
-                if (userRole == null) return NotFound("Not found user role");
-                var role = await _roleManager.FindByNameAsync(userRole);
-                if (role == null) return NotFound("Not found role");
-                var token = _tokenService.CreateToken(user, role);
+        //         // Generate JWT token for the authenticated user
+        //         var userRoles = await _userManager.GetRolesAsync(user);
+        //         var userRole = userRoles.FirstOrDefault();
+        //         if (userRole == null) return NotFound("Not found user role");
+        //         var role = await _roleManager.FindByNameAsync(userRole);
+        //         if (role == null) return NotFound("Not found role");
+        //         var token = _tokenService.CreateToken(user, role);
 
-                // Redirect to the frontend with token and username as query params
-                return Redirect($"http://localhost:5173/?token={token}&username={user.UserName}");
-            }
+        //         // Redirect to the frontend with token and username as query params
+        //         return Redirect($"http://localhost:5173/?token={token}&username={user.UserName}");
+        //     }
 
-            // If the authentication failed, redirect to the frontend with an error
-            return Redirect($"http://localhost:5173/?error=GoogleLoginFailed");
-        }
+        //     // If the authentication failed, redirect to the frontend with an error
+        //     return Redirect($"http://localhost:5173/?error=GoogleLoginFailed");
+        // }
 
 
 
@@ -175,45 +175,39 @@ namespace KoiFishCare.Controllers
                 FirstName = model.FirstName!,
                 LastName = model.LastName!,
                 UserName = model.UserName,
-                Email = model.Email
+                Email = model.Email,
+                EmailConfirmed = false // Set as unverified initially
             };
 
             var result = await _userManager.CreateAsync(customer, model.Password!);
             if (result.Succeeded)
             {
-                var roleResult = await _userManager.AddToRoleAsync(customer, "Customer");
-                if (roleResult.Succeeded)
-                {
-                    var role = await _roleManager.FindByNameAsync("Customer");
-                    var userDto = new UserDTO
-                    {
-                        UserName = customer.UserName,
-                        Email = customer.Email,
-                        FirstName = customer.FirstName,
-                        LastName = customer.LastName,
-                        Token = _tokenService.CreateToken(customer, role!)
-                    };
-                    var htmlContent = $@"
-            <html>
-            <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
-                <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
-                    <h2 style='text-align: center;'>Welcome to KoiFishCare!</h2>
-                    <p>Hello {customer.FirstName},</p>
-                    <p>Thank you for registering with us. We are excited to have you on board!</p>
-                    <p>If you have any questions, feel free to reach out to our support team.</p>
-                    <p>Best regards,<br>KoiNe Team</p>
-                    <hr style='margin-top: 20px;' />
-                    <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
-                </div>
-            </body>
-            </html>";
-            
-                    await _emailService.SendEmailAsync(customer.Email!, "Welcome to KoiFishCare", htmlContent);
-                    return Ok(userDto);
-                }
+                // Generate verification URL
+                var verifyUrl = $"http://localhost:5173/verify-email?email={customer.Email}";
+
+                var htmlContent = $@"
+        <html>
+        <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+            <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+                <h2 style='text-align: center;'>Verify Your Email</h2>
+                <p>Hello {customer.FirstName},</p>
+                <p>Please click the link below to verify your email address and complete your registration:</p>
+                <a href='{verifyUrl}' style='display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;'>Verify Email</a>
+                <p>If you did not register, please ignore this email.</p>
+                <p>Best regards,<br>KoiNe Team</p>
+            </div>
+        </body>
+        </html>";
+
+                await _emailService.SendEmailAsync(customer.Email!, "Verify Your Email", htmlContent);
+                return Ok("Registration successful. Please check your email to verify your account.");
             }
             return BadRequest(result.Errors);
         }
+
+
+
+
 
 
         [HttpPost("request-password-reset")]
