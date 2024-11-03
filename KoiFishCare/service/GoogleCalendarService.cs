@@ -18,13 +18,13 @@ namespace KoiFishCare.service
         {
 
         }
-        public static async Task<Event> CreateGoogleCalendar(GoogleCalendar request)
+        public static async Task<Event> CreateGoogleCalendar(GoogleCalendar request, string vetCredentialFilePath, string vetEmail, List<string> attendeeEmails)
         {
             string[] Scopes = { "https://www.googleapis.com/auth/calendar" };
             string ApplicationName = "KoiNe";
             UserCredential credential;
 
-            using (var stream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(),"Cre.json"), FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "Cre.json"), FileMode.Open, FileAccess.Read))
             {
                 string credPath = "token.json";
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -40,6 +40,17 @@ namespace KoiFishCare.service
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
             });
+
+            // Add the vet as the first attendee, then other participants
+            var attendees = new List<EventAttendee>
+            {
+                new EventAttendee { Email = vetEmail }  // Vet's email is the main organizer
+            };
+
+            if (attendeeEmails != null && attendeeEmails.Count > 0)
+            {
+                attendees.AddRange(attendeeEmails.Select(email => new EventAttendee { Email = email }));
+            }
 
             // Define the event with ConferenceData for Google Meet
             Event eventCalendar = new Event()
@@ -67,7 +78,8 @@ namespace KoiFishCare.service
                         },
                         RequestId = Guid.NewGuid().ToString()  // Unique request ID
                     }
-                }
+                },
+                Attendees = attendees  // Add the list of attendees to the event
             };
 
             var eventRequest = services.Events.Insert(eventCalendar, "primary");
