@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
+using KoiFishCare.Models;
 
 namespace KoiFishCare.Controllers
 {
@@ -41,18 +42,11 @@ namespace KoiFishCare.Controllers
         {
             var payments = await _paymentRepo.GetAllPayment();
             if (payments == null || !payments.Any()) return BadRequest("Can not find any payment");
-
-            var paymentsDto = payments.Select(p => new PaymentDTO
-            {
-                PaymentID = p.PaymentID,
-                Type = p.Type
-            }).ToList();
-
-            return Ok(paymentsDto);
+            return Ok(payments.Select(x => x.ToDTOFromModel()));
         }
 
         [HttpPost("create-payment")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager, Staff")]
         public async Task<IActionResult> AddPayment([FromBody] AddPaymentDTO addPaymentDTO)
         {
             if (!ModelState.IsValid)
@@ -65,8 +59,10 @@ namespace KoiFishCare.Controllers
                 return BadRequest("The length of the type must be greater than or equal to 3!");
             }
 
-            await _paymentRepo.Add(addPaymentDTO.ToModelFromDTO());
-            return Ok(addPaymentDTO);
+            var payment = new Payment();
+            payment.Type = addPaymentDTO.Type;
+            await _paymentRepo.Add(payment);
+            return Ok(payment.ToDTOFromModel());
         }
 
         [HttpPut("update-payment/{id:int}")]
@@ -89,8 +85,9 @@ namespace KoiFishCare.Controllers
                 return BadRequest("The length of the type must be greater than or equal to 3!");
             }
 
-            await _paymentRepo.Update(updatePaymentDTO.ToModelFromDTO());
-            return Ok(updatePaymentDTO);
+            paymentModel.Type = updatePaymentDTO.Type;
+            await _paymentRepo.Update(paymentModel);
+            return Ok(paymentModel.ToDTOFromModel());
         }
 
         [HttpDelete("delete-payment/{id:int}")]
@@ -213,7 +210,7 @@ namespace KoiFishCare.Controllers
                 return NotFound("Can not find this payment!");
             }
 
-            existingPayment.isDeleted = true;
+            existingPayment.IsDeleted = true;
             await _paymentRepo.Update(existingPayment);
             return Ok("Deleted successfully!");
         }

@@ -3147,7 +3147,24 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             }
         );
 
+        modelBuilder.Entity<Payment>().HasData(
+            new Payment
+            {
+                PaymentID = 1,
+                Type = "In Cash",
+                IsDeleted = false,
+            },
+
+            new Payment
+            {
+                PaymentID = 2,
+                Type = "VNPay",
+                IsDeleted = false,
+            }
+        );
     }
+
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

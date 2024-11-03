@@ -9,5 +9,6 @@ namespace KoiFishCare.DTOs.Payment
     {
         public int? PaymentID { get; set; }
         public string? Type { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

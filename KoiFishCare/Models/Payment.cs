@@ -13,7 +13,7 @@ public partial class Payment
 
     public string Type { get; set; } = null!;
 
-    public bool isDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     // ---- Booking -----------------------------------------------------------------------
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
