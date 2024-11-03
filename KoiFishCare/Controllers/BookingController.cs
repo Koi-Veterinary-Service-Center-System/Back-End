@@ -317,26 +317,26 @@ namespace KoiFishCare.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("schedule/{bookingID:int}")]
-        [Authorize(Roles = "Staff")]
-        public async Task<IActionResult> ScheduleBooking(int bookingID)
-        {
-            var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
-            if (booking == null)
-            {
-                return NotFound("Booking not found!");
-            }
+        // [HttpPatch("schedule/{bookingID:int}")]
+        // [Authorize(Roles = "Staff")]
+        // public async Task<IActionResult> ScheduleBooking(int bookingID)
+        // {
+        //     var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+        //     if (booking == null)
+        //     {
+        //         return NotFound("Booking not found!");
+        //     }
 
-            if (booking.BookingStatus == BookingStatus.Scheduled)
-            {
-                return BadRequest("The booking is already scheduled!");
-            }
+        //     if (booking.BookingStatus == BookingStatus.Scheduled)
+        //     {
+        //         return BadRequest("The booking is already scheduled!");
+        //     }
 
-            booking.BookingStatus = BookingStatus.Scheduled;
-            await _bookingRepo.UpdateBooking(booking);
+        //     booking.BookingStatus = BookingStatus.Scheduled;
+        //     await _bookingRepo.UpdateBooking(booking);
 
-            return Ok("Booking status updated successfully!");
-        }
+        //     return Ok("Booking status updated successfully!");
+        // }
 
 
         [HttpPatch("ongoing/{bookingID:int}")]

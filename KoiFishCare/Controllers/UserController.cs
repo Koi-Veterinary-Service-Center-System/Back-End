@@ -195,6 +195,8 @@ namespace KoiFishCare.Controllers
         <html>
         <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
             <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+                <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiFishCare Logo' 
+                     style='display: block; margin: 0 auto; width: 150px;' />
                 <h2 style='text-align: center;'>Verify Your Email</h2>
                 <p>Hello {customer.FirstName},</p>
                 <p>Your verification code is: <strong>{verificationCode}</strong></p>
@@ -266,6 +268,8 @@ namespace KoiFishCare.Controllers
         <html>
         <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
             <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+                <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiFishCare Logo' 
+                     style='display: block; margin: 0 auto; width: 150px;' />
                 <h2 style='text-align: center;'>Welcome to KoiNe!</h2>
                 <p>Hello {user.FirstName},</p>
                 <p>Your email has been verified successfully. Thank you for joining us!</p>
@@ -274,7 +278,7 @@ namespace KoiFishCare.Controllers
         </body>
         </html>";
 
-                await _emailService.SendEmailAsync(user.Email!, "Welcome to KoiFishCare!", welcomeContent);
+                await _emailService.SendEmailAsync(user.Email!, "Welcome to KoiNe!", welcomeContent);
 
                 return Ok(userDto);
             }

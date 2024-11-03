@@ -26,7 +26,7 @@ namespace KoiFishCare.service
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("nhatnhse182399@fpt.edu.vn", "KoiFishCare"),
+                    From = new MailAddress("nhatnhse182399@fpt.edu.vn", "KoiNe"),
                     Subject = subject,
                     Body = htmlMessage,
                     IsBodyHtml = true,
