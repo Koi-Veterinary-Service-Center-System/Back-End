@@ -24,5 +24,8 @@ namespace KoiFishCare.DTOs.Service
 
         [Required(ErrorMessage = "Is At Home is required.")]
         public bool IsAtHome { get; set; }
+
+        [Required(ErrorMessage = "Is Online is required.")]
+        public bool IsOnline { get; set; }
     }
 }

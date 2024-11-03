@@ -65,6 +65,7 @@ namespace KoiFishCare.Repository
             service.QuantityPrice = updateDto.QuantityPrice;
             service.ImageURL = updateDto.ImageURL;
             service.IsAtHome = updateDto.IsAtHome;
+            service.IsOnline = updateDto.IsOnline;
 
             await _context.SaveChangesAsync();
             return service;

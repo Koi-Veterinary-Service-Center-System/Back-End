@@ -22,6 +22,7 @@ namespace KoiFishCare.Mappers
                 ImageURL = s.ImageURL,
                 IsAtHome = s.IsAtHome,
                 IsDeleted = s.IsDeleted,
+                IsOnline = s.IsOnline,
             };
         }
 
@@ -36,6 +37,7 @@ namespace KoiFishCare.Mappers
                 EstimatedDuration = s.EstimatedDuration,
                 ImageURL = s.ImageURL,
                 IsAtHome = s.IsAtHome,
+                IsOnline = s.IsOnline
             };
         }
     }

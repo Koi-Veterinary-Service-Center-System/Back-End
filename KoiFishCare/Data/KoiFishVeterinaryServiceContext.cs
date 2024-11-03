@@ -461,6 +461,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 QuantityPrice = 25000M,
                 EstimatedDuration = 1.5,
                 IsAtHome = true,
+                IsOnline = false,
                 ImageURL = "https://cafishvet.com/wp-content/uploads/2024/09/Water-Treatment-Jessie-Sanders-Fish-Vetranarian-1024x683.jpg"
             },
 
@@ -473,6 +474,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 QuantityPrice = 25000M,
                 EstimatedDuration = 1.5,
                 IsAtHome = false,
+                IsOnline = false,
                 ImageURL = "https://cafishvet.com/wp-content/uploads/2024/09/Water-Treatment-Jessie-Sanders-Fish-Vetranarian-1024x683.jpg"
             },
 
@@ -485,6 +487,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 QuantityPrice = 0,
                 EstimatedDuration = 3.0,
                 IsAtHome = false,
+                IsOnline = true,
                 ImageURL = "https://i.pinimg.com/564x/10/50/09/105009e291593ad674bc60faed37a5e8.jpg"
             },
 
@@ -497,6 +500,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 QuantityPrice = 0,
                 EstimatedDuration = 3.0,
                 IsAtHome = true,
+                IsOnline = false,
                 ImageURL = "https://i.pinimg.com/564x/10/50/09/105009e291593ad674bc60faed37a5e8.jpg"
             },
 
@@ -509,6 +513,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 QuantityPrice = 25000M,
                 EstimatedDuration = 2.5,
                 IsAtHome = false,
+                IsOnline = false,
                 ImageURL = "https://wonkywheels.com/wp-content/uploads/2021/08/koidiseasemat.jpeg"
             },
 
@@ -521,6 +526,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 QuantityPrice = 25000M,
                 EstimatedDuration = 2.5,
                 IsAtHome = true,
+                IsOnline = false,
                 ImageURL = "https://wonkywheels.com/wp-content/uploads/2021/08/koidiseasemat.jpeg"
             },
 
@@ -534,6 +540,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 QuantityPrice = 20000M,
                 EstimatedDuration = 2.0,
                 IsAtHome = true,
+                IsOnline = false,
                 ImageURL = "https://i.pinimg.com/564x/7b/cc/71/7bcc716d63ec9bc682c019d2aa5090b8.jpg"
             },
 
@@ -546,6 +553,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 QuantityPrice = 20000M,
                 EstimatedDuration = 1.0,
                 IsAtHome = true,
+                IsOnline = false,
                 ImageURL = "https://cafishvet.com/wp-content/uploads/2020/10/good-water-quality-in-fish-tank-1024x536.jpg"
             },
 
@@ -558,6 +566,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 QuantityPrice = 15000M,
                 EstimatedDuration = 1.75,
                 IsAtHome = true,
+                IsOnline = false,
                 ImageURL = "https://youraquariumguide.com/wp-content/uploads/2022/05/Maintenance-Considerations-For-Koi-Pond.jpg"
             }
         );
