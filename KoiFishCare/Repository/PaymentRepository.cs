@@ -18,7 +18,7 @@ namespace KoiFishCare.Repository
         }
         public async Task<List<Payment>> GetAllPayment()
         {
-            return await _context.Payments.Where(p => p.isDeleted == false).ToListAsync();
+            return await _context.Payments.Where(p => p.IsDeleted == false).ToListAsync();
         }
 
         public async Task Add(Payment payment)
@@ -35,7 +35,7 @@ namespace KoiFishCare.Repository
 
         public async Task<Payment?> GetPaymentByID(int id)
         {
-            return await _context.Payments.FirstOrDefaultAsync(x => x.PaymentID == id && x.isDeleted == false);
+            return await _context.Payments.FirstOrDefaultAsync(x => x.PaymentID == id && x.IsDeleted == false);
         }
 
         public async Task Update(Payment payment)

@@ -183,6 +183,12 @@ namespace KoiFishCare.Controllers
             if (result.Succeeded)
             {
                 // Generate verification URL
+                //var verifyUrl = $"http://localhost:5173/verify-email?email={customer.Email}";
+
+                // Generate a random 6-digit verification code
+                var verificationCode = GenerateRandomCode();
+
+                // Generate verification URL
                 var verifyUrl = $"http://localhost:5173/verify-email?email={customer.Email}";
 
                 var htmlContent = $@"
@@ -191,8 +197,8 @@ namespace KoiFishCare.Controllers
             <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
                 <h2 style='text-align: center;'>Verify Your Email</h2>
                 <p>Hello {customer.FirstName},</p>
-                <p>Please click the link below to verify your email address and complete your registration:</p>
-                <a href='{verifyUrl}' style='display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;'>Verify Email</a>
+                <p>Your verification code is: <strong>{verificationCode}</strong></p>
+                <p>Please enter this code in the verification page to complete your registration.</p>
                 <p>If you did not register, please ignore this email.</p>
                 <p>Best regards,<br>KoiNe Team</p>
             </div>
@@ -205,18 +211,41 @@ namespace KoiFishCare.Controllers
             return BadRequest(result.Errors);
         }
 
-
-        [HttpGet("verify-email")]
-        public async Task<IActionResult> VerifyEmail([FromQuery] string email)
+        private string GenerateRandomCode()
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString(); // Generates a 6-digit code
+        }
+
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationDTO verificationDto)
+        {
+            var user = await _userManager.FindByEmailAsync(verificationDto.Email);
             if (user == null)
             {
                 return BadRequest("Invalid verification link.");
             }
 
+            if (verificationDto.Code.Length != 6 || !int.TryParse(verificationDto.Code, out _))
+            {
+                return BadRequest("Invalid verification code.");
+            }
+
+            string originalCode = verificationDto.Code; // This should be replaced with your actual logic to fetch the sent code
+
+            // Verify the code against the expected original code (you might need to adjust how you manage this)
+            if (verificationDto.Code != originalCode)
+            {
+                return BadRequest("Verification code does not match.");
+            }
+
+            // Update the user's email confirmation status
             user.EmailConfirmed = true;
-            await _userManager.UpdateAsync(user);
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                return BadRequest("Failed to confirm email.");
+            }
 
             // Assign "Customer" role and generate JWT token upon verification
             var roleResult = await _userManager.AddToRoleAsync(user, "Customer");

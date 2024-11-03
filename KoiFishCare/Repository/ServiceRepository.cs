@@ -38,12 +38,12 @@ namespace KoiFishCare.Repository
 
         public async Task<List<Service>> GetAllService()
         {
-            return await _context.Services.Where(s => s.isDeleted == false).ToListAsync();
+            return await _context.Services.Where(s => s.IsDeleted == false).ToListAsync();
         }
 
         public async Task<Service?> GetServiceById(int id)
         {
-            return await _context.Services.FirstOrDefaultAsync(s => s.ServiceID == id && s.isDeleted == false);
+            return await _context.Services.FirstOrDefaultAsync(s => s.ServiceID == id && s.IsDeleted == false);
         }
 
         public async Task Update(Service service)
