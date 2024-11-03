@@ -14,12 +14,15 @@ namespace KoiFishCare.DTOs.Service
         public string Description { get; set; } = string.Empty;
         [Required(ErrorMessage = "Price is required.")]
         public decimal Price { get; set; }
-        
+
         [Required(ErrorMessage = "Quantity Price is required.")]
-        public decimal QuantityPrice {get; set;}
-        
+        public decimal QuantityPrice { get; set; }
+
         [Required(ErrorMessage = "Duration is required.")]
         public double EstimatedDuration { get; set; }
         public string? ImageURL { get; set; }
+
+        [Required(ErrorMessage = "Is At Home is required.")]
+        public bool IsAtHome { get; set; }
     }
 }
