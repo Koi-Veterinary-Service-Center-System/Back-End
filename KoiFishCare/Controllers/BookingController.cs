@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using KoiFishCare.Dtos.Booking;
 using Microsoft.IdentityModel.Tokens;
 using KoiFishCare.service;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace KoiFishCare.Controllers
 {
@@ -281,6 +282,18 @@ namespace KoiFishCare.Controllers
             }
 
             return BadRequest("Invalid request");
+        }
+
+        [HttpGet("view-booking/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetBookingById([FromRoute] int id)
+        {
+            var booking = await _bookingRepo.GetBookingByIdAsync(id);
+            if (booking == null)
+            {
+                return NotFound("Can not find booking!");
+            }
+            return Ok(booking.ToDtoFromModel());
         }
 
         [HttpGet("view-booking-history")]
