@@ -80,10 +80,12 @@ namespace KoiFishCare.Repository
         }
 
 
-        void IBookingRepository.UpdateBooking(Booking booking)
+        public async Task<Booking?> UpdateBooking(Booking booking)
         {
             _context.Bookings.Update(booking);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
+            return booking;
         }
 
 

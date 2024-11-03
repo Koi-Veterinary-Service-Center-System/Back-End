@@ -118,7 +118,7 @@ namespace KoiFishCare.Controllers
             }
 
             booking.hasFeedback = true;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
             return Ok(feedback.ToViewFeedback());
         }
 

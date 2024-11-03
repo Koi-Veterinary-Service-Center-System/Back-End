@@ -16,6 +16,7 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
 
+
 namespace KoiFishCare.Controllers
 {
     [Route("api/payment")]
@@ -164,10 +165,9 @@ namespace KoiFishCare.Controllers
 
             booking.BookingStatus = Models.Enum.BookingStatus.Scheduled;
             booking.isPaid = true;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
 
             // Compose and send an email notification with payment information
-            var subject = "Booking Payment Notification";
             var htmlContent = $@"
 <html>
 <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
@@ -176,13 +176,10 @@ namespace KoiFishCare.Controllers
              alt='KoiFishCare Logo' style='display: block; margin: 0 auto; width: 150px;' />
         <h2 style='text-align: center;'>Booking Payment Notification</h2>
         <p>Dear {booking.Customer.UserName},</p>
-        <p>Your recent booking payment was processed successfully. Below are the payment details:</p>
-        <table style='width: 100%; border-collapse: collapse; margin-top: 20px;'>
-            <tr><td><strong>Order Description:</strong></td><td>{response.OrderDescription}</td></tr>
-            <tr><td><strong>Order ID:</strong></td><td>{response.OrderId}</td></tr>
-            <tr><td><strong>Payment ID:</strong></td><td>{response.PaymentId}</td></tr>
-            <tr><td><strong>Transaction ID:</strong></td><td>{response.TransactionId}</td></tr>
-        </table>
+        <p>Your recent booking payment was processed successfully. Below are the booking details:</p>
+        <p>Booking Id: {booking.BookingID}</p>
+        <p>Booking date: {booking.BookingDate.ToString("dd MMMM yyyy")}</p>
+        <p>Booking Veterinarian: {booking.Veterinarian.LastName + booking.Veterinarian.FirstName}</p>
         <p>If you have any questions, please contact us.</p>
         <p>Best regards,<br>KoiNe Team</p>
         <hr style='margin-top: 20px;' />
@@ -190,7 +187,7 @@ namespace KoiFishCare.Controllers
     </div>
 </body>
 </html>";
-            await _emailService.SendEmailAsync(booking.Customer.Email!, subject, htmlContent);
+            await _emailService.SendEmailAsync(booking.Customer.Email!, "Booking Payment Notification", htmlContent);
 
             return Redirect($"http://localhost:5173/paymentsuccess/{bookingId}");
         }

@@ -69,7 +69,7 @@ namespace KoiFishCare.Controllers
             if (presRec == null) return NotFound("Can not find BookingId");
 
             booking.hasPres = true;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
             return Ok(presRec.ToPresRecDtoFromModel());
         }
 

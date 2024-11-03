@@ -101,7 +101,7 @@ namespace KoiFishCare.Controllers
 
             var result = await _bookingRecordRepo.CreateAsync(bookingRecord);
             existingBooking.BookingStatus = BookingStatus.Completed;
-            _bookingRepo.UpdateBooking(existingBooking);
+            await _bookingRepo.UpdateBooking(existingBooking);
             return Ok(result.ToDTOFromModel());
         }
 

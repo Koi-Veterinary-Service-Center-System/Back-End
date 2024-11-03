@@ -639,6 +639,43 @@ namespace KoiFishCare.Controllers
             return Ok("Banned successfully!");
         }
 
+        [HttpPatch("unban-user/{id}")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> UnBanUser([FromRoute] string id)
+        {
+            var existingUser = await _userRepo.GetUserByIdAsync(id);
+            if (existingUser == null)
+            {
+                return NotFound("Can not find user!");
+            }
+
+            existingUser.isBanned = false;
+            await _userRepo.UpdateAsync(existingUser);
+
+            // Compose and send an email notification to the banned user
+            var subject = "Account UnBan Notification";
+            var htmlContent = $@"
+<html>
+<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+    <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
+        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' 
+             alt='KoiFishCare Logo' style='display: block; margin: 0 auto; width: 150px;' />
+        <h2 style='text-align: center;'>Account Unban Notification</h2>
+        <p>Dear {existingUser.UserName},</p>
+        <p>We are pleased to inform you that your account on KoiFishCare has been successfully unbanned. You can now log in and access all services as usual.</p>
+        <p>If you have any questions or need further assistance, please don't hesitate to reach out to our support team.</p>
+        <p>Thank you for being a part of our community, and we look forward to serving you.</p>
+        <p>Best regards,<br>KoiNe Team</p>
+        <hr style='margin-top: 20px;' />
+        <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
+    </div>
+</body>
+</html>";
+
+            await _emailService.SendEmailAsync(existingUser.Email!, subject, htmlContent);
+            return Ok("UnBanned successfully!");
+        }
+
 
         private bool IsValidPhoneNumber(string phoneNumber)
         {

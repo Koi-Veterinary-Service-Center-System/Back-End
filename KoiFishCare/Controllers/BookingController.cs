@@ -308,7 +308,7 @@ namespace KoiFishCare.Controllers
             }
 
             booking.BookingStatus = BookingStatus.Scheduled;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
 
             return Ok("Booking status updated successfully!");
         }
@@ -348,7 +348,7 @@ namespace KoiFishCare.Controllers
             }
 
             booking.BookingStatus = BookingStatus.Ongoing;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
 
             return Ok("Booking status updated successfully!");
         }
@@ -387,7 +387,7 @@ namespace KoiFishCare.Controllers
             }
 
             booking.BookingStatus = BookingStatus.Completed;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
 
             return Ok("Booking status updated successfully!");
         }
@@ -427,7 +427,7 @@ namespace KoiFishCare.Controllers
 
             booking.BookingStatus = BookingStatus.Received_Money;
             booking.isPaid = true;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
 
             return Ok("Booking status updated successfully!");
         }
@@ -465,7 +465,7 @@ namespace KoiFishCare.Controllers
             }
 
             booking.BookingStatus = BookingStatus.Succeeded;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
             await _vetSlotRepo.Update(booking.VetID, booking.SlotID, false);
 
             return Ok("Booking status updated successfully!");
@@ -546,15 +546,17 @@ namespace KoiFishCare.Controllers
             await _recordRepo.CreateAsync(record);
 
             booking.BookingStatus = BookingStatus.Cancelled;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
             await _vetSlotRepo.Update(booking.VetID, booking.SlotID, false);
 
-            var emailContent = $@"
+            if (User.IsInRole("Staff"))// Send email for customer if centre cancel booking
+            {
+                var emailContent = $@"
     <html>
     <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
         <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
             <h2 style='text-align: center;'>Booking Cancellation Confirmation</h2>
-            <p>Hello {user.FirstName},</p>
+            <p>Hello {booking.Customer.FirstName},</p>
             <p>Your booking with ID #{booking.BookingID} scheduled for {booking.BookingDate.ToString("dd MMMM yyyy")} has been successfully canceled.</p>
             <p>{note} {noteByCentre}</p>
             <p>Refund amount: <strong>{refundMoney:C}</strong> (Refund Percentage: {refundPercent}%)</p>
@@ -566,7 +568,8 @@ namespace KoiFishCare.Controllers
     </body>
     </html>";
 
-            await _emailService.SendEmailAsync(user.Email, "Booking Cancellation Confirmation", emailContent);
+                await _emailService.SendEmailAsync(booking.Customer.Email!, "Booking Cancellation Confirmation", emailContent);
+            }
 
             return Ok(record.ToDTOFromModel());
         }
@@ -594,7 +597,7 @@ namespace KoiFishCare.Controllers
             }
 
             booking.BookingStatus = BookingStatus.Refunded;
-            _bookingRepo.UpdateBooking(booking);
+            await _bookingRepo.UpdateBooking(booking);
 
             return Ok("Booking status updated successfully!");
 
