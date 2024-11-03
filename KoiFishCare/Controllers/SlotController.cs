@@ -46,10 +46,10 @@ namespace KoiFishCare.Controllers
 
             var slotsDto = slots.Select(vs => new SlotDTO
             {
-                SlotID = vs.Slot.SlotID,
-                StartTime = vs.Slot.StartTime,
-                EndTime = vs.Slot.EndTime,
-                WeekDate = vs.Slot.WeekDate.ToString()
+                SlotID = vs?.Slot?.SlotID,
+                StartTime = vs?.Slot?.StartTime,
+                EndTime = vs?.Slot?.EndTime,
+                WeekDate = vs?.Slot?.WeekDate.ToString()
             }
             ).ToList();
 
@@ -121,7 +121,7 @@ namespace KoiFishCare.Controllers
                 return NotFound("Can not find this service!");
             }
 
-            existingSlot.isDeleted = true;
+            existingSlot.IsDeleted = true;
             await _slotRepo.Update(existingSlot);
             return Ok("Deleted successfully!");
         }

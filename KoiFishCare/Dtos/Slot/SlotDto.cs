@@ -13,5 +13,7 @@ namespace KoiFishCare.DTOs.Slot
         public TimeOnly? EndTime { get; set; }
 
         public string? WeekDate { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }
