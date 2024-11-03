@@ -21,7 +21,11 @@ public partial class User : IdentityUser
 
     public string? ImagePublicId { get; set; } //id của hình lưu trên cloud
 
-    public bool isBanned { get; set; }
+    public bool IsBanned { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public bool IsDeleted { get; set; }
 
     // ---- Attribute for Vet -----------------------------------------------------------------------
     public int? ExperienceYears { get; set; }

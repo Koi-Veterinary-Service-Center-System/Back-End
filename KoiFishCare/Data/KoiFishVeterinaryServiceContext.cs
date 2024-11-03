@@ -142,6 +142,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = null,
                 PhoneNumber = "0786542387",
                 ExperienceYears = null,
+                IsBanned = false,
+                IsActive = true
             },
 
         //---------- Staff -----------------------------------------------------------------
@@ -161,6 +163,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = null,
                 PhoneNumber = "0799981696",
                 ExperienceYears = null,
+                IsBanned = false,
+                IsActive = true
             },
 
         //---------- Customer -----------------------------------------------------------------
@@ -179,6 +183,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = null,
                 PhoneNumber = "0972513978",
                 ExperienceYears = null,
+                IsBanned = false,
+                IsActive = true,
             },
 
         //---------- Veterinarian -----------------------------------------------------------------
@@ -191,13 +197,15 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 FirstName = "Nhat",
                 LastName = "Nguyen",
                 Gender = true,
-                Email = "nhatnguyense186475@fpt.edu.vn",
-                NormalizedEmail = "NHATNGUYENSE186475@FPT.EDU.VN",
+                Email = "koine1814@gmail.com",
+                NormalizedEmail = "KOINE1814@GMAIL.COM",
                 Address = "Phu My Hung",
                 ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2FnhatNguyen.png?alt=media&token=dd5ce883-e50a-49e8-9393-7739f188389e",
                 ImagePublicId = null,
                 PhoneNumber = "0873457689",
                 ExperienceYears = 10,
+                IsBanned = false,
+                IsActive = true,
             },
 
             new User {
@@ -209,13 +217,15 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 FirstName = "Minh",
                 LastName = "E",
                 Gender = true,
-                Email = "minhlu1476@gmail.com",
-                NormalizedEmail = "MINHLU1476@GMAIL.COM",
+                Email = "khoalmdse182689@fpt.edu.vn",
+                NormalizedEmail = "KHOALMDSE182689@FPT.EDU.VN",
                 Address = "Le Van Viet",
                 ImageURL = "https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/profile_pictures%2F346077162_980458369794854_6154481088254840308_n.jpg?alt=media&token=11e2d80f-b7f0-463c-8531-246172cc214f",
                 ImagePublicId = null,
                 PhoneNumber = "0762431687",
                 ExperienceYears = 5,
+                IsBanned = false,
+                IsActive = true,
             },
 
             new User {
@@ -227,13 +237,15 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 FirstName = "Chau",
                 LastName = "Lee",
                 Gender = true,
-                Email = "ChauLee123@gmail.com",
-                NormalizedEmail = "CHAULEE123@GMAIL.COM",
+                Email = "chaulbse182712@fpt.edu.vn",
+                NormalizedEmail = "CHAULBSE182712@FPT.EDU.VN",
                 Address = "Lam Van Ben",
                 ImageURL = null,
                 ImagePublicId = null,
                 PhoneNumber = "0123456789",
                 ExperienceYears = 8,
+                IsBanned = false,
+                IsActive = true
             },
 
             new User {
@@ -245,13 +257,15 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 FirstName = "An",
                 LastName = "Nguyen",
                 Gender = false,
-                Email = "AnNTP1904@gmail.com",
-                NormalizedEmail = "AnNTP1904@GMAIL.COM",
+                Email = "anntpse182743@fpt.edu.vn",
+                NormalizedEmail = "ANNTPSE182743@FPT.EDU.VN",
                 Address = "Dong Nai",
                 ImageURL = null,
                 ImagePublicId = null,
                 PhoneNumber = "0967812345",
                 ExperienceYears = 7,
+                IsBanned = false, 
+                IsActive = true
             },
 
             new User {
@@ -263,13 +277,15 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 FirstName = "Anh",
                 LastName = "Pham",
                 Gender = true,
-                Email = "AnhPham2909@gmail.com",
-                NormalizedEmail = "ANHPHAM2909@GMAIL.COM",
+                Email = "nhatnhse182399@fpt.edu.vn",
+                NormalizedEmail = "NHATNHSE182399@FPT.EDU.VN",
                 Address = "Thao Dien",
                 ImageURL = null,
                 ImagePublicId = null,
                 PhoneNumber = "0987654321",
                 ExperienceYears = 9,
+                IsBanned = false,
+                IsActive = true,
             }
         };
 

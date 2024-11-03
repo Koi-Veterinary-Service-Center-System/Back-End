@@ -62,7 +62,7 @@ namespace KoiFishCare.Controllers
                 return Unauthorized("Invalid login");
             }
 
-            if (user.isBanned)
+            if (user.IsBanned)
             {
                 return Unauthorized("You are banned!");
             }
@@ -586,7 +586,7 @@ namespace KoiFishCare.Controllers
                     Gender = user.Gender,
                     UserName = user.UserName,
                     Email = user.Email,
-                    IsActive = user.isBanned,
+                    IsActive = user.IsActive,
                 });
             }
 
@@ -646,7 +646,7 @@ namespace KoiFishCare.Controllers
                 return NotFound("Can not find user!");
             }
 
-            existingUser.isBanned = true;
+            existingUser.IsBanned = true;
             await _userRepo.UpdateAsync(existingUser);
 
             // Compose and send an email notification to the banned user
@@ -683,7 +683,7 @@ namespace KoiFishCare.Controllers
                 return NotFound("Can not find user!");
             }
 
-            existingUser.isBanned = false;
+            existingUser.IsBanned = false;
             await _userRepo.UpdateAsync(existingUser);
 
             // Compose and send an email notification to the banned user
