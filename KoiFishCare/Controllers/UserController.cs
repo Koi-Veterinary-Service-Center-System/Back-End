@@ -21,7 +21,6 @@ namespace KoiFishCare.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [AllowAnonymous]
     public class UserController : ControllerBase
     {
         private readonly SignInManager<User> _signInManager;
@@ -704,6 +703,44 @@ namespace KoiFishCare.Controllers
             return Ok("UnBanned successfully!");
         }
 
+        [HttpGet("get-all-Customer")]
+        [Authorize(Roles = "Manager, Staff")]
+        public async Task<IActionResult> GetAllCustomer()
+        {
+            var users = await _userRepo.GetAllUserAsync();
+            if (users == null || !users.Any())
+            {
+                return NotFound("There is no user!");
+            }
+
+            var cusDTOs = new List<ViewUserDTO>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault();
+                if (role != null && role.Equals("Customer"))
+                {
+                    cusDTOs.Add(new ViewUserDTO
+                    {
+                        UserID = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Role = role,
+                        Gender = user.Gender,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        IsActive = user.IsActive,
+                    });
+                }
+            }
+
+            if (!cusDTOs.Any())
+                return NotFound("No customers found!");
+
+
+            return Ok(cusDTOs);
+        }
 
         private bool IsValidPhoneNumber(string phoneNumber)
         {

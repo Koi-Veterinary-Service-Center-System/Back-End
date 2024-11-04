@@ -290,7 +290,6 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet("view-booking/{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetBookingById([FromRoute] int id)
         {
             var booking = await _bookingRepo.GetBookingByIdAsync(id);

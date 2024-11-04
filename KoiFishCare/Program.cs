@@ -165,13 +165,6 @@ builder.Services.AddAuthorization(options =>
 
 });
 
-builder.Services.AddControllers(options =>
-{
-    //add authorization Policy
-    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-    options.Filters.Add(new AuthorizeFilter(policy));
-});
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

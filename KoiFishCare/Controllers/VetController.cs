@@ -12,7 +12,6 @@ namespace KoiFishCare.Controllers
 {
     [Route("api/vet")]
     [ApiController]
-    [AllowAnonymous]
     public class VetController : ControllerBase
     {
         private readonly IVetRepository _vetRepo;
