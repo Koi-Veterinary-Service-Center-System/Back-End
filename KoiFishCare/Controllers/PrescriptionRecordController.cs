@@ -120,6 +120,10 @@ namespace KoiFishCare.Controllers
             var presRec = await _preRecRepo.Delete(presRecId);
             if (presRec == null) return NotFound();
 
+            
+            booking.hasPres = false;
+            await _bookingRepo.UpdateBooking(booking);
+
             return NoContent();
         }
 
