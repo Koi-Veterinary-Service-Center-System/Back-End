@@ -192,19 +192,34 @@ namespace KoiFishCare.Controllers
 
                 var htmlContent = $@"
         <html>
-        <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
-            <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
-                <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiFishCare Logo' 
-                     style='display: block; margin: 0 auto; width: 150px;' />
-                <h2 style='text-align: center;'>Verify Your Email</h2>
-                <p>Hello {customer.FirstName},</p>
-                <p>Your verification code is: <strong>{verificationCode}</strong></p>
-                <p>Please enter this code in the verification page to complete your registration.</p>
-                <p>If you did not register, please ignore this email.</p>
-                <p>Best regards,<br>KoiNe Team</p>
-            </div>
-        </body>
-        </html>";
+  <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+    <div style='max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
+      <div style='text-align: center;'>
+        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiNe Logo' style='width: 120px; margin-bottom: 20px;' />
+        <h2 style='color: #4A90E2; font-size: 24px; margin: 0;'>Welcome to KoiNe!</h2>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6; margin-top: 20px;'>Hello {customer.FirstName},</p>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>Thank you for registering with us! To complete your registration, please verify your email using the code below:</p>
+      
+      <div style='text-align: center; margin: 20px 0;'>
+        <span style='display: inline-block; padding: 10px 20px; background-color: #4A90E2; color: #ffffff; font-size: 24px; font-weight: bold; border-radius: 5px;'>{verificationCode}</span>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>Please enter this code on the verification page to activate your account.</p>
+      
+      <hr style='border: none; border-top: 1px solid #eeeeee; margin: 20px 0;' />
+      
+      <p style='color: #777777; font-size: 14px; text-align: center;'>If you did not create this account, please disregard this email.</p>
+      
+      <div style='text-align: center; margin-top: 30px;'>
+        <p style='color: #333333; font-size: 16px; margin: 0;'>Best regards,</p>
+        <p style='color: #4A90E2; font-size: 16px; font-weight: bold; margin: 5px 0;'>KoiNe Team</p>
+      </div>
+    </div>
+  </body>
+</html>";
 
                 await _emailService.SendEmailAsync(customer.Email!, "Verify Your Email", htmlContent);
                 return Ok("Registration successful. Please check your email to verify your account.");
@@ -267,7 +282,7 @@ namespace KoiFishCare.Controllers
         <html>
         <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
             <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
-                <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiFishCare Logo' 
+                <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiNe Logo' 
                      style='display: block; margin: 0 auto; width: 150px;' />
                 <h2 style='text-align: center;'>Welcome to KoiNe!</h2>
                 <p>Hello {user.FirstName},</p>
@@ -304,7 +319,7 @@ namespace KoiFishCare.Controllers
         <html>
         <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
             <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
-                <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiFishCare Logo' 
+                <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiNe Logo' 
                      style='display: block; margin: 0 auto; width: 150px;' />
                 <h2 style='text-align: center;'>Password Reset Request</h2>
                 <p>Hello,</p>
@@ -317,7 +332,7 @@ namespace KoiFishCare.Controllers
                 <p>If you did not request this, please ignore this email.</p>
                 <p>Best regards,<br>KoiNe Team</p>
                 <hr style='margin-top: 20px;' />
-                <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
+                <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiNe. All rights reserved.</p>
             </div>
         </body>
         </html>";
@@ -645,21 +660,31 @@ namespace KoiFishCare.Controllers
             var subject = "Account Banned Notification";
             var htmlContent = $@"
     <html>
-    <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
-        <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
-            <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' 
-                 alt='KoiFishCare Logo' style='display: block; margin: 0 auto; width: 150px;' />
-            <h2 style='text-align: center;'>Account Banned</h2>
-            <p>Dear {existingUser.UserName},</p>
-            <p>Your account has been banned for the following reason:</p>
-            <p><strong>{model.Reason}</strong></p>
-            <p>If you have any questions or believe this was a mistake, please contact us.</p>
-            <p>Best regards,<br>KoiNe Team</p>
-            <hr style='margin-top: 20px;' />
-            <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
-        </div>
-    </body>
-    </html>";
+  <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+    <div style='max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
+      <div style='text-align: center;'>
+        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiNe Logo' style='width: 120px; margin-bottom: 20px;' />
+        <h2 style='color: #e63946; font-size: 24px; margin: 0;'>Account Banned</h2>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6; margin-top: 20px;'>Dear {existingUser.UserName},</p>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>We regret to inform you that your account has been banned for the following reason:</p>
+      
+      <div style='margin: 20px 0; padding: 15px; background-color: #fee2e2; border-left: 4px solid #e63946; border-radius: 5px;'>
+        <p style='color: #e63946; font-size: 16px; font-weight: bold; margin: 0;'>{model.Reason}</p>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>If you have any questions or believe this action was taken in error, please feel free to <a href='mailto:support@KoiNe.com' style='color: #1d72b8; text-decoration: none;'>contact us</a>.</p>
+      
+      <hr style='border: none; border-top: 1px solid #eeeeee; margin: 20px 0;' />
+      
+      <p style='color: #777777; font-size: 12px; text-align: center;'>Best regards,<br><strong style='color: #333;'>KoiNe Team</strong></p>
+      
+      <p style='font-size: 12px; text-align: center; color: #777777; margin-top: 20px;'>&copy; 2024 KoiNe. All rights reserved.</p>
+    </div>
+  </body>
+</html>";
 
             await _emailService.SendEmailAsync(existingUser.Email!, subject, htmlContent);
             return Ok("Banned successfully!");
@@ -683,20 +708,30 @@ namespace KoiFishCare.Controllers
             var subject = "Account UnBan Notification";
             var htmlContent = $@"
 <html>
-<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
-    <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
-        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' 
-             alt='KoiFishCare Logo' style='display: block; margin: 0 auto; width: 150px;' />
-        <h2 style='text-align: center;'>Account Unban Notification</h2>
-        <p>Dear {existingUser.UserName},</p>
-        <p>We are pleased to inform you that your account on KoiFishCare has been successfully unbanned. You can now log in and access all services as usual.</p>
-        <p>If you have any questions or need further assistance, please don't hesitate to reach out to our support team.</p>
-        <p>Thank you for being a part of our community, and we look forward to serving you.</p>
-        <p>Best regards,<br>KoiNe Team</p>
-        <hr style='margin-top: 20px;' />
-        <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
+  <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+    <div style='max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
+      <div style='text-align: center;'>
+        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiNe Logo' style='width: 120px; margin-bottom: 20px;' />
+        <h2 style='color: #4A90E2; font-size: 24px; margin: 0;'>Account Unbanned</h2>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6; margin-top: 20px;'>Dear {existingUser.UserName},</p>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>We are pleased to inform you that your account with KoiNe has been successfully unbanned. You can now log in and enjoy all the services as usual.</p>
+      
+      <div style='margin: 20px 0; padding: 15px; background-color: #e6f7ff; border-left: 4px solid #4A90E2; border-radius: 5px;'>
+        <p style='color: #4A90E2; font-size: 16px; font-weight: bold; margin: 0;'>Welcome back to the KoiNe community!</p>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>If you have any questions or need further assistance, please don't hesitate to <a href='mailto:support@KoiNe.com' style='color: #1d72b8; text-decoration: none;'>contact our support team</a>.</p>
+      
+      <hr style='border: none; border-top: 1px solid #eeeeee; margin: 20px 0;' />
+      
+      <p style='color: #777777; font-size: 12px; text-align: center;'>Thank you for being a valued member of our community. We look forward to serving you!</p>
+      
+      <p style='font-size: 12px; text-align: center; color: #777777; margin-top: 20px;'>&copy; 2024 KoiNe. All rights reserved.</p>
     </div>
-</body>
+  </body>
 </html>";
 
             await _emailService.SendEmailAsync(existingUser.Email!, subject, htmlContent);
