@@ -22,7 +22,6 @@ namespace KoiFishCare.Controllers
 {
     [Route("api/payment")]
     [ApiController]
-    [AllowAnonymous]
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentRepository _paymentRepo;

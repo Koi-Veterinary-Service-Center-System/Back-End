@@ -13,7 +13,6 @@ namespace KoiFishCare.Controllers
 {
     [ApiController]
     [Route("api/slot")]
-    [AllowAnonymous]
     public class SlotController : ControllerBase
     {
         private readonly ISlotRepository _slotRepo;

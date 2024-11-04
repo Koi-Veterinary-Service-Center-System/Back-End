@@ -166,7 +166,6 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet("view-feedback-by/{serviceID}")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetFeedbackByServiceID([FromRoute] int serviceID)
         {
             if (!ModelState.IsValid)
