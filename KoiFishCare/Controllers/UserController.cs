@@ -280,17 +280,31 @@ namespace KoiFishCare.Controllers
                 // Send final welcome email
                 var welcomeContent = $@"
         <html>
-        <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
-            <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
-                <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiNe Logo' 
-                     style='display: block; margin: 0 auto; width: 150px;' />
-                <h2 style='text-align: center;'>Welcome to KoiNe!</h2>
-                <p>Hello {user.FirstName},</p>
-                <p>Your email has been verified successfully. Thank you for joining us!</p>
-                <p>Best regards,<br>KoiNe Team</p>
-            </div>
-        </body>
-        </html>";
+  <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+    <div style='max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
+      <div style='text-align: center;'>
+        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiNe Logo' style='width: 120px; margin-bottom: 20px;' />
+        <h2 style='color: #4A90E2; font-size: 24px; margin: 0;'>Welcome to KoiNe!</h2>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6; margin-top: 20px;'>Hello {user.FirstName},</p>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>Congratulations! Your email has been successfully verified. We are excited to have you as part of the KoiNe community, where you can now enjoy all our services and benefits.</p>
+      
+      <div style='margin: 20px 0; padding: 15px; background-color: #e6f7ff; border-left: 4px solid #4A90E2; border-radius: 5px;'>
+        <p style='color: #4A90E2; font-size: 16px; font-weight: bold; margin: 0;'>Thank you for joining us!</p>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>If you have any questions, feel free to <a href='mailto:support@koifishcare.com' style='color: #1d72b8; text-decoration: none;'>reach out to our support team</a>.</p>
+      
+      <hr style='border: none; border-top: 1px solid #eeeeee; margin: 20px 0;' />
+      
+      <p style='color: #777777; font-size: 12px; text-align: center;'>We look forward to supporting you on your journey. Welcome aboard!</p>
+      
+      <p style='font-size: 12px; text-align: center; color: #777777; margin-top: 20px;'>&copy; 2024 KoiNe. All rights reserved.</p>
+    </div>
+  </body>
+</html>";
 
                 await _emailService.SendEmailAsync(user.Email!, "Welcome to KoiNe!", welcomeContent);
 
