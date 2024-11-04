@@ -45,69 +45,69 @@ namespace KoiFishCare.Controllers
             return Ok(payments.Select(x => x.ToDTOFromModel()));
         }
 
-        [HttpPost("create-payment")]
-        [Authorize(Roles = "Manager, Staff")]
-        public async Task<IActionResult> AddPayment([FromBody] AddPaymentDTO addPaymentDTO)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        // [HttpPost("create-payment")]
+        // [Authorize(Roles = "Manager, Staff")]
+        // public async Task<IActionResult> AddPayment([FromBody] AddPaymentDTO addPaymentDTO)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
 
-            if (addPaymentDTO.Type.Length < 3)
-            {
-                return BadRequest("The length of the type must be greater than or equal to 3!");
-            }
+        //     if (addPaymentDTO.Type.Length < 3)
+        //     {
+        //         return BadRequest("The length of the type must be greater than or equal to 3!");
+        //     }
 
-            var payment = new Payment();
-            payment.Type = addPaymentDTO.Type;
-            await _paymentRepo.Add(payment);
-            return Ok(payment.ToDTOFromModel());
-        }
+        //     var payment = new Payment();
+        //     payment.Type = addPaymentDTO.Type;
+        //     await _paymentRepo.Add(payment);
+        //     return Ok(payment.ToDTOFromModel());
+        // }
 
-        [HttpPut("update-payment/{id:int}")]
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> UpdatePayment([FromRoute] int id, [FromBody] AddPaymentDTO updatePaymentDTO)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        // [HttpPut("update-payment/{id:int}")]
+        // [Authorize(Roles = "Manager")]
+        // public async Task<IActionResult> UpdatePayment([FromRoute] int id, [FromBody] AddPaymentDTO updatePaymentDTO)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
 
-            var paymentModel = await _paymentRepo.GetPaymentByID(id);
-            if (paymentModel == null)
-            {
-                return BadRequest("Can not find any payment!");
-            }
+        //     var paymentModel = await _paymentRepo.GetPaymentByID(id);
+        //     if (paymentModel == null)
+        //     {
+        //         return BadRequest("Can not find any payment!");
+        //     }
 
-            if (updatePaymentDTO.Type.Length < 3)
-            {
-                return BadRequest("The length of the type must be greater than or equal to 3!");
-            }
+        //     if (updatePaymentDTO.Type.Length < 3)
+        //     {
+        //         return BadRequest("The length of the type must be greater than or equal to 3!");
+        //     }
 
-            paymentModel.Type = updatePaymentDTO.Type;
-            await _paymentRepo.Update(paymentModel);
-            return Ok(paymentModel.ToDTOFromModel());
-        }
+        //     paymentModel.Type = updatePaymentDTO.Type;
+        //     await _paymentRepo.Update(paymentModel);
+        //     return Ok(paymentModel.ToDTOFromModel());
+        // }
 
-        [HttpDelete("delete-payment/{id:int}")]
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> DeletePayment([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        // [HttpDelete("delete-payment/{id:int}")]
+        // [Authorize(Roles = "Manager")]
+        // public async Task<IActionResult> DeletePayment([FromRoute] int id)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
 
-            var paymentModel = await _paymentRepo.GetPaymentByID(id);
-            if (paymentModel == null)
-            {
-                return BadRequest("Can not find any payment!");
-            }
+        //     var paymentModel = await _paymentRepo.GetPaymentByID(id);
+        //     if (paymentModel == null)
+        //     {
+        //         return BadRequest("Can not find any payment!");
+        //     }
 
-            await _paymentRepo.Delete(paymentModel);
-            return Ok("Deleted successfully!");
-        }
+        //     await _paymentRepo.Delete(paymentModel);
+        //     return Ok("Deleted successfully!");
+        // }
 
         [HttpPost("create-paymentUrl")]
         public async Task<IActionResult> CreatePaymentUrl(int bookingId)
