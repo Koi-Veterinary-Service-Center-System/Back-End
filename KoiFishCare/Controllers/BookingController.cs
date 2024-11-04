@@ -91,8 +91,18 @@ namespace KoiFishCare.Controllers
             if (User.IsInRole("Customer"))
             {
                 //check if there is any booking in process
-                var booking = await _bookingRepo.GetBookingsByCusIdAsync(userModel.Id);
-                if (!booking.IsNullOrEmpty())
+                var bookings = await _bookingRepo.GetBookingsByCusIdAsync(userModel.Id);
+                if (!bookings.IsNullOrEmpty())
+                {
+                    // Check if have a booking is pending, delele that booking
+                    var pendingBooking = bookings!.FirstOrDefault(b => b.BookingStatus == BookingStatus.Pending);
+                    if (pendingBooking != null)
+                    {
+                        _bookingRepo.DeleteBooking(pendingBooking);
+                        return BadRequest("A pending booking was deleted. Please submit again!");
+                    }
+                }
+                else
                     return BadRequest("You already have booking that in process!");
             }
 
