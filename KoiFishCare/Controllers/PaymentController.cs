@@ -166,22 +166,32 @@ namespace KoiFishCare.Controllers
             // Compose and send an email notification with payment information
             var htmlContent = $@"
 <html>
-<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
-    <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
-        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' 
-             alt='KoiFishCare Logo' style='display: block; margin: 0 auto; width: 150px;' />
-        <h2 style='text-align: center;'>Booking Payment Notification</h2>
-        <p>Dear {booking.Customer.UserName},</p>
-        <p>Your recent booking payment was processed successfully. Below are the booking details:</p>
-        <p>Booking Id: {booking.BookingID}</p>
-        <p>Booking date: {booking.BookingDate.ToString("dd MMMM yyyy")}</p>
-        <p>Booking Veterinarian: {booking.Veterinarian.LastName + booking.Veterinarian.FirstName}</p>
-        <p>If you have any questions, please contact us.</p>
-        <p>Best regards,<br>KoiNe Team</p>
-        <hr style='margin-top: 20px;' />
-        <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
+  <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+    <div style='max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
+      <div style='text-align: center;'>
+        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiNe Logo' style='width: 120px; margin-bottom: 20px;' />
+        <h2 style='color: #4A90E2; font-size: 24px; margin: 0;'>Booking Payment Confirmation</h2>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6; margin-top: 20px;'>Dear {booking.Customer.UserName},</p>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>We are pleased to inform you that your booking payment has been successfully processed. Here are the details of your booking:</p>
+      
+      <div style='margin: 20px 0; padding: 15px; background-color: #e6f7ff; border-left: 4px solid #4A90E2; border-radius: 5px;'>
+        <p style='color: #333333; font-size: 16px; margin: 5px 0;'><strong>Booking ID:</strong> {booking.BookingID}</p>
+        <p style='color: #333333; font-size: 16px; margin: 5px 0;'><strong>Booking Date:</strong> {booking.BookingDate.ToString("dd MMMM yyyy")}</p>
+        <p style='color: #333333; font-size: 16px; margin: 5px 0;'><strong>Veterinarian:</strong> Dr. {booking.Veterinarian.FirstName} {booking.Veterinarian.LastName}</p>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>If you have any questions or require further assistance, please feel free to <a href='mailto:support@KoiNe.com' style='color: #1d72b8; text-decoration: none;'>contact our support team</a>.</p>
+      
+      <hr style='border: none; border-top: 1px solid #eeeeee; margin: 20px 0;' />
+      
+      <p style='color: #777777; font-size: 12px; text-align: center;'>Thank you for trusting us with your pet's care. We look forward to serving you and your pet!</p>
+      
+      <p style='font-size: 12px; text-align: center; color: #777777; margin-top: 20px;'>&copy; 2024 KoiNe. All rights reserved.</p>
     </div>
-</body>
+  </body>
 </html>";
             await _emailService.SendEmailAsync(booking.Customer.Email!, "Booking Payment Notification", htmlContent);
 

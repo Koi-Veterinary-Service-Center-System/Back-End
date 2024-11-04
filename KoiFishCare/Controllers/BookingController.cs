@@ -592,20 +592,37 @@ namespace KoiFishCare.Controllers
             {
                 var emailContent = $@"
     <html>
-    <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
-        <div style='max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; padding: 20px;'>
-            <h2 style='text-align: center;'>Booking Cancellation Confirmation</h2>
-            <p>Hello {booking.Customer.FirstName},</p>
-            <p>Your booking with ID #{booking.BookingID} scheduled for {booking.BookingDate.ToString("dd MMMM yyyy")} has been successfully canceled.</p>
-            <p>{note} {noteByCentre}</p>
-            <p>Refund amount: <strong>{refundMoney:C}</strong> (Refund Percentage: {refundPercent}%)</p>
-            <p>If you have any questions, please feel free to contact us.</p>
-            <p>Thank you,<br>KoiFishCare Team</p>
-            <hr style='margin-top: 20px;' />
-            <p style='font-size: 12px; text-align: center; color: #777;'>&copy; 2024 KoiFishCare. All rights reserved.</p>
-        </div>
-    </body>
-    </html>";
+  <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+    <div style='max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
+      <div style='text-align: center;'>
+        <img src='https://firebasestorage.googleapis.com/v0/b/swp391veterinary.appspot.com/o/logo.png?alt=media&token=a26711fc-ed75-4e62-8af1-ec577334574a' alt='KoiNe Logo' style='width: 120px; margin-bottom: 20px;' />
+        <h2 style='color: #e63946; font-size: 24px; margin: 0;'>Booking Cancellation Confirmation</h2>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6; margin-top: 20px;'>Hello {booking.Customer.FirstName},</p>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>We confirm that your booking with ID <strong>#{booking.BookingID}</strong>, scheduled for <strong>{booking.BookingDate.ToString("dd MMMM yyyy")}</strong>, has been successfully canceled.</p>
+      
+      <div style='margin: 20px 0; padding: 15px; background-color: #ffe6e6; border-left: 4px solid #e63946; border-radius: 5px;'>
+        <p style='color: #e63946; font-size: 16px; font-weight: bold; margin: 0;'>{note}</p>
+        <p style='color: #e63946; font-size: 16px; margin: 5px 0;'>{noteByCentre}</p>
+      </div>
+      
+      <div style='margin: 20px 0; padding: 15px; background-color: #f4f8fb; border-radius: 5px;'>
+        <p style='color: #333333; font-size: 16px; margin: 5px 0;'><strong>Refund Amount:</strong> {refundMoney:C}</p>
+        <p style='color: #333333; font-size: 16px; margin: 5px 0;'><strong>Refund Percentage:</strong> {refundPercent}%</p>
+      </div>
+      
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>If you have any questions or need further assistance, please do not hesitate to <a href='mailto:support@KoiNe.com' style='color: #1d72b8; text-decoration: none;'>contact our support team</a>.</p>
+      
+      <hr style='border: none; border-top: 1px solid #eeeeee; margin: 20px 0;' />
+      
+      <p style='color: #777777; font-size: 12px; text-align: center;'>Thank you for choosing KoiNe. We hope to serve you again in the future.</p>
+      
+      <p style='font-size: 12px; text-align: center; color: #777777; margin-top: 20px;'>&copy; 2024 KoiNe. All rights reserved.</p>
+    </div>
+  </body>
+</html>";
 
                 await _emailService.SendEmailAsync(booking.Customer.Email!, "Booking Cancellation Confirmation", emailContent);
             }
