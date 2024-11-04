@@ -55,6 +55,7 @@ namespace KoiFishCare.Repository
             exist.Symptoms = model.Symptoms;
             exist.Medication = model.Medication;
             exist.Note = model.Note;
+            exist.Frequency = model.Frequency;
             await _context.SaveChangesAsync();
             return exist;
         }

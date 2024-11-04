@@ -46,7 +46,8 @@ namespace KoiFishCare.Mappers
                 Symptoms = dto.Symptoms,
                 Medication = dto.Medication,
                 Frequency = dto.Frequency,
-                Note = dto.Note
+                Note = dto.Note,
+                CreateAt = DateTime.UtcNow
             };
         }
     }
