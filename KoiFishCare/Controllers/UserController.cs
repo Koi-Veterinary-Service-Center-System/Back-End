@@ -677,6 +677,7 @@ namespace KoiFishCare.Controllers
             }
 
             existingUser.IsBanned = false;
+            existingUser.IsActive = true;
             await _userRepo.UpdateAsync(existingUser);
 
             // Compose and send an email notification to the banned user

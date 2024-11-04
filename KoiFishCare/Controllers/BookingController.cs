@@ -155,25 +155,28 @@ namespace KoiFishCare.Controllers
                     ? DateTime.UtcNow.Date.Add(bookingModel.Slot.EndTime.Value.ToTimeSpan())
                     : throw new Exception("End time is missing");
 
-                // Create a Google Calendar event and get the Meet link
-                var googleCalendarRequest = new GoogleCalendar
+                if (service.IsOnline == true)
                 {
-                    Summary = "Booking: " + service.ServiceName,
-                    Description = "Booking with vet " + vet.UserName,
-                    Location = "KoiNe",
-                    Start = startDateTime, // Using the DateTime after conversion
-                    End = endDateTime      // Using the DateTime after conversion
-                };
+                    // Create a Google Calendar event and get the Meet link
+                    var googleCalendarRequest = new GoogleCalendar
+                    {
+                        Summary = "Booking: " + service.ServiceName,
+                        Description = "Booking with vet " + vet.UserName,
+                        Location = "KoiNe",
+                        Start = startDateTime, // Using the DateTime after conversion
+                        End = endDateTime      // Using the DateTime after conversion
+                    };
 
-                // Vet's credential file path - modify to retrieve actual path if stored in DB or configuration
-                string vetCredentialFilePath = Path.Combine(Directory.GetCurrentDirectory(), "VetCredentials", $"{vet?.Id}_Cre.json");
+                    // Vet's credential file path - modify to retrieve actual path if stored in DB or configuration
+                    string vetCredentialFilePath = Path.Combine(Directory.GetCurrentDirectory(), "VetCredentials", $"{vet?.Id}_Cre.json");
 
-                List<string> attendeeEmails = new List<string> { userModel.Email }; // Add the customer email
+                    List<string> attendeeEmails = new List<string> { userModel.Email }; // Add the customer email
 
-                var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest, vetCredentialFilePath, vet.Email, attendeeEmails);
-                var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
+                    var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest, vetCredentialFilePath, vet.Email, attendeeEmails);
+                    var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
 
-                bookingModel.MeetURL = googleMeetLink;
+                    bookingModel.MeetURL = googleMeetLink;
+                }
 
                 bookingModel.Customer = userModel;
 
@@ -203,26 +206,28 @@ namespace KoiFishCare.Controllers
                 var endDateTime = bookingModel.Slot.EndTime.HasValue
                     ? DateTime.UtcNow.Date.Add(bookingModel.Slot.EndTime.Value.ToTimeSpan())
                     : throw new Exception("End time is missing");
-
-                // Create a Google Calendar event and get the Meet link
-                var googleCalendarRequest = new GoogleCalendar
+                if (service.IsOnline == true)
                 {
-                    Summary = "Booking: " + service.ServiceName,
-                    Description = "Booking with vet " + availableVet.Veterinarian,
-                    Location = "KoiNe",
-                    Start = startDateTime, // Using the DateTime after conversion
-                    End = endDateTime      // Using the DateTime after conversion
-                };
+                    // Create a Google Calendar event and get the Meet link
+                    var googleCalendarRequest = new GoogleCalendar
+                    {
+                        Summary = "Booking: " + service.ServiceName,
+                        Description = "Booking with vet " + availableVet.Veterinarian,
+                        Location = "KoiNe",
+                        Start = startDateTime, // Using the DateTime after conversion
+                        End = endDateTime      // Using the DateTime after conversion
+                    };
 
-                // Vet's credential file path - modify to retrieve actual path if stored in DB or configuration
-                string vetCredentialFilePath = Path.Combine(Directory.GetCurrentDirectory(), "VetCredentials", $"{availableVet?.VetID}_Cre.json");
+                    // Vet's credential file path - modify to retrieve actual path if stored in DB or configuration
+                    string vetCredentialFilePath = Path.Combine(Directory.GetCurrentDirectory(), "VetCredentials", $"{availableVet?.VetID}_Cre.json");
 
-                List<string> attendeeEmails = new List<string> { userModel.Email }; // Add the customer email
+                    List<string> attendeeEmails = new List<string> { userModel.Email }; // Add the customer email
 
-                var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest, vetCredentialFilePath, availableVet.Veterinarian.Email, attendeeEmails);
-                var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
+                    var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest, vetCredentialFilePath, availableVet.Veterinarian.Email, attendeeEmails);
+                    var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
 
-                bookingModel.MeetURL = googleMeetLink;
+                    bookingModel.MeetURL = googleMeetLink;
+                }
 
                 bookingModel.Customer = userModel;
 
