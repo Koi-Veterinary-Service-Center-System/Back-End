@@ -27,11 +27,12 @@ namespace KoiFishCare.Mappers
             {
                 FeedbackID = feedbackModel.FeedbackID,
                 BookingID = feedbackModel.BookingID,
+                VetID = feedbackModel.Booking.Veterinarian.Id,
                 ServiceName = feedbackModel.Booking.Service.ServiceName,
                 CustomerName = feedbackModel.CustomerName,
                 Rate = feedbackModel.Rate,
                 Comments = feedbackModel.Comments,
-                IsVisible = feedbackModel.IsVisible,
+                IsVisible = feedbackModel.IsVisible
             };
         }
     }

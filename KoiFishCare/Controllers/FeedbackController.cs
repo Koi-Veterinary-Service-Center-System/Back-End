@@ -181,5 +181,22 @@ namespace KoiFishCare.Controllers
 
             return Ok(feedbacks.Select(x => x.ToViewFeedback()));
         }
+
+        [HttpGet("feedback/{vetID}")]
+        public async Task<IActionResult> GetFeedbackByVetID([FromRoute] string vetID)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var feedbacks = await _feedbackRepo.GetFeedbackByVetIDAsync(vetID);
+            if (feedbacks == null || !feedbacks.Any())
+            {
+                return NotFound("There is no feedback of this Vet!");
+            }
+
+            return Ok(feedbacks.Select(x => x.ToViewFeedback()));
+        }
     }
 }

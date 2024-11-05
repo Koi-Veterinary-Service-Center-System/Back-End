@@ -9,7 +9,9 @@ namespace KoiFishCare.Dtos.Feedback
     {
         public int FeedbackID { get; set; }
 
-        public int? BookingID { get; set; }
+        public int BookingID { get; set; }
+
+        public string? VetID { get; set; }
 
         public string? ServiceName { get; set; }
 

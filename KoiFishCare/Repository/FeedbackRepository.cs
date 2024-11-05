@@ -49,22 +49,22 @@ namespace KoiFishCare.Repository
 
         public async Task<List<Feedback>?> GetAllFeedbackAsync()
         {
-            return await _context.Feedbacks.Include(x => x.Booking.Service).ToListAsync();
+            return await _context.Feedbacks.Include(x => x.Booking.Service).Include(x => x.Booking.Veterinarian).ToListAsync();
         }
 
         public async Task<List<Feedback>?> GetAllFeedbackByUserNameAsync(string userName)
         {
-            return await _context.Feedbacks.Include(x => x.Booking.Service).Where(c => c.Booking.Customer.UserName == userName).ToListAsync();
+            return await _context.Feedbacks.Include(x => x.Booking.Service).Include(x => x.Booking.Veterinarian).Where(c => c.Booking.Customer.UserName == userName).ToListAsync();
         }
 
         public async Task<Feedback?> GetFeedbackByBookingIdAsync(int id)
         {
-            return await _context.Feedbacks.Include(x => x.Booking.Service).FirstOrDefaultAsync(x => x.Booking.BookingID == id);
+            return await _context.Feedbacks.Include(x => x.Booking.Service).Include(x => x.Booking.Veterinarian).FirstOrDefaultAsync(x => x.Booking.BookingID == id);
         }
 
         public async Task<Feedback?> UpdateFeedbackStatus(int id, bool isVisible)
         {
-            var feedback = await _context.Feedbacks.Include(x => x.Booking.Service).FirstOrDefaultAsync(x => x.FeedbackID == id);
+            var feedback = await _context.Feedbacks.Include(x => x.Booking.Service).Include(x => x.Booking.Veterinarian).FirstOrDefaultAsync(x => x.FeedbackID == id);
             if (feedback == null)
             {
                 return null;
@@ -78,17 +78,22 @@ namespace KoiFishCare.Repository
 
         public async Task<List<Feedback>?> GetAllFeedbackIsHidden()
         {
-            return await _context.Feedbacks.Include(x => x.Booking.Service).Where(x => x.IsVisible == true).ToListAsync();
+            return await _context.Feedbacks.Include(x => x.Booking.Service).Include(x => x.Booking.Veterinarian).Where(x => x.IsVisible == true).ToListAsync();
         }
 
         public async Task<Feedback?> GetFeedbackByUserNameAndIdAsync(int bookingID, string userName)
         {
-            return await _context.Feedbacks.Include(x => x.Booking).Include(x => x.Booking.Service).FirstOrDefaultAsync(x => x.BookingID == bookingID && x.Booking.Customer.UserName == userName);
+            return await _context.Feedbacks.Include(x => x.Booking).Include(x => x.Booking.Veterinarian).Include(x => x.Booking.Service).FirstOrDefaultAsync(x => x.BookingID == bookingID && x.Booking.Customer.UserName == userName);
         }
 
         public async Task<List<Feedback>?> GetFeedbackByServiceIDAsync(int serviceID)
         {
-            return await _context.Feedbacks.Include(b => b.Booking).ThenInclude(s => s.Service).Where(x => x.Booking.ServiceID == serviceID).ToListAsync();
+            return await _context.Feedbacks.Include(b => b.Booking).ThenInclude(s => s.Service).Include(x => x.Booking.Veterinarian).Where(x => x.Booking.ServiceID == serviceID).ToListAsync();
+        }
+
+        public async Task<List<Feedback>?> GetFeedbackByVetIDAsync(string vetID)
+        {
+           return await _context.Feedbacks.Include(b => b.Booking).ThenInclude(s => s.Service).Include(v => v.Booking.Veterinarian).Where(x => x.Booking.VetID == vetID).ToListAsync();
         }
     }
 }

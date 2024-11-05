@@ -490,10 +490,10 @@ namespace KoiFishCare.Controllers
             {
                 return BadRequest("The booking is already succeeded!");
             }
-            // else if (booking.BookingStatus != BookingStatus.Received_Money)
-            // {
-            //     return BadRequest("The booking is not ready to set!");
-            // }
+            else if (booking.BookingStatus != BookingStatus.Received_Money)
+            {
+                return BadRequest("The booking is not ready to set!");
+            }
 
             if (User.IsInRole("Customer"))
             {
