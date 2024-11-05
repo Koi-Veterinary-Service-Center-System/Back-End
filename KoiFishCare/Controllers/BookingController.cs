@@ -607,6 +607,10 @@ namespace KoiFishCare.Controllers
         <p style='color: #e63946; font-size: 16px; font-weight: bold; margin: 0;'>{note}</p>
         <p style='color: #e63946; font-size: 16px; margin: 5px 0;'>{noteByCentre}</p>
       </div>
+
+      <div style='margin: 20px 0; padding: 15px; background-color: #fee2e2; border-left: 4px solid #e63946; border-radius: 5px;'>
+        <p style='color: #e63946; font-size: 16px; font-weight: bold; margin: 0;'>{dto.Reason}</p>
+      </div>
       
       <div style='margin: 20px 0; padding: 15px; background-color: #f4f8fb; border-radius: 5px;'>
         <p style='color: #333333; font-size: 16px; margin: 5px 0;'><strong>Refund Amount:</strong> {refundMoney:C}</p>
