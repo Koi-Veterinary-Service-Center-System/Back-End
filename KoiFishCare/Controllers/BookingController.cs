@@ -101,9 +101,9 @@ namespace KoiFishCare.Controllers
                         _bookingRepo.DeleteBooking(pendingBooking);
                         return BadRequest("A pending booking was deleted. Please submit again!");
                     }
+                    else
+                        return BadRequest("You already have booking that in process!");
                 }
-                else
-                    return BadRequest("You already have booking that in process!");
             }
 
             //check date time
