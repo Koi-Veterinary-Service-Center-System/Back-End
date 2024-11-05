@@ -603,13 +603,15 @@ namespace KoiFishCare.Controllers
       
       <p style='color: #333333; font-size: 16px; line-height: 1.6;'>We confirm that your booking with ID <strong>#{booking.BookingID}</strong>, scheduled for <strong>{booking.BookingDate.ToString("dd MMMM yyyy")}</strong>, has been successfully canceled.</p>
       
+      <p style='color: #333333; font-size: 16px; line-height: 1.6;'>We regret to inform you that your booking has been cancelled for the following reason:</p>
+      
+      <div style='margin: 20px 0; padding: 15px; background-color: #fee2e2; border-left: 4px solid #e63946; border-radius: 5px;'>
+        <p style='color: #e63946; font-size: 16px; font-weight: bold; margin: 0;'>{dto.Reason}</p>
+      </div>
+
       <div style='margin: 20px 0; padding: 15px; background-color: #ffe6e6; border-left: 4px solid #e63946; border-radius: 5px;'>
         <p style='color: #e63946; font-size: 16px; font-weight: bold; margin: 0;'>{note}</p>
         <p style='color: #e63946; font-size: 16px; margin: 5px 0;'>{noteByCentre}</p>
-      </div>
-
-      <div style='margin: 20px 0; padding: 15px; background-color: #fee2e2; border-left: 4px solid #e63946; border-radius: 5px;'>
-        <p style='color: #e63946; font-size: 16px; font-weight: bold; margin: 0;'>{dto.Reason}</p>
       </div>
       
       <div style='margin: 20px 0; padding: 15px; background-color: #f4f8fb; border-radius: 5px;'>
