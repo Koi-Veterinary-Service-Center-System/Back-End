@@ -67,7 +67,7 @@ namespace KoiFishCare.Controllers
         }
 
         [Authorize(Roles = "Vet")]
-        [HttpPost("create-bookingRecord/auto-completed-booking")]
+        [HttpPost("create-bookingRecord/auto-completed-or-received-money-booking")]
         public async Task<IActionResult> CreateBookingRecord([FromBody] FromCreateBookingRecordDTO createBookingRecordDTO)
         {
             if (!ModelState.IsValid)
@@ -100,7 +100,14 @@ namespace KoiFishCare.Controllers
             };
 
             var result = await _bookingRecordRepo.CreateAsync(bookingRecord);
-            existingBooking.BookingStatus = BookingStatus.Completed;
+            if (existingBooking.isPaid == true && bookingRecord.QuantityMoney == 0)
+            {
+                existingBooking.BookingStatus = BookingStatus.Received_Money;
+            }
+            else
+            {
+                existingBooking.BookingStatus = BookingStatus.Completed;
+            }
             await _bookingRepo.UpdateBooking(existingBooking);
             return Ok(result.ToDTOFromModel());
         }

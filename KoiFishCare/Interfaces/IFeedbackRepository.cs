@@ -18,6 +18,7 @@ namespace KoiFishCare.Interfaces
         Task<List<Feedback>?> GetAllFeedbackIsHidden();
         Task<Feedback?> GetFeedbackByUserNameAndIdAsync(int bookingID, string userName);
         Task<List<Feedback>?> GetFeedbackByServiceIDAsync(int serviceID);
+        Task<List<Feedback>?> GetFeedbackByVetIDAsync(string vetID);
 
     }
 }

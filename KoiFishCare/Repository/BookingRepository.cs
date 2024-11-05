@@ -117,8 +117,7 @@ namespace KoiFishCare.Repository
                         b.BookingStatus == BookingStatus.Scheduled ||
                         b.BookingStatus == BookingStatus.Ongoing ||
                         b.BookingStatus == BookingStatus.Completed ||
-                        b.BookingStatus == BookingStatus.Received_Money ||
-                        b.BookingStatus == BookingStatus.Refunded
+                        b.BookingStatus == BookingStatus.Received_Money
                     )).ToListAsync();
 
             if (bookings == null)
@@ -164,7 +163,8 @@ namespace KoiFishCare.Repository
                 .Include(b => b.BookingRecord)
                 .Where(x => x.Customer.Id.Equals(userID) &&
                     (x.BookingStatus == BookingStatus.Succeeded ||
-                        x.BookingStatus == BookingStatus.Cancelled
+                        x.BookingStatus == BookingStatus.Cancelled||
+                        x.BookingStatus == BookingStatus.Refunded
                       )).ToListAsync();
 
             if (bookings == null)
