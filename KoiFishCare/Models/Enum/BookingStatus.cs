@@ -20,8 +20,8 @@ namespace KoiFishCare.Models.Enum
         Received_Money,
         [EnumMember(Value = "Succeeded")]
         Succeeded,
-        [EnumMember(Value = "Refunded")]
-        Refunded,
+        // [EnumMember(Value = "Refunded")]
+        // Refunded,
         [EnumMember(Value = "Cancelled")]
         Cancelled,
     }
