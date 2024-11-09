@@ -591,6 +591,7 @@ namespace KoiFishCare.Controllers
                     UserName = user.UserName,
                     Email = user.Email,
                     IsActive = user.IsActive,
+                    IsDeleted = user.IsDeleted,
                 });
             }
 
