@@ -28,7 +28,7 @@ namespace KoiFishCare.Controllers
             _bookingRepo = bookingRepo;
         }
 
-        [HttpGet("list-preRec-by-BookingId{bookingId:int}")]
+        [HttpGet("{bookingId:int}")]
         [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int bookingId)
         {
@@ -59,8 +59,8 @@ namespace KoiFishCare.Controllers
             var booking = await _bookingRepo.GetBookingByIdAsync(createDto.BookingID);
             if (booking == null) return NotFound("Not found booking!");
 
-            if (booking.BookingStatus == Models.Enum.BookingStatus.Cancelled)
-                return BadRequest("Can't create Prescription that booking is Cancelled");
+            if (booking.BookingStatus == Models.Enum.BookingStatus.Cancelled || booking.BookingStatus == Models.Enum.BookingStatus.Succeeded)
+                return BadRequest("Can't create Prescription that booking is Cancelled/Succeeded");
 
             //check only the vet of the booking or staff can create
             if (User.IsInRole("Vet"))
