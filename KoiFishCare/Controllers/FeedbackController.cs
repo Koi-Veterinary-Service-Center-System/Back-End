@@ -135,7 +135,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpPut("show-hide-feedback/{id}")]
-        [Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff, Manager")]
         public async Task<IActionResult> UpdateIsVisible(int id, bool isVisible)
         {
             if (!ModelState.IsValid)
