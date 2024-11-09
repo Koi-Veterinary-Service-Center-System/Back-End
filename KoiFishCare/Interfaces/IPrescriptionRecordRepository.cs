@@ -8,6 +8,7 @@ namespace KoiFishCare.Interfaces
 {
     public interface IPrescriptionRecordRepository
     {
+        Task<List<PrescriptionRecord>> GetListById(int id);
         Task<PrescriptionRecord?> GetById(int id);
         Task<List<PrescriptionRecord>> GetListByCusUsername(string cusName);
         Task<PrescriptionRecord?> Create(PrescriptionRecord model);

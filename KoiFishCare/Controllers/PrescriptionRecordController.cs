@@ -28,13 +28,15 @@ namespace KoiFishCare.Controllers
             _bookingRepo = bookingRepo;
         }
 
-        [HttpGet("{bookingId:int}")]
+        [HttpGet("list-preRec-by-BookingId{bookingId:int}")]
         [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int bookingId)
         {
-            var presRec = await _preRecRepo.GetById(bookingId);
+            var presRec = await _preRecRepo.GetListById(bookingId);
             if (presRec == null) return NotFound();
-            return Ok(presRec.ToPresRecDtoFromModel());
+
+            var listDto = presRec.Select(p => p.ToPresRecDtoFromModel());
+            return Ok(listDto);
         }
 
         [HttpGet("list-preRec-CusName/{cusName}")]
@@ -110,17 +112,21 @@ namespace KoiFishCare.Controllers
             var booking = await _bookingRepo.GetBookingByIdAsync(preRec.BookingID.Value);
             if (booking == null) return NotFound("Not found booking");
 
+            if (booking.BookingStatus == Models.Enum.BookingStatus.Succeeded || booking.BookingStatus == Models.Enum.BookingStatus.Refunded ||
+            booking.BookingStatus == Models.Enum.BookingStatus.Cancelled)
+                return BadRequest("Can't delete Prescription that booking is Succeeded/Refunded/Cancelled");
+
             if (User.IsInRole("Vet"))
             {
                 var user = await _userManager.GetUserAsync(this.User);
-                if(user == null) return NotFound("Not found user");
+                if (user == null) return NotFound("Not found user");
                 if (user.Id != booking.VetID) return Unauthorized("This booking is not yours, you can not delete record for this!");
             }
 
             var presRec = await _preRecRepo.Delete(presRecId);
             if (presRec == null) return NotFound();
 
-            
+
             booking.hasPres = false;
             await _bookingRepo.UpdateBooking(booking);
 
