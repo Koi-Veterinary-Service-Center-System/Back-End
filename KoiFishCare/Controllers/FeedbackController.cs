@@ -28,7 +28,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet("all-feedback")]
-        // [Authorize(Roles = "Staff, Manager")]
+        [Authorize(Roles = "Staff, Manager")]
         public async Task<IActionResult> GetAllFeedback()
         {
             var feedbacks = await _feedbackRepo.GetAllFeedbackAsync();
@@ -88,6 +88,11 @@ namespace KoiFishCare.Controllers
             if (booking == null)
             {
                 return NotFound("Can not find this booking with succeed status");
+            }
+
+            if (booking.BookingStatus != BookingStatus.Succeeded)
+            {
+                return BadRequest("You can only feedback when succeed this booking!");
             }
 
             else if (booking.Customer.UserName != user.UserName)
