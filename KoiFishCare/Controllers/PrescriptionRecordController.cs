@@ -59,6 +59,9 @@ namespace KoiFishCare.Controllers
             var booking = await _bookingRepo.GetBookingByIdAsync(createDto.BookingID);
             if (booking == null) return NotFound("Not found booking!");
 
+            if (booking.BookingStatus == Models.Enum.BookingStatus.Cancelled)
+                return BadRequest("Can't create Prescription that booking is Cancelled");
+
             //check only the vet of the booking or staff can create
             if (User.IsInRole("Vet"))
             {
@@ -88,6 +91,10 @@ namespace KoiFishCare.Controllers
             var booking = await _bookingRepo.GetBookingByIdAsync(presReco.BookingID.Value);
             if (booking == null) return NotFound("Not found booking");
 
+            if (booking.BookingStatus == Models.Enum.BookingStatus.Succeeded ||
+            booking.BookingStatus == Models.Enum.BookingStatus.Cancelled)
+                return BadRequest("Can't update Prescription that booking is Succeeded/Cancelled");
+
             //check only the vet of the booking or staff can create
             if (User.IsInRole("Vet"))
             {
@@ -112,9 +119,9 @@ namespace KoiFishCare.Controllers
             var booking = await _bookingRepo.GetBookingByIdAsync(preRec.BookingID.Value);
             if (booking == null) return NotFound("Not found booking");
 
-            if (booking.BookingStatus == Models.Enum.BookingStatus.Succeeded || booking.BookingStatus == Models.Enum.BookingStatus.Refunded ||
+            if (booking.BookingStatus == Models.Enum.BookingStatus.Succeeded ||
             booking.BookingStatus == Models.Enum.BookingStatus.Cancelled)
-                return BadRequest("Can't delete Prescription that booking is Succeeded/Refunded/Cancelled");
+                return BadRequest("Can't delete Prescription that booking is Succeeded/Cancelled");
 
             if (User.IsInRole("Vet"))
             {
