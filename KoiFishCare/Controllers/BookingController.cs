@@ -521,7 +521,7 @@ namespace KoiFishCare.Controllers
 
             var booking = await _bookingRepo.GetBookingByIdAsync(bookingId);
             if (booking == null) return NotFound("Booking not found!");
-            if (booking.BookingStatus == BookingStatus.Cancelled || booking.BookingStatus == BookingStatus.Refunded)
+            if (booking.BookingStatus == BookingStatus.Cancelled)
                 return BadRequest("The booking is already canceled");
 
             if (User.IsInRole("Customer") && booking.CustomerID != user.Id)
@@ -637,8 +637,36 @@ namespace KoiFishCare.Controllers
         }
 
 
+        // [HttpPatch("refund-booking/{bookingID:int}")]
+        // [Authorize(Roles = "Manager")]
+        // public async Task<IActionResult> RefundBooking([FromRoute] int bookingID)
+        // {
+        //     var user = await _userManager.GetUserAsync(this.User);
+        //     if (user == null)
+        //     {
+        //         return Unauthorized("User is not available!");
+        //     }
+
+        //     var booking = await _bookingRepo.GetBookingByIdAsync(bookingID);
+        //     if (booking == null)
+        //     {
+        //         return NotFound("Booking not found!");
+        //     }
+
+        //     if (booking.BookingStatus == BookingStatus.Refunded)
+        //     {
+        //         return BadRequest("The booking is already refunded!");
+        //     }
+
+        //     booking.BookingStatus = BookingStatus.Refunded;
+        //     await _bookingRepo.UpdateBooking(booking);
+
+        //     return Ok("Booking status updated successfully!");
+
+        // }
+
         [HttpPatch("refund-booking/{bookingID:int}")]
-        [Authorize(Roles = "Manager")]
+        // [Authorize(Roles = "Manager")]
         public async Task<IActionResult> RefundBooking([FromRoute] int bookingID)
         {
             var user = await _userManager.GetUserAsync(this.User);
@@ -653,16 +681,19 @@ namespace KoiFishCare.Controllers
                 return NotFound("Booking not found!");
             }
 
-            if (booking.BookingStatus == BookingStatus.Refunded)
+            if (booking.BookingStatus != BookingStatus.Cancelled)
+            {
+                return BadRequest("The booking is not ready!");
+            }
+            
+            if (booking.isRefunded == true)
             {
                 return BadRequest("The booking is already refunded!");
             }
 
-            booking.BookingStatus = BookingStatus.Refunded;
+            booking.isRefunded = true;
             await _bookingRepo.UpdateBooking(booking);
-
             return Ok("Booking status updated successfully!");
-
         }
 
         [HttpGet("all-booking")]

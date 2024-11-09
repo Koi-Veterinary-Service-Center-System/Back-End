@@ -27,6 +27,8 @@ public partial class Booking
 
     public bool isPaid { get; set; } = false;
 
+    public bool isRefunded { get; set; } = false;
+
     public bool hasPres { get; set; } = false;
 
     public bool hasFeedback { get; set; } = false;

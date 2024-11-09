@@ -163,8 +163,7 @@ namespace KoiFishCare.Repository
                 .Include(b => b.BookingRecord)
                 .Where(x => x.Customer.Id.Equals(userID) &&
                     (x.BookingStatus == BookingStatus.Succeeded ||
-                        x.BookingStatus == BookingStatus.Cancelled||
-                        x.BookingStatus == BookingStatus.Refunded
+                        x.BookingStatus == BookingStatus.Cancelled
                       )).ToListAsync();
 
             if (bookings == null)
