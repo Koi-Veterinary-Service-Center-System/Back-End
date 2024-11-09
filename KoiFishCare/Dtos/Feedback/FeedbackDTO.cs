@@ -13,6 +13,8 @@ namespace KoiFishCare.Dtos.Feedback
 
         public string? VetID { get; set; }
 
+        public string? VetName { get; set; }
+
         public string? ServiceName { get; set; }
 
         public string? CustomerName { get; set; }

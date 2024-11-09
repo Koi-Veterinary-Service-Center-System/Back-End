@@ -28,7 +28,7 @@ namespace KoiFishCare.Controllers
         }
 
         [HttpGet("all-feedback")]
-        [Authorize(Roles = "Staff, Manager")]
+        // [Authorize(Roles = "Staff, Manager")]
         public async Task<IActionResult> GetAllFeedback()
         {
             var feedbacks = await _feedbackRepo.GetAllFeedbackAsync();

@@ -28,6 +28,7 @@ namespace KoiFishCare.Mappers
                 FeedbackID = feedbackModel.FeedbackID,
                 BookingID = feedbackModel.BookingID,
                 VetID = feedbackModel.Booking.Veterinarian.Id,
+                VetName = feedbackModel.Booking.Veterinarian.FirstName + " " + feedbackModel.Booking.Veterinarian.LastName,
                 ServiceName = feedbackModel.Booking.Service.ServiceName,
                 CustomerName = feedbackModel.CustomerName,
                 Rate = feedbackModel.Rate,
