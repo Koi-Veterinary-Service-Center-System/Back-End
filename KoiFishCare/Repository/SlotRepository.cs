@@ -42,12 +42,6 @@ namespace KoiFishCare.Repository
         public async Task<VetSlot?> GetAvailableVet(Slot slot)
         {
             // Find VetSlots that match the given slot and have no bookings
-            // return await _context.VetSlots
-            //     .Include(vs => vs.Veterinarian) // Include Veterinarian details if needed
-            //     .Where(vs => vs.SlotID == slot.SlotID && vs.isBooked == false) // Check if there are no bookings for the slot
-            //     .FirstOrDefaultAsync();
-
-            // Find VetSlots that match the given slot and have no bookings
             var availableVets = await _context.VetSlots
                 .Include(vs => vs.Veterinarian) // Include Veterinarian details if needed
                 .Where(vs => vs.SlotID == slot.SlotID && vs.isBooked == false) // Check if there are no bookings for the slot

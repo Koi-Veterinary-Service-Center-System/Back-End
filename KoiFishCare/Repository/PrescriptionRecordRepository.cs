@@ -34,11 +34,18 @@ namespace KoiFishCare.Repository
             return model;
         }
 
+        public async Task<List<PrescriptionRecord>> GetListById(int id)
+        {
+            var list = await _context.PrescriptionRecords.Where(p => p.BookingID == id).ToListAsync();
+            return list;
+        }
+
         public async Task<PrescriptionRecord?> GetById(int id)
         {
             var model = await _context.PrescriptionRecords.FirstOrDefaultAsync(p => p.BookingID == id);
             return model;
         }
+
 
         public async Task<List<PrescriptionRecord>> GetListByCusUsername(string cusName)
         {

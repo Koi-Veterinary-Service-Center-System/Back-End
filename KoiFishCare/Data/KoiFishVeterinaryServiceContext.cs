@@ -264,7 +264,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ImagePublicId = null,
                 PhoneNumber = "0967812345",
                 ExperienceYears = 7,
-                IsBanned = false, 
+                IsBanned = false,
                 IsActive = true
             },
 
@@ -348,6 +348,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
         // Seed data for Slots
         modelBuilder.Entity<Slot>().HasData(
+            // Monday
             new Slot
             {
                 SlotID = 1,
@@ -365,15 +366,17 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new Slot
             {
                 SlotID = 3,
-                StartTime = new TimeOnly(9, 0),
-                EndTime = new TimeOnly(12, 0),
-                WeekDate = Models.Enum.DayOfWeek.Tuesday
+                StartTime = new TimeOnly(13, 0),
+                EndTime = new TimeOnly(14, 0),
+                WeekDate = Models.Enum.DayOfWeek.Monday
             },
+
+            // Tuesday
             new Slot
             {
                 SlotID = 4,
-                StartTime = new TimeOnly(11, 0),
-                EndTime = new TimeOnly(12, 0),
+                StartTime = new TimeOnly(9, 0),
+                EndTime = new TimeOnly(10, 0),
                 WeekDate = Models.Enum.DayOfWeek.Tuesday
             },
             new Slot
@@ -381,9 +384,86 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 SlotID = 5,
                 StartTime = new TimeOnly(11, 0),
                 EndTime = new TimeOnly(12, 0),
+                WeekDate = Models.Enum.DayOfWeek.Tuesday
+            },
+            new Slot
+            {
+                SlotID = 6,
+                StartTime = new TimeOnly(14, 0),
+                EndTime = new TimeOnly(15, 0),
+                WeekDate = Models.Enum.DayOfWeek.Tuesday
+            },
+
+            // Wednesday
+            new Slot
+            {
+                SlotID = 7,
+                StartTime = new TimeOnly(8, 0),
+                EndTime = new TimeOnly(9, 0),
                 WeekDate = Models.Enum.DayOfWeek.Wednesday
+            },
+            new Slot
+            {
+                SlotID = 8,
+                StartTime = new TimeOnly(10, 0),
+                EndTime = new TimeOnly(11, 0),
+                WeekDate = Models.Enum.DayOfWeek.Wednesday
+            },
+            new Slot
+            {
+                SlotID = 9,
+                StartTime = new TimeOnly(15, 0),
+                EndTime = new TimeOnly(16, 0),
+                WeekDate = Models.Enum.DayOfWeek.Wednesday
+            },
+
+            // Thursday
+            new Slot
+            {
+                SlotID = 10,
+                StartTime = new TimeOnly(7, 0),
+                EndTime = new TimeOnly(8, 0),
+                WeekDate = Models.Enum.DayOfWeek.Thursday
+            },
+            new Slot
+            {
+                SlotID = 11,
+                StartTime = new TimeOnly(12, 0),
+                EndTime = new TimeOnly(13, 0),
+                WeekDate = Models.Enum.DayOfWeek.Thursday
+            },
+            new Slot
+            {
+                SlotID = 12,
+                StartTime = new TimeOnly(16, 0),
+                EndTime = new TimeOnly(17, 0),
+                WeekDate = Models.Enum.DayOfWeek.Thursday
+            },
+
+            // Friday
+            new Slot
+            {
+                SlotID = 13,
+                StartTime = new TimeOnly(9, 0),
+                EndTime = new TimeOnly(10, 0),
+                WeekDate = Models.Enum.DayOfWeek.Friday
+            },
+            new Slot
+            {
+                SlotID = 14,
+                StartTime = new TimeOnly(11, 0),
+                EndTime = new TimeOnly(12, 0),
+                WeekDate = Models.Enum.DayOfWeek.Friday
+            },
+            new Slot
+            {
+                SlotID = 15,
+                StartTime = new TimeOnly(14, 0),
+                EndTime = new TimeOnly(15, 0),
+                WeekDate = Models.Enum.DayOfWeek.Friday
             }
         );
+
 
         // Seed data for VetSlot (Assuming that the relationship between Vet and Slot is many-to-many)
         modelBuilder.Entity<VetSlot>().HasData(
