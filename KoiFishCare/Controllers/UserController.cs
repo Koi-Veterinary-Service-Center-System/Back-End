@@ -61,6 +61,11 @@ namespace KoiFishCare.Controllers
                 return Unauthorized("Invalid username or password. Please try again!");
             }
 
+            if (!user.EmailConfirmed)
+            {
+                return Unauthorized("Email not verified. Please verify your email to log in.");
+            }
+
             if (user.IsBanned)
             {
                 return Unauthorized("You are banned!");
@@ -267,15 +272,15 @@ namespace KoiFishCare.Controllers
             var roleResult = await _userManager.AddToRoleAsync(user, "Customer");
             if (roleResult.Succeeded)
             {
-                var role = await _roleManager.FindByNameAsync("Customer");
-                var userDto = new UserDTO
-                {
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Token = _tokenService.CreateToken(user, role!)
-                };
+                // var role = await _roleManager.FindByNameAsync("Customer");
+                // var userDto = new UserDTO
+                // {
+                //     UserName = user.UserName,
+                //     Email = user.Email,
+                //     FirstName = user.FirstName,
+                //     LastName = user.LastName,
+                //     Token = _tokenService.CreateToken(user, role!)
+                // };
 
                 // Send final welcome email
                 var welcomeContent = $@"
@@ -308,7 +313,7 @@ namespace KoiFishCare.Controllers
 
                 await _emailService.SendEmailAsync(user.Email!, "Welcome to KoiNe!", welcomeContent);
 
-                return Ok(userDto);
+                return Ok("Email verified successfully!");
             }
             return BadRequest("An error occurred while assigning the role.");
         }
