@@ -144,7 +144,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = null,
                 IsBanned = false,
                 IsActive = true,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                VerificationCode = "983138"
             },
 
         //---------- Staff -----------------------------------------------------------------
@@ -166,7 +167,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = null,
                 IsBanned = false,
                 IsActive = true,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                VerificationCode = "273937"
             },
 
         //---------- Customer -----------------------------------------------------------------
@@ -187,7 +189,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = null,
                 IsBanned = false,
                 IsActive = true,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                VerificationCode = "428230"
             },
 
         //---------- Veterinarian -----------------------------------------------------------------
@@ -209,7 +212,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 10,
                 IsBanned = false,
                 IsActive = true,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                VerificationCode = "937917"
             },
 
             new User {
@@ -230,7 +234,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 5,
                 IsBanned = false,
                 IsActive = true,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                VerificationCode = "842987"
             },
 
             new User {
@@ -251,7 +256,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 8,
                 IsBanned = false,
                 IsActive = true,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                VerificationCode = "891847"
             },
 
             new User {
@@ -272,7 +278,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 7,
                 IsBanned = false,
                 IsActive = true,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                VerificationCode = "239176"
             },
 
             new User {
@@ -293,7 +300,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 9,
                 IsBanned = false,
                 IsActive = true,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                VerificationCode = "830173"
             }
         };
 
