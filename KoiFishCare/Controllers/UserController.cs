@@ -186,11 +186,13 @@ namespace KoiFishCare.Controllers
             var result = await _userManager.CreateAsync(customer, model.Password!);
             if (result.Succeeded)
             {
-                // Generate verification URL
-                //var verifyUrl = $"http://localhost:5173/verify-email?email={customer.Email}";
 
                 // Generate a random 6-digit verification code
                 var verificationCode = GenerateRandomCode();
+                
+                // Temporarily store the verification code in the user's profile or a cache.
+                customer.VerificationCode = verificationCode; // Assume you have added a VerificationCode field in the User model.
+                await _userManager.UpdateAsync(customer); // Save code to database
 
                 // Generate verification URL
                 var verifyUrl = $"http://localhost:5173/verify-email?email={customer.Email}";
@@ -241,7 +243,8 @@ namespace KoiFishCare.Controllers
         [HttpPost("verify-email")]
         public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationDTO verificationDto)
         {
-            var user = await _userManager.FindByEmailAsync(verificationDto.Email);
+            var user = await _userManager.Users
+                                 .FirstOrDefaultAsync(u => u.VerificationCode == verificationDto.Code);
             if (user == null)
             {
                 return BadRequest("Invalid verification link.");
@@ -262,6 +265,7 @@ namespace KoiFishCare.Controllers
 
             // Update the user's email confirmation status
             user.EmailConfirmed = true;
+            user.VerificationCode = null; 
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
