@@ -3264,7 +3264,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 BookingDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-15)),
                 Location = "12/22 Le Van Viet, Linh Trung, Thu Duc",
                 Note = "Initial Consultation",
-                InitAmount = 100.00m,
+                InitAmount = 100000.00m,
                 Quantity = 1,
                 BookingStatus = Models.Enum.BookingStatus.Succeeded,
                 isPaid = true,
@@ -3276,14 +3276,14 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PaymentTypeAtBooking = "Cash",
                 ServiceID = 1,
                 ServiceNameAtBooking = "On-Site Koi Health Check Service",
-                ServicePriceAtBooking = 100.00m,
-                ServiceQuantityPriceAtBooking = 100.00m,
+                ServicePriceAtBooking = 100000.00m,
+                ServiceQuantityPriceAtBooking = 100000.00m,
                 SlotID = 1,
                 SlotStartTimeAtBooking = new TimeOnly(10, 0),
                 SlotEndTimeAtBooking = new TimeOnly(10, 30),
                 SlotWeekDateAtBooking = DayOfWeek.Wednesday.ToString(),
                 CustomerID = "c1",
-                VetID = "v1"
+                VetID = "v1",
             },
             new Booking
             {
@@ -3291,7 +3291,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 BookingDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-45)),
                 Location = "12/22 Le Van Viet, Linh Trung, Thu Duc",
                 Note = "Follow-up",
-                InitAmount = 150.00m,
+                InitAmount = 150000.00m,
                 Quantity = 2,
                 BookingStatus = Models.Enum.BookingStatus.Cancelled,
                 isPaid = true,
@@ -3303,8 +3303,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PaymentTypeAtBooking = "VNPay",
                 ServiceID = 2,
                 ServiceNameAtBooking = "In-Center Koi Health Check Service",
-                ServicePriceAtBooking = 150.00m,
-                ServiceQuantityPriceAtBooking = 300.00m,
+                ServicePriceAtBooking = 150000.00m,
+                ServiceQuantityPriceAtBooking = 300000.00m,
                 SlotID = 2,
                 SlotStartTimeAtBooking = new TimeOnly(14, 0),
                 SlotEndTimeAtBooking = new TimeOnly(14, 30),
@@ -3318,7 +3318,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 BookingDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-45)),
                 Location = "12/22 Le Van Viet, Linh Trung, Thu Duc",
                 Note = "",
-                InitAmount = 150.00m,
+                InitAmount = 150000.00m,
                 Quantity = 2,
                 BookingStatus = Models.Enum.BookingStatus.Succeeded,
                 isPaid = true,
@@ -3330,8 +3330,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PaymentTypeAtBooking = "VNPay",
                 ServiceID = 2,
                 ServiceNameAtBooking = "In-Center Koi Health Check Service",
-                ServicePriceAtBooking = 150.00m,
-                ServiceQuantityPriceAtBooking = 300.00m,
+                ServicePriceAtBooking = 150000.00m,
+                ServiceQuantityPriceAtBooking = 300000.00m,
                 SlotID = 5,
                 SlotStartTimeAtBooking = new TimeOnly(14, 0),
                 SlotEndTimeAtBooking = new TimeOnly(14, 30),
@@ -3345,7 +3345,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 BookingDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-45)),
                 Location = "12/22 Le Van Viet, Linh Trung, Thu Duc",
                 Note = "",
-                InitAmount = 150.00m,
+                InitAmount = 150000.00m,
                 Quantity = 2,
                 BookingStatus = Models.Enum.BookingStatus.Succeeded,
                 isPaid = true,
@@ -3357,8 +3357,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PaymentTypeAtBooking = "VNPay",
                 ServiceID = 2,
                 ServiceNameAtBooking = "In-Center Koi Health Check Service",
-                ServicePriceAtBooking = 150.00m,
-                ServiceQuantityPriceAtBooking = 300.00m,
+                ServicePriceAtBooking = 150000.00m,
+                ServiceQuantityPriceAtBooking = 300000.00m,
                 SlotID = 5,
                 SlotStartTimeAtBooking = new TimeOnly(14, 0),
                 SlotEndTimeAtBooking = new TimeOnly(14, 30),
@@ -3367,6 +3367,50 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 VetID = "v4"
             }
         );
+
+        modelBuilder.Entity<BookingRecord>().HasData(
+            new BookingRecord
+            {
+                BookingRecordID = 1,
+                TotalAmount = 100000.00m,
+                ArisedQuantity = 1,
+                QuantityMoney = 100000.00m,
+                Note = "First booking record",
+                CreateAt = new DateTime(2023, 6, 15),
+                BookingID = 1
+            },
+            new BookingRecord
+            {
+                BookingRecordID = 2,
+                TotalAmount = 300000.00m, 
+                RefundPercent = 0,
+                RefundMoney = 0,
+                Note = "",
+                CreateAt = DateTime.Today.AddDays(-45),
+                BookingID = 2
+            },
+            new BookingRecord
+            {
+                BookingRecordID = 3,
+                TotalAmount = 300000.00m, 
+                ArisedQuantity = 2, 
+                QuantityMoney = 150000.00m,
+                Note = "Third booking record",
+                CreateAt = new DateTime(2024, 8, 10),
+                BookingID = 3
+            },
+            new BookingRecord
+            {
+                BookingRecordID = 4,
+                TotalAmount = 300000.00m, 
+                ArisedQuantity = 2, 
+                QuantityMoney = 150000.00m,
+                Note = "Fourth booking record",
+                CreateAt = new DateTime(2024, 8, 10),
+                BookingID = 4
+            }
+);
+
 
         // Seed data for Feedbacks
         modelBuilder.Entity<Feedback>().HasData(
@@ -3395,7 +3439,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Rate = 3,
                 Comments = "It was okay, but not exceptional.",
                 BookingID = 4,
-                IsVisible = false // Hidden feedback
+                IsVisible = true
             }
         );
     }
