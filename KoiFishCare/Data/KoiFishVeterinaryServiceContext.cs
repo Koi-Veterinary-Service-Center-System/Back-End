@@ -143,7 +143,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PhoneNumber = "0786542387",
                 ExperienceYears = null,
                 IsBanned = false,
-                IsActive = true
+                IsActive = true,
+                EmailConfirmed = true
             },
 
         //---------- Staff -----------------------------------------------------------------
@@ -164,7 +165,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PhoneNumber = "0799981696",
                 ExperienceYears = null,
                 IsBanned = false,
-                IsActive = true
+                IsActive = true,
+                EmailConfirmed = true
             },
 
         //---------- Customer -----------------------------------------------------------------
@@ -185,6 +187,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = null,
                 IsBanned = false,
                 IsActive = true,
+                EmailConfirmed = true
             },
 
         //---------- Veterinarian -----------------------------------------------------------------
@@ -206,6 +209,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 10,
                 IsBanned = false,
                 IsActive = true,
+                EmailConfirmed = true
             },
 
             new User {
@@ -226,6 +230,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 5,
                 IsBanned = false,
                 IsActive = true,
+                EmailConfirmed = true
             },
 
             new User {
@@ -245,7 +250,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PhoneNumber = "0123456789",
                 ExperienceYears = 8,
                 IsBanned = false,
-                IsActive = true
+                IsActive = true,
+                EmailConfirmed = true
             },
 
             new User {
@@ -265,7 +271,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 PhoneNumber = "0967812345",
                 ExperienceYears = 7,
                 IsBanned = false,
-                IsActive = true
+                IsActive = true,
+                EmailConfirmed = true
             },
 
             new User {
@@ -286,6 +293,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 ExperienceYears = 9,
                 IsBanned = false,
                 IsActive = true,
+                EmailConfirmed = true
             }
         };
 
