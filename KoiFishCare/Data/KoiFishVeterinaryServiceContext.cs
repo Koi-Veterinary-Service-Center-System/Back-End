@@ -3283,7 +3283,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 SlotEndTimeAtBooking = new TimeOnly(10, 30),
                 SlotWeekDateAtBooking = DayOfWeek.Wednesday.ToString(),
                 CustomerID = "c1",
-                VetID = "v1"
+                VetID = "v1",
             },
             new Booking
             {
@@ -3368,6 +3368,50 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             }
         );
 
+        modelBuilder.Entity<BookingRecord>().HasData(
+            new BookingRecord
+            {
+                BookingRecordID = 1,
+                TotalAmount = 100000.00m,
+                ArisedQuantity = 1,
+                QuantityMoney = 100000.00m,
+                Note = "First booking record",
+                CreateAt = new DateTime(2023, 6, 15),
+                BookingID = 1
+            },
+            new BookingRecord
+            {
+                BookingRecordID = 2,
+                TotalAmount = 300000.00m, 
+                RefundPercent = 0,
+                RefundMoney = 0,
+                Note = "",
+                CreateAt = DateTime.Today.AddDays(-45),
+                BookingID = 2
+            },
+            new BookingRecord
+            {
+                BookingRecordID = 3,
+                TotalAmount = 300000.00m, 
+                ArisedQuantity = 2, 
+                QuantityMoney = 150000.00m,
+                Note = "Third booking record",
+                CreateAt = new DateTime(2024, 8, 10),
+                BookingID = 3
+            },
+            new BookingRecord
+            {
+                BookingRecordID = 4,
+                TotalAmount = 300000.00m, 
+                ArisedQuantity = 2, 
+                QuantityMoney = 150000.00m,
+                Note = "Fourth booking record",
+                CreateAt = new DateTime(2024, 8, 10),
+                BookingID = 4
+            }
+);
+
+
         // Seed data for Feedbacks
         modelBuilder.Entity<Feedback>().HasData(
             new Feedback
@@ -3396,6 +3440,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Comments = "The doctor is so sexy!",
                 BookingID = 4,
                 IsVisible = false 
+
             }
         );
     }
