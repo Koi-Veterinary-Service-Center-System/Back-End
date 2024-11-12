@@ -518,6 +518,8 @@ namespace KoiFishCare.Controllers
                     Gender = userDTO.Gender,
                     ManagerID = User.FindFirstValue(ClaimTypes.NameIdentifier),
                     IsManager = userDTO.Role.Equals("Manager"),
+                    VerificationCode = GenerateRandomCode(),
+                    EmailConfirmed = true,
                 };
 
                 var result = await _userManager.CreateAsync(user, userDTO.Password);
@@ -543,6 +545,8 @@ namespace KoiFishCare.Controllers
                     Email = userDTO.Email,
                     Gender = userDTO.Gender,
                     IsManager = userDTO.Role.Equals("Manager"),
+                    EmailConfirmed = true,
+                    VerificationCode = GenerateRandomCode(),
                 };
 
                 var result = await _userManager.CreateAsync(user, userDTO.Password);
