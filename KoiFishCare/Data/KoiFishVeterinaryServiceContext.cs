@@ -475,68 +475,40 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
 
         // Seed data for VetSlot (Assuming that the relationship between Vet and Slot is many-to-many)
         modelBuilder.Entity<VetSlot>().HasData(
-            new VetSlot
-            {
-                VetID = "v1",
-                SlotID = 1,
-                isBooked = false
-            },
-            new VetSlot
-            {
-                VetID = "v2",
-                SlotID = 1,
-                isBooked = false
-            },
-            new VetSlot
-            {
-                VetID = "v4",
-                SlotID = 1,
-                isBooked = false
-            },
-            new VetSlot
-            {
-                VetID = "v1",
-                SlotID = 2,
-                isBooked = false
-            },
-            new VetSlot
-            {
-                VetID = "v1",
-                SlotID = 3,
-                isBooked = false
-            },
-            new VetSlot
-            {
-                VetID = "v4",
-                SlotID = 3,
-                isBooked = false
-            },
-            new VetSlot
-            {
-                VetID = "v2",
-                SlotID = 4,
-                isBooked = false
-            },
-            new VetSlot
-            {
-                VetID = "v3",
-                SlotID = 4,
-                isBooked = false
-            },
-            new VetSlot
-            {
-                VetID = "v3",
-                SlotID = 5,
-                isBooked = false
-            },
+            new VetSlot { VetID = "v1", SlotID = 1, isBooked = false },
+            new VetSlot { VetID = "v2", SlotID = 1, isBooked = false },
+            new VetSlot { VetID = "v4", SlotID = 1, isBooked = false },
+            new VetSlot { VetID = "v1", SlotID = 2, isBooked = false },
+            new VetSlot { VetID = "v1", SlotID = 3, isBooked = false },
+            new VetSlot { VetID = "v4", SlotID = 3, isBooked = false },
+            new VetSlot { VetID = "v2", SlotID = 4, isBooked = false },
+            new VetSlot { VetID = "v3", SlotID = 4, isBooked = false },
+            new VetSlot { VetID = "v3", SlotID = 5, isBooked = false },
+            new VetSlot { VetID = "v5", SlotID = 5, isBooked = false },
+            new VetSlot { VetID = "v1", SlotID = 6, isBooked = false },
+            new VetSlot { VetID = "v2", SlotID = 6, isBooked = false },
+            new VetSlot { VetID = "v3", SlotID = 6, isBooked = false },
+            new VetSlot { VetID = "v4", SlotID = 7, isBooked = false },
+            new VetSlot { VetID = "v5", SlotID = 7, isBooked = false },
+            new VetSlot { VetID = "v1", SlotID = 8, isBooked = false },
+            new VetSlot { VetID = "v2", SlotID = 8, isBooked = false },
+            new VetSlot { VetID = "v3", SlotID = 9, isBooked = false },
+            new VetSlot { VetID = "v4", SlotID = 9, isBooked = false },
+            new VetSlot { VetID = "v5", SlotID = 9, isBooked = false },
+            new VetSlot { VetID = "v1", SlotID = 10, isBooked = false },
+            new VetSlot { VetID = "v3", SlotID = 10, isBooked = false },
+            new VetSlot { VetID = "v2", SlotID = 11, isBooked = false },
+            new VetSlot { VetID = "v4", SlotID = 11, isBooked = false },
+            new VetSlot { VetID = "v5", SlotID = 12, isBooked = false },
+            new VetSlot { VetID = "v2", SlotID = 12, isBooked = false },
+            new VetSlot { VetID = "v1", SlotID = 13, isBooked = false },
+            new VetSlot { VetID = "v3", SlotID = 13, isBooked = false },
+            new VetSlot { VetID = "v4", SlotID = 14, isBooked = false },
+            new VetSlot { VetID = "v5", SlotID = 14, isBooked = false },
+            new VetSlot { VetID = "v2", SlotID = 15, isBooked = false },
+            new VetSlot { VetID = "v3", SlotID = 15, isBooked = false }
+);
 
-            new VetSlot
-            {
-                VetID = "v5",
-                SlotID = 5,
-                isBooked = false
-            }
-        );
 
         // Seed data for Services
         modelBuilder.Entity<Service>().HasData(
@@ -3275,9 +3247,150 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 IsDeleted = false,
             }
         );
+
+        // Seed data for booking
+        modelBuilder.Entity<Booking>().HasData(
+            new Booking
+            {
+                BookingID = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-15)),
+                Location = "12/22 Le Van Viet, Linh Trung, Thu Duc",
+                Note = "Initial Consultation",
+                InitAmount = 100.00m,
+                Quantity = 1,
+                BookingStatus = Models.Enum.BookingStatus.Succeeded,
+                isPaid = true,
+                isRefunded = false,
+                hasPres = true,
+                hasFeedback = false,
+                MeetURL = null,
+                PaymentID = 1,
+                PaymentTypeAtBooking = "Cash",
+                ServiceID = 1,
+                ServiceNameAtBooking = "On-Site Koi Health Check Service",
+                ServicePriceAtBooking = 100.00m,
+                ServiceQuantityPriceAtBooking = 100.00m,
+                SlotID = 1,
+                SlotStartTimeAtBooking = new TimeOnly(10, 0),
+                SlotEndTimeAtBooking = new TimeOnly(10, 30),
+                SlotWeekDateAtBooking = DayOfWeek.Wednesday.ToString(),
+                CustomerID = "c1",
+                VetID = "v1"
+            },
+            new Booking
+            {
+                BookingID = 2,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-45)),
+                Location = "12/22 Le Van Viet, Linh Trung, Thu Duc",
+                Note = "Follow-up",
+                InitAmount = 150.00m,
+                Quantity = 2,
+                BookingStatus = Models.Enum.BookingStatus.Cancelled,
+                isPaid = true,
+                isRefunded = true,
+                hasPres = true,
+                hasFeedback = true,
+                MeetURL = "https://meet.example.com/session2",
+                PaymentID = 2,
+                PaymentTypeAtBooking = "VNPay",
+                ServiceID = 2,
+                ServiceNameAtBooking = "In-Center Koi Health Check Service",
+                ServicePriceAtBooking = 150.00m,
+                ServiceQuantityPriceAtBooking = 300.00m,
+                SlotID = 2,
+                SlotStartTimeAtBooking = new TimeOnly(14, 0),
+                SlotEndTimeAtBooking = new TimeOnly(14, 30),
+                SlotWeekDateAtBooking = DayOfWeek.Monday.ToString(),
+                CustomerID = "c1",
+                VetID = "v2"
+            },
+            new Booking
+            {
+                BookingID = 3,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-45)),
+                Location = "12/22 Le Van Viet, Linh Trung, Thu Duc",
+                Note = "",
+                InitAmount = 150.00m,
+                Quantity = 2,
+                BookingStatus = Models.Enum.BookingStatus.Succeeded,
+                isPaid = true,
+                isRefunded = true,
+                hasPres = true,
+                hasFeedback = true,
+                MeetURL = "https://meet.example.com/session2",
+                PaymentID = 2,
+                PaymentTypeAtBooking = "VNPay",
+                ServiceID = 2,
+                ServiceNameAtBooking = "In-Center Koi Health Check Service",
+                ServicePriceAtBooking = 150.00m,
+                ServiceQuantityPriceAtBooking = 300.00m,
+                SlotID = 5,
+                SlotStartTimeAtBooking = new TimeOnly(14, 0),
+                SlotEndTimeAtBooking = new TimeOnly(14, 30),
+                SlotWeekDateAtBooking = DayOfWeek.Friday.ToString(),
+                CustomerID = "c1",
+                VetID = "v3"
+            },
+            new Booking
+            {
+                BookingID = 4,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-45)),
+                Location = "12/22 Le Van Viet, Linh Trung, Thu Duc",
+                Note = "",
+                InitAmount = 150.00m,
+                Quantity = 2,
+                BookingStatus = Models.Enum.BookingStatus.Succeeded,
+                isPaid = true,
+                isRefunded = true,
+                hasPres = true,
+                hasFeedback = true,
+                MeetURL = "https://meet.example.com/session2",
+                PaymentID = 2,
+                PaymentTypeAtBooking = "VNPay",
+                ServiceID = 2,
+                ServiceNameAtBooking = "In-Center Koi Health Check Service",
+                ServicePriceAtBooking = 150.00m,
+                ServiceQuantityPriceAtBooking = 300.00m,
+                SlotID = 5,
+                SlotStartTimeAtBooking = new TimeOnly(14, 0),
+                SlotEndTimeAtBooking = new TimeOnly(14, 30),
+                SlotWeekDateAtBooking = DayOfWeek.Thursday.ToString(),
+                CustomerID = "c1",
+                VetID = "v4"
+            }
+        );
+
+        // Seed data for Feedbacks
+        modelBuilder.Entity<Feedback>().HasData(
+            new Feedback
+            {
+                FeedbackID = 1,
+                CustomerName = "Dkhoa_Happy",
+                Rate = 5,
+                Comments = "Excellent service, very satisfied!",
+                BookingID = 1,
+                IsVisible = true
+            },
+            new Feedback
+            {
+                FeedbackID = 2,
+                CustomerName = "Dkhoa_Happy",
+                Rate = 4,
+                Comments = "Great experience, but could be improved in some areas.",
+                BookingID = 3,
+                IsVisible = true
+            },
+            new Feedback
+            {
+                FeedbackID = 3,
+                CustomerName = "Dkhoa_Happy",
+                Rate = 3,
+                Comments = "It was okay, but not exceptional.",
+                BookingID = 4,
+                IsVisible = false // Hidden feedback
+            }
+        );
     }
-
-
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
