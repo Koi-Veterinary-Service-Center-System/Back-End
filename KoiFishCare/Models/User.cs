@@ -26,6 +26,7 @@ public partial class User : IdentityUser
     public bool IsActive { get; set; } = true;
 
     public bool IsDeleted { get; set; } = false;
+    public string? VerificationCode { get; set; }
 
     // ---- Attribute for Vet -----------------------------------------------------------------------
     public int? ExperienceYears { get; set; }
