@@ -369,21 +369,21 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             {
                 SlotID = 1,
                 StartTime = new TimeOnly(9, 0),
-                EndTime = new TimeOnly(10, 0),
+                EndTime = new TimeOnly(11, 0),  // 2 hours
                 WeekDate = Models.Enum.DayOfWeek.Monday
             },
             new Slot
             {
                 SlotID = 2,
                 StartTime = new TimeOnly(11, 0),
-                EndTime = new TimeOnly(12, 0),
+                EndTime = new TimeOnly(13, 0),  // 2 hours
                 WeekDate = Models.Enum.DayOfWeek.Monday
             },
             new Slot
             {
                 SlotID = 3,
                 StartTime = new TimeOnly(13, 0),
-                EndTime = new TimeOnly(14, 0),
+                EndTime = new TimeOnly(16, 0),  // 3 hours
                 WeekDate = Models.Enum.DayOfWeek.Monday
             },
 
@@ -392,21 +392,21 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             {
                 SlotID = 4,
                 StartTime = new TimeOnly(9, 0),
-                EndTime = new TimeOnly(10, 0),
+                EndTime = new TimeOnly(12, 0),  // 3 hours
                 WeekDate = Models.Enum.DayOfWeek.Tuesday
             },
             new Slot
             {
                 SlotID = 5,
-                StartTime = new TimeOnly(11, 0),
-                EndTime = new TimeOnly(12, 0),
+                StartTime = new TimeOnly(13, 0),
+                EndTime = new TimeOnly(16, 0),  // 3 hours
                 WeekDate = Models.Enum.DayOfWeek.Tuesday
             },
             new Slot
             {
                 SlotID = 6,
-                StartTime = new TimeOnly(14, 0),
-                EndTime = new TimeOnly(15, 0),
+                StartTime = new TimeOnly(16, 0),
+                EndTime = new TimeOnly(18, 0),  // 2 hours
                 WeekDate = Models.Enum.DayOfWeek.Tuesday
             },
 
@@ -415,21 +415,21 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             {
                 SlotID = 7,
                 StartTime = new TimeOnly(8, 0),
-                EndTime = new TimeOnly(9, 0),
+                EndTime = new TimeOnly(12, 0),  // 4 hours
                 WeekDate = Models.Enum.DayOfWeek.Wednesday
             },
             new Slot
             {
                 SlotID = 8,
-                StartTime = new TimeOnly(10, 0),
-                EndTime = new TimeOnly(11, 0),
+                StartTime = new TimeOnly(12, 0),
+                EndTime = new TimeOnly(15, 0),  // 3 hours
                 WeekDate = Models.Enum.DayOfWeek.Wednesday
             },
             new Slot
             {
                 SlotID = 9,
                 StartTime = new TimeOnly(15, 0),
-                EndTime = new TimeOnly(16, 0),
+                EndTime = new TimeOnly(17, 0),  // 2 hours
                 WeekDate = Models.Enum.DayOfWeek.Wednesday
             },
 
@@ -438,21 +438,21 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             {
                 SlotID = 10,
                 StartTime = new TimeOnly(7, 0),
-                EndTime = new TimeOnly(8, 0),
+                EndTime = new TimeOnly(9, 0),  // 2 hours
                 WeekDate = Models.Enum.DayOfWeek.Thursday
             },
             new Slot
             {
                 SlotID = 11,
-                StartTime = new TimeOnly(12, 0),
-                EndTime = new TimeOnly(13, 0),
+                StartTime = new TimeOnly(10, 0),
+                EndTime = new TimeOnly(13, 0),  // 3 hours
                 WeekDate = Models.Enum.DayOfWeek.Thursday
             },
             new Slot
             {
                 SlotID = 12,
-                StartTime = new TimeOnly(16, 0),
-                EndTime = new TimeOnly(17, 0),
+                StartTime = new TimeOnly(14, 0),
+                EndTime = new TimeOnly(17, 0),  // 3 hours
                 WeekDate = Models.Enum.DayOfWeek.Thursday
             },
 
@@ -461,21 +461,21 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             {
                 SlotID = 13,
                 StartTime = new TimeOnly(9, 0),
-                EndTime = new TimeOnly(10, 0),
+                EndTime = new TimeOnly(12, 0),  // 3 hours
                 WeekDate = Models.Enum.DayOfWeek.Friday
             },
             new Slot
             {
                 SlotID = 14,
-                StartTime = new TimeOnly(11, 0),
-                EndTime = new TimeOnly(12, 0),
+                StartTime = new TimeOnly(13, 0),
+                EndTime = new TimeOnly(16, 0),  // 3 hours
                 WeekDate = Models.Enum.DayOfWeek.Friday
             },
             new Slot
             {
                 SlotID = 15,
-                StartTime = new TimeOnly(14, 0),
-                EndTime = new TimeOnly(15, 0),
+                StartTime = new TimeOnly(16, 0),
+                EndTime = new TimeOnly(18, 0),  // 2 hours
                 WeekDate = Models.Enum.DayOfWeek.Friday
             }
         );

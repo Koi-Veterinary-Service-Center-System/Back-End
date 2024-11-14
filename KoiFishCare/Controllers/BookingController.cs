@@ -129,6 +129,22 @@ namespace KoiFishCare.Controllers
             var service = await _serviceRepo.GetServiceById(createBookingDto.ServiceId);
             if (service == null) return BadRequest("Service does not exist");
 
+            // Check slot duration is at least 30 minutes longer than the service's estimated duration
+            if (slot.StartTime.HasValue && slot.EndTime.HasValue)
+            {
+                var slotDuration = slot.EndTime.Value.ToTimeSpan() - slot.StartTime.Value.ToTimeSpan();
+                var requiredDuration = TimeSpan.FromMinutes(service.EstimatedDuration + 30);
+
+                if (slotDuration < requiredDuration)
+                {
+                    return BadRequest("Slot duration must be at least 30 minutes longer than the service's estimated duration.");
+                }
+            }
+            else
+            {
+                return BadRequest("Slot start or end time is not defined.");
+            }
+
             // Get Payment
             var payment = await _paymentRepo.GetPaymentByID(createBookingDto.PaymentId);
             if (payment == null) return BadRequest("Payment does not exist");
@@ -180,7 +196,7 @@ namespace KoiFishCare.Controllers
                     // Vet's credential file path - modify to retrieve actual path if stored in DB or configuration
 
                     string vetCredentialFilePath = Path.Combine(Directory.GetCurrentDirectory(), "VetCredentials", $"{vet?.Id}_Cre.json");
-                    
+
                     List<string> attendeeEmails = new List<string> { userModel.Email! }; // Add the customer email
                     var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest, vetCredentialFilePath, vet.Email!, attendeeEmails);
                     var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
