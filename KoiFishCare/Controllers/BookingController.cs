@@ -132,8 +132,11 @@ namespace KoiFishCare.Controllers
             // Check slot duration is at least 30 minutes longer than the service's estimated duration
             if (slot.StartTime.HasValue && slot.EndTime.HasValue)
             {
+                // Calculate the slot duration
                 var slotDuration = slot.EndTime.Value.ToTimeSpan() - slot.StartTime.Value.ToTimeSpan();
-                var requiredDuration = TimeSpan.FromMinutes(service.EstimatedDuration + 30);
+
+                // Convert EstimatedDuration from hours to minutes and add 30 minutes
+                var requiredDuration = TimeSpan.FromMinutes(service.EstimatedDuration * 60 + 30);
 
                 if (slotDuration < requiredDuration)
                 {
