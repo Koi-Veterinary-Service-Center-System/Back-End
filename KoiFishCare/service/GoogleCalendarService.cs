@@ -40,11 +40,11 @@ namespace KoiFishCare.service
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
             });
-
+            
             // Add the vet as the first attendee, then other participants
             var attendees = new List<EventAttendee>
             {
-                new EventAttendee { Email = vetEmail }  // Vet's email is the main organizer
+                new EventAttendee { Email = vetEmail, ResponseStatus = "accepted" }  // Vet's email is the main organizer
             };
 
             if (attendeeEmails != null && attendeeEmails.Count > 0)

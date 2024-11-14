@@ -178,11 +178,11 @@ namespace KoiFishCare.Controllers
                     };
 
                     // Vet's credential file path - modify to retrieve actual path if stored in DB or configuration
+
                     string vetCredentialFilePath = Path.Combine(Directory.GetCurrentDirectory(), "VetCredentials", $"{vet?.Id}_Cre.json");
-
+                    
                     List<string> attendeeEmails = new List<string> { userModel.Email! }; // Add the customer email
-
-                    var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest, vetCredentialFilePath, vet!.Email!, attendeeEmails);
+                    var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest, vetCredentialFilePath, vet.Email!, attendeeEmails);
                     var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
 
                     bookingModel.MeetURL = googleMeetLink;
@@ -229,10 +229,10 @@ namespace KoiFishCare.Controllers
                     };
 
                     // Vet's credential file path - modify to retrieve actual path if stored in DB or configuration
+
                     string vetCredentialFilePath = Path.Combine(Directory.GetCurrentDirectory(), "VetCredentials", $"{availableVet?.VetID}_Cre.json");
 
                     List<string> attendeeEmails = new List<string> { userModel.Email! }; // Add the customer email
-
                     var calendarEvent = await GoogleCalendarService.CreateGoogleCalendar(googleCalendarRequest, vetCredentialFilePath, availableVet!.Veterinarian.Email, attendeeEmails);
                     var googleMeetLink = calendarEvent.ConferenceData?.EntryPoints?.FirstOrDefault(e => e.EntryPointType == "video")?.Uri;
 
@@ -685,7 +685,7 @@ namespace KoiFishCare.Controllers
             {
                 return BadRequest("The booking is not ready!");
             }
-            
+
             if (booking.isRefunded == true)
             {
                 return BadRequest("The booking is already refunded!");
