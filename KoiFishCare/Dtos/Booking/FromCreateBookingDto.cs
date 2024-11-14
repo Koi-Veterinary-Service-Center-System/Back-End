@@ -10,7 +10,7 @@ namespace KoiFishCare.DTOs
     public class FromCreateBookingDTO
     {
         public string? CustomerId { get; set; }
-        
+
         public string? Note { get; set; }
 
         public string VetName { get; set; } = string.Empty;
@@ -19,7 +19,7 @@ namespace KoiFishCare.DTOs
         public decimal InitAmount { get; set; }
 
         [Required(ErrorMessage = "Quantity is required.")]
-        [Range(1,15, ErrorMessage = "Quantity should in range 1 to 15")]
+        [Range(0, 15, ErrorMessage = "Quantity should in range 0 to 15")]
         public int Quantity { get; set; }
 
         public string? Location { get; set; }

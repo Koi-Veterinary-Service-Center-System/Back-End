@@ -3270,7 +3270,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 isPaid = true,
                 isRefunded = false,
                 hasPres = true,
-                hasFeedback = false,
+                hasFeedback = true,
                 MeetURL = null,
                 PaymentID = 1,
                 PaymentTypeAtBooking = "Cash",
@@ -3382,7 +3382,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new BookingRecord
             {
                 BookingRecordID = 2,
-                TotalAmount = 300000.00m, 
+                TotalAmount = 300000.00m,
                 RefundPercent = 0,
                 RefundMoney = 0,
                 Note = "",
@@ -3392,8 +3392,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new BookingRecord
             {
                 BookingRecordID = 3,
-                TotalAmount = 300000.00m, 
-                ArisedQuantity = 2, 
+                TotalAmount = 300000.00m,
+                ArisedQuantity = 2,
                 QuantityMoney = 150000.00m,
                 Note = "Third booking record",
                 CreateAt = new DateTime(2024, 8, 10),
@@ -3402,8 +3402,8 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
             new BookingRecord
             {
                 BookingRecordID = 4,
-                TotalAmount = 300000.00m, 
-                ArisedQuantity = 2, 
+                TotalAmount = 300000.00m,
+                ArisedQuantity = 2,
                 QuantityMoney = 150000.00m,
                 Note = "Fourth booking record",
                 CreateAt = new DateTime(2024, 8, 10),
@@ -3439,7 +3439,7 @@ public partial class KoiFishVeterinaryServiceContext : IdentityDbContext<User>
                 Rate = 3,
                 Comments = "The doctor is so sexy!",
                 BookingID = 4,
-                IsVisible = false 
+                IsVisible = false
 
             }
         );
