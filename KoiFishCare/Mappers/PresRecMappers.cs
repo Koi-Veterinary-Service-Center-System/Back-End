@@ -16,8 +16,7 @@ namespace KoiFishCare.Mappers
                 PrescriptionRecordID = model.PrescriptionRecordID,
                 DiseaseName = model.DiseaseName,
                 Symptoms = model.Symptoms,
-                Medication = model.Medication,
-                Frequency = model.Frequency,
+                MedicationDetails = model.MedicationDetails,
                 Note = model.Note,
                 BookingID = model.BookingID,
                 CreateAt = model.CreateAt
@@ -30,8 +29,7 @@ namespace KoiFishCare.Mappers
             {
                 DiseaseName = dto.DiseaseName,
                 Symptoms = dto.Symptoms,
-                Medication = dto.Medication,
-                Frequency = dto.Frequency,
+                MedicationDetails = dto.MedicationDetails,
                 Note = dto.Note,
                 BookingID = dto.BookingID,
                 CreateAt = DateTime.Now
@@ -44,8 +42,7 @@ namespace KoiFishCare.Mappers
             {
                 DiseaseName = dto.DiseaseName,
                 Symptoms = dto.Symptoms,
-                Medication = dto.Medication,
-                Frequency = dto.Frequency,
+                MedicationDetails = dto.MedicationDetails,
                 Note = dto.Note,
                 CreateAt = DateTime.UtcNow
             };

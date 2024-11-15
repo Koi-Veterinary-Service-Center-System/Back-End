@@ -12,9 +12,7 @@ namespace KoiFishCare.Dtos.PrescriptionRecord
 
         public string? Symptoms { get; set; }
 
-        public string? Medication { get; set; }
-
-        public string? Frequency { get; set; }
+        public string? MedicationDetails { get; set; }
 
         public string? Note { get; set; }
         

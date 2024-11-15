@@ -60,9 +60,8 @@ namespace KoiFishCare.Repository
 
             exist.DiseaseName = model.DiseaseName;
             exist.Symptoms = model.Symptoms;
-            exist.Medication = model.Medication;
+            exist.MedicationDetails = model.MedicationDetails;
             exist.Note = model.Note;
-            exist.Frequency = model.Frequency;
             await _context.SaveChangesAsync();
             return exist;
         }
