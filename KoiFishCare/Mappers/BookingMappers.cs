@@ -74,6 +74,7 @@ namespace KoiFishCare.Mappers
                 TotalAmount = booking.BookingRecord?.TotalAmount,
                 BookingRecordNote = booking.BookingRecord?.Note,
                 hasFeedback = booking.hasFeedback,
+                hasBookingRecord = booking.hasBookingRecord,
             };
         }
 

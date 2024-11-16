@@ -92,6 +92,7 @@ namespace KoiFishCare.Controllers
 
             BookingRecord bookingRecord = new BookingRecord()
             {
+                CreateAt = DateTime.Now,
                 BookingID = createBookingRecordDTO.BookingID,
                 ArisedQuantity = createBookingRecordDTO.ArisedQuantity,
                 QuantityMoney = (createBookingRecordDTO.ArisedQuantity + existingBooking.Quantity) * existingBooking.Service.QuantityPrice,
@@ -108,6 +109,8 @@ namespace KoiFishCare.Controllers
             {
                 existingBooking.BookingStatus = BookingStatus.Completed;
             }
+            
+            existingBooking.hasBookingRecord = true;
             await _bookingRepo.UpdateBooking(existingBooking);
             return Ok(result.ToDTOFromModel());
         }

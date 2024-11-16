@@ -33,6 +33,8 @@ public partial class Booking
 
     public bool hasFeedback { get; set; } = false;
 
+    public bool hasBookingRecord { get; set; } = false;
+
     public string? MeetURL { get; set; }
 
     // ---- Payment -----------------------------------------------------------------------
