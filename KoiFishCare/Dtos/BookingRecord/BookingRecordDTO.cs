@@ -7,9 +7,17 @@ namespace KoiFishCare.Dtos.BookingRecord
 {
     public class BookingRecordDTO
     {
+        public DateTime CreateAt { get; set; }
+        
         public int BookingRecordID { get; set; }
 
         public int BookingID { get; set; }
+
+        public decimal InitAmount { get; set; }
+
+        public decimal UnitPrice { get; set; }
+
+        public int InitQuantity { get; set; }
 
         public int ArisedQuantity { get; set; }
 
