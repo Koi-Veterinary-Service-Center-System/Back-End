@@ -11,7 +11,7 @@ namespace KoiFishCare.Mappers
 {
     public static class BookingMappers
     {
-        public static Booking ToBookingFromCreate(this FromCreateBookingDTO createBookingDto, 
+        public static Booking ToBookingFromCreate(this FromCreateBookingDTO createBookingDto,
         Slot slot, Service service, Payment payment, string customerId, string vetId)
         {
             return new Booking()
@@ -51,7 +51,7 @@ namespace KoiFishCare.Mappers
                 Note = booking.Note,
                 InitAmount = booking.InitAmount,
                 BookingStatus = booking.BookingStatus.ToString(),
-                MeetURL = booking.MeetURL,
+                MeetURL = (booking.BookingStatus == BookingStatus.Succeeded || booking.BookingStatus == BookingStatus.Cancelled) ? null : booking.MeetURL,
                 PaymentID = booking.PaymentID,
                 PaymentTypeAtBooking = booking.PaymentTypeAtBooking,
                 Quantity = booking.Quantity + (booking.BookingRecord?.ArisedQuantity ?? 0),
@@ -77,6 +77,5 @@ namespace KoiFishCare.Mappers
                 hasBookingRecord = booking.hasBookingRecord,
             };
         }
-
     }
 }

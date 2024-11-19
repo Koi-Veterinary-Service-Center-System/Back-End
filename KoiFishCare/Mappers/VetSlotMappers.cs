@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using KoiFishCare.Dtos.VetSlot;
 using KoiFishCare.DTOs.Vet;
 using KoiFishCare.Models;
+using KoiFishCare.Models.Enum;
 
 namespace KoiFishCare.Mappers
 {
@@ -23,7 +24,7 @@ namespace KoiFishCare.Mappers
                 VetName = vetSlot.Veterinarian?.UserName,
                 VetFirstName = vetSlot.Veterinarian?.FirstName,
                 VetLastName = vetSlot.Veterinarian?.LastName,
-                MeetURL = vetSlot.Veterinarian?.VetBookings.FirstOrDefault(b => b.SlotID == vetSlot.SlotID)?.MeetURL ?? ""
+                MeetURL = vetSlot.Veterinarian?.VetBookings.FirstOrDefault(b => b.SlotID == vetSlot.SlotID && b.BookingStatus != BookingStatus.Succeeded && b.BookingStatus != BookingStatus.Cancelled)?.MeetURL ?? null
             };
         }
 
