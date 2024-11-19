@@ -29,7 +29,12 @@ namespace KoiFishCare.Repository
 
         public async Task<List<User>?> GetAllUserAsync()
         {
-            return await _context.Users.ToListAsync();
+            var managerRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Manager");
+            if (managerRole == null)
+            {
+                return null;
+            }
+            return await _context.Users.Where(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId != managerRole.Id)).ToListAsync();
         }
 
         public async Task<User?> GetUserByIdAsync(string userID)
