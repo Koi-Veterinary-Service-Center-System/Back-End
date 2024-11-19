@@ -20,6 +20,7 @@ namespace KoiFishCare.Mappers
                 UnitPrice = bookingRecord.Booking.ServiceQuantityPriceAtBooking,
                 InitQuantity = bookingRecord.Booking.Quantity,
                 ArisedQuantity = bookingRecord.ArisedQuantity,
+                TotalQuantity = bookingRecord.Booking.Quantity + bookingRecord.ArisedQuantity,
                 QuantityMoney = bookingRecord.QuantityMoney,
                 ReceivableAmount = bookingRecord.Booking.isPaid == true ? bookingRecord.QuantityMoney : bookingRecord.TotalAmount,
                 TotalAmount = bookingRecord.TotalAmount,
