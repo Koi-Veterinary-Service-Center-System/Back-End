@@ -27,12 +27,12 @@ namespace KoiFishCare.service
             using (var stream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "Cre.json"), FileMode.Open, FileAccess.Read))
             {
                 string credPath = "token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     Scopes,
                     "user",
                     CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
+                    new FileDataStore(credPath, true));
             }
 
             var services = new CalendarService(new BaseClientService.Initializer()
@@ -40,16 +40,19 @@ namespace KoiFishCare.service
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
             });
-            
+
             // Add the vet as the first attendee, then other participants
             var attendees = new List<EventAttendee>
             {
-                new EventAttendee { Email = vetEmail, ResponseStatus = "accepted" }  // Vet's email is the main organizer
+                new EventAttendee { Email = vetEmail, ResponseStatus = "accepted" } // Vet's email is the main organizer
             };
-
             if (attendeeEmails != null && attendeeEmails.Count > 0)
             {
-                attendees.AddRange(attendeeEmails.Select(email => new EventAttendee { Email = email }));
+                attendees.AddRange(attendeeEmails.Select(email => new EventAttendee
+                {
+                    Email = email,
+                    ResponseStatus = "accepted" // Set the attendee as accepted
+                }));
             }
 
             // Define the event with ConferenceData for Google Meet
@@ -74,16 +77,18 @@ namespace KoiFishCare.service
                     {
                         ConferenceSolutionKey = new ConferenceSolutionKey
                         {
-                            Type = "hangoutsMeet"  // This creates a Google Meet link
+                            Type = "hangoutsMeet" // This creates a Google Meet link
                         },
-                        RequestId = Guid.NewGuid().ToString()  // Unique request ID
+                        RequestId = Guid.NewGuid().ToString() // Unique request ID
                     }
                 },
-                Attendees = attendees  // Add the list of attendees to the event
+                Visibility = "public", // Ensure visibility is public to reduce join restrictions
+                Attendees = attendees // Assign attendees to the event
             };
 
             var eventRequest = services.Events.Insert(eventCalendar, "primary");
-            eventRequest.ConferenceDataVersion = 1;  // Enable ConferenceData for Google Meet
+            eventRequest.ConferenceDataVersion = 1; // Enable ConferenceData for Google Meet
+            eventRequest.SendUpdates = EventsResource.InsertRequest.SendUpdatesEnum.All; // Notify all attendees about the event
             var requestCreate = await eventRequest.ExecuteAsync();
 
             return requestCreate;
