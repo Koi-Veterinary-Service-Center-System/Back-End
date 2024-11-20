@@ -61,6 +61,11 @@ namespace KoiFishCare.Controllers
                 return Unauthorized("Invalid username or password. Please try again!");
             }
 
+            if (user.IsDeleted)
+            {
+                return Unauthorized("Account is deactivated and cannot be used to log in.");
+            }
+
             if (!user.EmailConfirmed)
             {
                 return Unauthorized("Email not verified. Please verify your email to log in.");
@@ -189,7 +194,7 @@ namespace KoiFishCare.Controllers
 
                 // Generate a random 6-digit verification code
                 var verificationCode = GenerateRandomCode();
-                
+
                 // Temporarily store the verification code in the user's profile or a cache.
                 customer.VerificationCode = verificationCode; // Assume you have added a VerificationCode field in the User model.
                 await _userManager.UpdateAsync(customer); // Save code to database
@@ -265,7 +270,7 @@ namespace KoiFishCare.Controllers
 
             // Update the user's email confirmation status
             user.EmailConfirmed = true;
-            user.VerificationCode = null; 
+            user.VerificationCode = null;
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
